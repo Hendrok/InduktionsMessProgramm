@@ -22,7 +22,6 @@ private:
     QString filename_;
 
     //parameter:
-    QString NameSupra_;
 
 
 };
