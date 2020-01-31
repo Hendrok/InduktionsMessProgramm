@@ -35,7 +35,7 @@
      <string notr="true">background-color:white</string>
     </property>
     <property name="text">
-     <string>hi</string>
+     <string/>
     </property>
     <property name="textFormat">
      <enum>Qt::AutoText</enum>

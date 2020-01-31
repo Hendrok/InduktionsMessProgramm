@@ -28,7 +28,7 @@ GraphWidget::GraphWidget(Datafile &cfile)
 void GraphWidget::createDatapoints(std::shared_ptr<Datafile> datafile){
     volts_=datafile->getVoltage();
     temps_=datafile->getTemperature();
-    filename1_=cfile_.getFileName();
+    filename1_=cfile_.getFileName();   //cfile. pointet auf getfilename
     //qDebug()<<filename1_;
 
 }

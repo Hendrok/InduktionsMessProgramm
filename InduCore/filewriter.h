@@ -3,7 +3,7 @@
 
 #include <QString>
 #include <memory>
-
+#include "measurementsequence.h"
 #include "InduCore_global.h"
 
 //forward decleration (hier nur declariert, FileWriter ist z.B. declariert und definiert)
@@ -13,11 +13,13 @@ class DataPoint;
 class FileWriter
 {
 public:
-    FileWriter();
+    FileWriter(MeasurementSequence &mfile);
     QString openFile(std::shared_ptr<MeasurementSequence> measurementSequence, QString filepath);
     bool append(std::shared_ptr<DataPoint> datapoint);
 private:
     bool writeHeader(std::shared_ptr<MeasurementSequence> measurementSequence);
+    QString header_;
+    MeasurementSequence mfile_;
 
 };
 

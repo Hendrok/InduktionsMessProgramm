@@ -2,8 +2,9 @@
 #define DATAFILE_H
 
 #include <QVector>
+#include <memory>
 #include "InduCore_global.h" //hier ist das export macro, sonst kann ich INDUCORE_EXPORT nicht benutzen beim deklarieren der Klasse
-
+#include "measurementsequence.h"
 class INDUCORE_EXPORT Datafile
 {
 public:
@@ -18,11 +19,12 @@ public:
 private:
     QVector<double> temperature_;
     QVector<double> voltage_;
+    QVector<double> phaseShift_;
     QString inputText_;
     QString filename_;
 
-    //parameter:
-
+    //attribute
+    std::shared_ptr<MeasurementSequence>  MeasurementPointer;
 
 };
 
