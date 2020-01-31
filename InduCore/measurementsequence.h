@@ -14,18 +14,18 @@ public:
     //PPMS
     double tempStart();
     void setTempStart(double &tempStart);
-    double TempEnd();
+    double tempEnd();
     void setTempEnd(double &tempEnd);
-    double MagneticField();
+    double magneticField();
     void setMagneticField(double &magneticField);
-    double CoilAngle();
+    double coilAngle();
     void setCoilAngle(double &coilAngle);
     //GBIB
-    double Frequency();
+    double frequency();
     void setFrequency(double &frequency);
-    double VoltageAmplitude();
+    double voltageAmplitude();
     void setVoltageAmplitude(double &voltageAmplitude);
-    int HarmonicWave();
+    int harmonicWave();
     void setHarmonicWave(int &harmonicWave);
 
 private:
@@ -44,9 +44,9 @@ private:
 
     };
 
-#endif // MEASUREMENTSEQUENCE_H
 
-inline QString MeasurementSequence::supraName(){
+inline QString MeasurementSequence::supraName()
+{
     return supraName_;
 }
 
@@ -64,7 +64,7 @@ inline void MeasurementSequence::setTempStart(double &tempStart)
     tempStart_= tempStart;
 }
 
-inline double MeasurementSequence::TempEnd()
+inline double MeasurementSequence::tempEnd()
 {
     return tempEnd_;
 }
@@ -74,7 +74,7 @@ inline void MeasurementSequence::setTempEnd(double &tempEnd)
     tempEnd_= tempEnd;
 }
 
-inline double MeasurementSequence::MagneticField()
+inline double MeasurementSequence::magneticField()
 {
     return magneticField_;
 }
@@ -84,7 +84,7 @@ inline void MeasurementSequence::setMagneticField(double &magneticField)
     magneticField_= magneticField;
 }
 
-inline double MeasurementSequence::CoilAngle()
+inline double MeasurementSequence::coilAngle()
 {
     return coilAngle_;
 }
@@ -94,7 +94,7 @@ inline void MeasurementSequence::setCoilAngle(double &coilAngle)
     coilAngle_= coilAngle;
 }
 
-inline double MeasurementSequence::Frequency()
+inline double MeasurementSequence::frequency()
 {
     return frequency_;
 }
@@ -104,7 +104,7 @@ inline void MeasurementSequence::setFrequency(double &frequency)
     frequency_= frequency;
 }
 
-inline double MeasurementSequence::VoltageAmplitude()
+inline double MeasurementSequence::voltageAmplitude()
 {
     return voltageAmplitude_;
 }
@@ -114,7 +114,7 @@ inline void MeasurementSequence::setVoltageAmplitude(double &voltageAmplitude)
     voltageAmplitude_= voltageAmplitude;
 }
 
-inline int MeasurementSequence::HarmonicWave()
+inline int MeasurementSequence::harmonicWave()
 {
     return harmonicWave_;
 }
@@ -126,3 +126,4 @@ inline void MeasurementSequence::setHarmonicWave(int &harmonicWave)
 
 
 
+#endif // MEASUREMENTSEQUENCE_H
