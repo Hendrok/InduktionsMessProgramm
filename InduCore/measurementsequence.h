@@ -3,16 +3,16 @@
 
 #include "InduCore_global.h"
 #include <QString>
-
+//getter klein durch refactoring
 class INDUCORE_EXPORT MeasurementSequence
 {
 public:
     MeasurementSequence();
     //algemein
-    QString SupraName();
+    QString supraName();
     void setSupraName(QString &supraName);
     //PPMS
-    double TempStart();
+    double tempStart();
     void setTempStart(double &tempStart);
     double TempEnd();
     void setTempEnd(double &tempEnd);
@@ -32,11 +32,12 @@ private:
     //allgemein
     QString supraName_;
     //PPMS
-    double tempStart_, tempEnd_; //von wo bis wo wird gemessen
+    double tempStart_;
+    double tempEnd_; //von wo bis wo wird gemessen
     double temperatureRate_;
     double magneticField_;
     double coilAngle_;
-    //GBIB
+    //Lockin
     double frequency_;
     double voltageAmplitude_;
     int harmonicWave_;
@@ -45,22 +46,22 @@ private:
 
 #endif // MEASUREMENTSEQUENCE_H
 
-inline QString MeasurementSequence::SupraName(){
+inline QString MeasurementSequence::supraName(){
     return supraName_;
 }
 
 inline void MeasurementSequence::setSupraName(QString &supraName){
-    supraName_=supraName;
+    supraName_= supraName;
 }
 
-inline double MeasurementSequence::TempStart()
+inline double MeasurementSequence::tempStart()
 {
     return tempStart_;
 }
 
 inline void MeasurementSequence::setTempStart(double &tempStart)
 {
-    tempStart_=tempStart;
+    tempStart_= tempStart;
 }
 
 inline double MeasurementSequence::TempEnd()
@@ -70,7 +71,7 @@ inline double MeasurementSequence::TempEnd()
 
 inline void MeasurementSequence::setTempEnd(double &tempEnd)
 {
-    tempEnd_=tempEnd;
+    tempEnd_= tempEnd;
 }
 
 inline double MeasurementSequence::MagneticField()
@@ -80,7 +81,7 @@ inline double MeasurementSequence::MagneticField()
 
 inline void MeasurementSequence::setMagneticField(double &magneticField)
 {
-    magneticField_=magneticField;
+    magneticField_= magneticField;
 }
 
 inline double MeasurementSequence::CoilAngle()
@@ -90,7 +91,7 @@ inline double MeasurementSequence::CoilAngle()
 
 inline void MeasurementSequence::setCoilAngle(double &coilAngle)
 {
-    coilAngle_=coilAngle;
+    coilAngle_= coilAngle;
 }
 
 inline double MeasurementSequence::Frequency()
@@ -100,7 +101,7 @@ inline double MeasurementSequence::Frequency()
 
 inline void MeasurementSequence::setFrequency(double &frequency)
 {
-    frequency_=frequency;
+    frequency_= frequency;
 }
 
 inline double MeasurementSequence::VoltageAmplitude()
@@ -110,7 +111,7 @@ inline double MeasurementSequence::VoltageAmplitude()
 
 inline void MeasurementSequence::setVoltageAmplitude(double &voltageAmplitude)
 {
-    voltageAmplitude_=voltageAmplitude;
+    voltageAmplitude_= voltageAmplitude;
 }
 
 inline int MeasurementSequence::HarmonicWave()
@@ -120,7 +121,7 @@ inline int MeasurementSequence::HarmonicWave()
 
 inline void MeasurementSequence::setHarmonicWave(int &harmonicWave)
 {
-    harmonicWave_=harmonicWave;
+    harmonicWave_= harmonicWave;
 }
 
 

@@ -8,14 +8,17 @@ FileWriter::FileWriter(MeasurementSequence &mfile)
 }
 
 bool FileWriter::writeHeader(std::shared_ptr<MeasurementSequence> measurementSequence){
+        //wasobenintextdateisteht später
+      QString header_;
       header_="";
-      header_.append(measurementSequence->SupraName());
+      header_.append(measurementSequence->supraName());
       header_.append("_");
       header_.append(QString::number(measurementSequence->VoltageAmplitude()));
       header_.append("_");
       header_.append(QString::number(measurementSequence->Frequency()));
       header_.append("_");
       header_.append(QString::number(measurementSequence->MagneticField()));
+
 if (header_==""){
     return false;
 }

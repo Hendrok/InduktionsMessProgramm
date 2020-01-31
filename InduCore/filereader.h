@@ -13,9 +13,9 @@ class INDUCORE_EXPORT FileReader
 public:
     FileReader(Datafile &dfile);
     std::shared_ptr<Datafile> readFile();
-    std::shared_ptr<MeasurementSequence> readData(QString readdata);
 private:
     Datafile dfile_;
+     std::shared_ptr<MeasurementSequence> readData(QString readheader);
 };
 
 #endif // FILEREADER_H

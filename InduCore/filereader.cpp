@@ -40,7 +40,8 @@ std::shared_ptr<Datafile> FileReader::readFile(){
 
     return datafile;
 }
-std::shared_ptr<MeasurementSequence> FileReader::readData(QString readdata){
+
+std::shared_ptr<MeasurementSequence> FileReader::readData(QString readheader){
 
 
 }

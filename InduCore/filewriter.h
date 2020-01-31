@@ -17,9 +17,10 @@ public:
     QString openFile(std::shared_ptr<MeasurementSequence> measurementSequence, QString filepath);
     bool append(std::shared_ptr<DataPoint> datapoint);
 private:
+
     bool writeHeader(std::shared_ptr<MeasurementSequence> measurementSequence);
 
-    QString header_;
+
     MeasurementSequence mfile_;
     std::shared_ptr<QFile> file_;
 };
