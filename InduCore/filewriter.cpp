@@ -32,6 +32,15 @@ bool FileWriter::append(std::shared_ptr<DataPoint> datapoint){
 QString FileWriter::openFile(std::shared_ptr<MeasurementSequence> measurementSequence, QString filepath){
 
 
-    QString hi="hi";
-    return hi;
+        file_ = std::make_shared<QFile>(filepath);
+        file_->open(QIODevice::WriteOnly | QIODevice::Text);
+
+        if(!file_->isOpen())
+        {
+            return QString();
+        }
+
+        writeHeader(measurementSequence);
+
+        return filepath;
 }
