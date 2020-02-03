@@ -1,4 +1,4 @@
-#ifndef INDUCONTROLCORE_H
+#ifndef INDUCONTROLCORE_H                          //Aufgabe:Geschäftslogik der Inducontrol, d.h. Messpunkte der Datei speichern.
 #define INDUCONTROLCORE_H
 
 #include "InduControlCore_global.h"

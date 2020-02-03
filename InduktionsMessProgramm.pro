@@ -2,6 +2,7 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     ClassTest \
+    InduControl \
     InduControlCore \
     InduCore \
     InduViewer

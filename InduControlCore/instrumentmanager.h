@@ -1,7 +1,7 @@
-#ifndef INSTRUMENTMANAGER_H
+#ifndef INSTRUMENTMANAGER_H                          //Aufgabe: Daten von Messequence an PPMS-Core UND GBIB-Core weiter zu geben!
 #define INSTRUMENTMANAGER_H
-
 #include "InduControlCore_global.h"
+
 
 //Eigene Klassen
 
