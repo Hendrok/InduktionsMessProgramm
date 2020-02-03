@@ -18,6 +18,8 @@ public:
     void setpvPhase(double pvPhase);
     int pvStatusPPMS() const;
     void setpvStatusPPMS(int &pvStatusPPMS);
+    double getpvHeliumStatus() const;
+    void setpvHeliumStatus(double &pvHeliumStatus_);
 
 private:
     double pvTemp_;
@@ -26,6 +28,7 @@ private:
     double pvVolt_;
     double pvPhase_;
     int pvStatusPPMS_;
+    double pvHeliumStatus_;
 };
 
 inline double DataPoint::pvTemp() const
@@ -83,10 +86,20 @@ inline int DataPoint::pvStatusPPMS() const
     return pvStatusPPMS_;
 }
 
-void DataPoint::setpvStatusPPMS(int &pvStatusPPMS)
+inline void DataPoint::setpvStatusPPMS(int &pvStatusPPMS)
 {
     pvStatusPPMS_=pvStatusPPMS;
 }
+inline double DataPoint::getpvHeliumStatus() const
+{
+    return pvHeliumStatus_;
+}
+
+inline void DataPoint::setpvHeliumStatus(double &pvHeliumStatus)
+{
+    pvHeliumStatus_ = pvHeliumStatus;
+}
+
 
 
 

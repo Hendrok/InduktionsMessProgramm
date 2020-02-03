@@ -38,3 +38,4 @@ unix|win32: LIBS += -L$$OUT_PWD/../InduCore/ -lInduCore
 
 INCLUDEPATH += $$PWD/../InduCore
 DEPENDPATH += $$PWD/../InduCore
+

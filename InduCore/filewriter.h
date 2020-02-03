@@ -10,15 +10,16 @@
 //forward decleration (hier nur declariert, FileWriter ist z.B. declariert und definiert)
 class DataPoint;
 
-class FileWriter
+class INDUCORE_EXPORT FileWriter
 {
 public:
-    FileWriter(MeasurementSequence &mfile);
+    FileWriter();
     QString openFile(std::shared_ptr<MeasurementSequence> measurementSequence, QString filepath);
     bool append(std::shared_ptr<DataPoint> datapoint);
+    QString writeHeader(std::shared_ptr<MeasurementSequence> measurementSequence);
 private:
 
-    bool writeHeader(std::shared_ptr<MeasurementSequence> measurementSequence);
+
 
 
     MeasurementSequence mfile_;
