@@ -20,7 +20,7 @@ MainWindow::~MainWindow()
 //TODO: meine ui klappt nicht, bzw die werte aus der Ui den attributen hinzuzufügen
 void MainWindow::on_pushButton_clicked()
 {
-    measurementSequence  = std::make_shared<MeasurementSequence>();
+    //measurementSequence  = std::make_shared<MeasurementSequence>();
     QString SupraName= "hi";
     double StartTemp =10;//ui->StartTemp->value();
     double EndTemp=10;//ui->EndTemp->value();
@@ -43,7 +43,7 @@ void MainWindow::on_pushButton_clicked()
     measurementSequence->setVoltageAmplitude(voltageAmplitude);
     measurementSequence->setHarmonicWave(harmonicWave);
 
-    FileWriter fw(*measurementSequence);
+    FileWriter fw(measurementSequence);
     QString header =fw.writeHeader(measurementSequence);
     qDebug()<<header;
 }
