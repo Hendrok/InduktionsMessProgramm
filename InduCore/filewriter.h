@@ -10,7 +10,7 @@
 //forward decleration (hier nur declariert, FileWriter ist z.B. declariert und definiert)
 class DataPoint;
 
-class FileWriter
+class INDUCORE_EXPORT FileWriter
 {
 public:
     FileWriter();

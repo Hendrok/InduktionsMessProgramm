@@ -21,18 +21,18 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     measurementSequence  = std::make_shared<MeasurementSequence>();
-    QString SupraName= "hi";
-    double StartTemp =10;//ui->StartTemp->value();
-    double EndTemp=10;//ui->EndTemp->value();
-    double temperatureRate =10;//ui->TempRate->value();
-    double magneticField =10;//ui->MagField->value();
-    double coilAngle=10;//ui->CoilAngle->value();
+    QString SupraName;
+    double StartTemp =ui->StartTemp->value();
+    double EndTemp=ui->EndTemp->value();
+    double temperatureRate =ui->TempRate->value();
+    double magneticField =ui->MagField->value();
+    double coilAngle=ui->CoilAngle->value();
     //Lockin
-    double frequency =10;//ui->Frequency->value();
-    double voltageAmplitude=10;// ui->VoltageAmplitude->value();
-    int harmonicWave=10;//ui->HarmonicWave->value();
+    double frequency =ui->Frequency->value();
+    double voltageAmplitude= ui->VoltageAmplitude->value();
+    int harmonicWave=ui->HarmonicWave->value();
 
-    //SupraName.append(ui->SupraName1->toPlainText());
+    SupraName.append(ui->SupraName1->text());
     measurementSequence->setSupraName(SupraName);
     measurementSequence->setTempStart(StartTemp);
     measurementSequence->setTempEnd(EndTemp);
@@ -45,6 +45,6 @@ void MainWindow::on_pushButton_clicked()
 
     FileWriter fw;
     QString header =fw.writeHeader(measurementSequence);
-    qDebug()<<header;
+    qDebug().noquote()<<header;
 }
 

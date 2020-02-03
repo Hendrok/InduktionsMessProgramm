@@ -27,11 +27,11 @@
      <string>Start</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>43</y>
+      <x>50</x>
+      <y>50</y>
       <width>348</width>
       <height>394</height>
      </rect>
@@ -47,13 +47,22 @@
         </widget>
        </item>
        <item>
-        <widget class="QTextEdit" name="SupraName1">
-         <property name="html">
-          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:14.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:14pt;&quot;&gt;HI&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>100</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="SupraName1">
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -69,7 +78,14 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="StartTemp"/>
+        <widget class="QDoubleSpinBox" name="StartTemp">
+         <property name="maximum">
+          <double>330.990000000000009</double>
+         </property>
+         <property name="value">
+          <double>80.000000000000000</double>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -83,7 +99,14 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="EndTemp"/>
+        <widget class="QDoubleSpinBox" name="EndTemp">
+         <property name="maximum">
+          <double>300.990000000000009</double>
+         </property>
+         <property name="value">
+          <double>100.000000000000000</double>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -97,7 +120,17 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="TempRate"/>
+        <widget class="QDoubleSpinBox" name="TempRate">
+         <property name="maximum">
+          <double>5.990000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.100000000000000</double>
+         </property>
+         <property name="value">
+          <double>1.000000000000000</double>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -111,7 +144,11 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="MagField"/>
+        <widget class="QDoubleSpinBox" name="MagField">
+         <property name="maximum">
+          <double>14000.989999999999782</double>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -125,7 +162,11 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="CoilAngle"/>
+        <widget class="QDoubleSpinBox" name="CoilAngle">
+         <property name="maximum">
+          <double>360.000000000000000</double>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -139,7 +180,14 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="Frequency"/>
+        <widget class="QDoubleSpinBox" name="Frequency">
+         <property name="maximum">
+          <double>100000.990000000005239</double>
+         </property>
+         <property name="value">
+          <double>3333.000000000000000</double>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -153,7 +201,14 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="VoltageAmplitude"/>
+        <widget class="QDoubleSpinBox" name="VoltageAmplitude">
+         <property name="maximum">
+          <double>10.990000000000000</double>
+         </property>
+         <property name="value">
+          <double>0.100000000000000</double>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -167,7 +222,17 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="HarmonicWave"/>
+        <widget class="QSpinBox" name="HarmonicWave">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>3</number>
+         </property>
+         <property name="value">
+          <number>1</number>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
