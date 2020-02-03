@@ -28,6 +28,9 @@ public:
     int harmonicWave();
     void setHarmonicWave(int &harmonicWave);
 
+    double temperatureRate() const;
+    void setTemperatureRate(double temperatureRate);
+
 private:
     //allgemein
     QString supraName_;
@@ -122,6 +125,16 @@ inline int MeasurementSequence::harmonicWave()
 inline void MeasurementSequence::setHarmonicWave(int &harmonicWave)
 {
     harmonicWave_= harmonicWave;
+}
+
+inline double MeasurementSequence::temperatureRate() const
+{
+    return temperatureRate_;
+}
+
+inline void MeasurementSequence::setTemperatureRate(double temperatureRate)
+{
+    temperatureRate_ = temperatureRate;
 }
 
 

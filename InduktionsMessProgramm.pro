@@ -1,7 +1,9 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
+    ClassTest \
     InduCore \
     InduViewer
 
-InduViewer.depends = InduCore
+ClassTest.depends= InduCore
+InduViewer.depends=ClassTest
