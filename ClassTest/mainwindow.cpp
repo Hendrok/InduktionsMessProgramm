@@ -4,6 +4,7 @@
 #include "QString"
 #include <memory>
 #include "../InduCore/filewriter.h"
+#include "classtestmanager.h"
 #include <QDebug>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -45,8 +46,8 @@ void MainWindow::on_pushButton_clicked()
     measurementSequence->setVoltageAmplitude(voltageAmplitude);
     measurementSequence->setHarmonicWave(harmonicWave);
 
-    FileWriter fw;
-    QString header =fw.writeHeader(measurementSequence);
-    qDebug().noquote()<<header;
+    ClassTestManager ctm;
+    ctm.startMeasurement(measurementSequence);
+
 }
 

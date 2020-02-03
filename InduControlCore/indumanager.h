@@ -3,6 +3,8 @@
 #include "InduControlCore_global.h"
 #include <memory>
 
+//Eigene Klassen
+#include "instrumentmanager.h"
 #include "../InduCore/measurementsequence.h"
 
 class INDUCONTROLCORE_EXPORT InduManager
@@ -10,6 +12,8 @@ class INDUCONTROLCORE_EXPORT InduManager
 public:
     InduManager();
     void startMeasurement(std::shared_ptr<MeasurementSequence>);
+private:
+    std::unique_ptr<InstrumentManager> instrumentmanager_;
 };
 
 #endif // INDUMANAGER_H
