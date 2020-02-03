@@ -7,7 +7,7 @@ FileWriter::FileWriter(MeasurementSequence &mfile)
 
 }
 
-bool FileWriter::writeHeader(std::shared_ptr<MeasurementSequence> measurementSequence){
+QString FileWriter::writeHeader(std::shared_ptr<MeasurementSequence> measurementSequence){
         //wasobenintextdateisteht später
       QString header_;
       header_="";
@@ -19,12 +19,13 @@ bool FileWriter::writeHeader(std::shared_ptr<MeasurementSequence> measurementSeq
       header_.append("_");
       header_.append(QString::number(measurementSequence->magneticField()));
 
-if (header_==""){
+/*if (header_==""){
     return false;
 }
 else{
     return true;
-}
+}*/
+      return header_;
 }
 
 bool FileWriter::append(std::shared_ptr<DataPoint> datapoint){

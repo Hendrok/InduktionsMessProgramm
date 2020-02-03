@@ -16,12 +16,12 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
+    std::shared_ptr<MeasurementSequence> measurementSequence;
 private slots:
     void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;
-    std::shared_ptr<MeasurementSequence> measurementSequence = std::make_shared<MeasurementSequence>();
+
 };
 #endif // MAINWINDOW_H

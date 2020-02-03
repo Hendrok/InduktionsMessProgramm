@@ -5,5 +5,6 @@ SUBDIRS += \
     InduCore \
     InduViewer
 
-ClassTest.depends= InduCore
-InduViewer.depends=ClassTest
+InduViewer.depends= InduCore
+ClassTest.depends =InduViewer
+
