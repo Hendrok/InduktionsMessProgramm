@@ -13,7 +13,7 @@ class DataPoint;
 class FileWriter
 {
 public:
-    FileWriter(std::shared_ptr <MeasurementSequence> &mfile);
+    FileWriter();
     QString openFile(std::shared_ptr<MeasurementSequence> measurementSequence, QString filepath);
     bool append(std::shared_ptr<DataPoint> datapoint);
     QString writeHeader(std::shared_ptr<MeasurementSequence> measurementSequence);

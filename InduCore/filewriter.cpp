@@ -1,8 +1,8 @@
 #include "filewriter.h"
 
 #include <QString>
-FileWriter::FileWriter(std::shared_ptr <MeasurementSequence> &mfile )
-    :mfile_(*mfile)
+FileWriter::FileWriter()
+
 {
 
 }

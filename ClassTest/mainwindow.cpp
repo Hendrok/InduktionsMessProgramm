@@ -43,7 +43,7 @@ void MainWindow::on_pushButton_clicked()
     measurementSequence->setVoltageAmplitude(voltageAmplitude);
     measurementSequence->setHarmonicWave(harmonicWave);
 
-    FileWriter fw(measurementSequence);
+    FileWriter fw;
     QString header =fw.writeHeader(measurementSequence);
     qDebug()<<header;
 }
