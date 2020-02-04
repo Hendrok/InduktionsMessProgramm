@@ -50,12 +50,13 @@ QString FileWriter::createFileName(std::shared_ptr<MeasurementSequence> measurem
     filename_.append(measurementSequence->supraName());
     filename_.append("_");
     filename_.append(QString::number(measurementSequence->voltageAmplitude()));
-    filename_.append("_");
+    filename_.append("V_");
     filename_.append(QString::number(measurementSequence->frequency()));
-    filename_.append("_");
+    filename_.append("hz_");
     filename_.append(QString::number(measurementSequence->magneticField()));
-    filename_.append("_");
+    filename_.append("mT_");
     filename_.append(QString::number(measurementSequence->coilAngle()));
+    filename_.append("d");
     return filename_;
 }
 
@@ -73,18 +74,16 @@ QString FileWriter::openFile(std::shared_ptr<MeasurementSequence> measurementSeq
         dir.mkpath(path); // You can check the success if needed
         measurementSequence->setFileName(createFileName(measurementSequence));
 
-
+        // der Filename und path wird gesezt, außerdem wird der name mit (i) verändert, wenn es die Txt datei schon  gibt
         QFile file(path + measurementSequence->fileName() + ".txt");
-        for(int i=0; file.exists();i++)
+        for(int i=1; file.exists();i++)
         {
         if (file.exists()){
             file.setFileName(path + measurementSequence->fileName() +"_("+QString::number(i)+")" ".txt");
         }
         }
+
         file.open(QIODevice::WriteOnly);
-
-
-
         file_ = std::make_shared<QFile>(file.fileName());
         file_->open(QIODevice::WriteOnly | QIODevice::Text);
 
