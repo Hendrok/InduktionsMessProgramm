@@ -29,11 +29,15 @@ public:
     void setHarmonicWave(int &harmonicWave);
 
     double temperatureRate() const;
-    void setTemperatureRate(double temperatureRate);
+    void setTemperatureRate(double &temperatureRate);
+
+    QString fileName() const;
+    void setFileName(const QString &fileName);
 
 private:
     //allgemein
     QString supraName_;
+    QString fileName_;
     //PPMS
     double tempStart_;
     double tempEnd_; //von wo bis wo wird gemessen
@@ -132,9 +136,19 @@ inline double MeasurementSequence::temperatureRate() const
     return temperatureRate_;
 }
 
-inline void MeasurementSequence::setTemperatureRate(double temperatureRate)
+inline void MeasurementSequence::setTemperatureRate(double &temperatureRate)
 {
     temperatureRate_ = temperatureRate;
+}
+
+inline QString MeasurementSequence::fileName() const
+{
+    return fileName_;
+}
+
+inline void MeasurementSequence::setFileName(const QString &fileName)
+{
+    fileName_ = fileName;
 }
 
 

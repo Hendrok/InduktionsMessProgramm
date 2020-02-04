@@ -3,6 +3,8 @@
 
 #include <QString>
 #include <memory>
+#include <QFile>
+#include <QFileDialog>
 
 //Eigene Klassen
 #include "../InduCore/measurementsequence.h"
@@ -49,8 +51,28 @@ void MainWindow::on_pushButton_clicked()
     measurementSequence->setVoltageAmplitude(voltageAmplitude);
     measurementSequence->setHarmonicWave(harmonicWave);
 
+    /*QFile file(QFileDialog::getOpenFileName(this,
+                                                  tr("OPEN FILE"),
+                                                  "C:",
+                                                  tr("All files(*.*);;Text File(*.txt)")));*/
+    QString path("SimulationsMessungen/");
+    QDir dir;  // ich erstelle QString mit dem Ordner, danach die direction
+    if (!dir.exists(path)) // Wenn nötig wird der Ordner erstellt
+        dir.mkpath(path); // You can check the success if needed
+
+
+    QFile file(path + measurementSequence->fileName() + ".txt");
+    file.open(QIODevice::WriteOnly);
+
+    QString filepath=file.fileName();
+
+
     ClassTestManager ctm;
-    ctm.startMeasurement(measurementSequence);
+    ctm.startMeasurement(measurementSequence,filepath);
+
+
+
+
 
 }
 

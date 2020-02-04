@@ -1,6 +1,7 @@
 #include "filewriter.h"
 
 #include <QString>
+#include <QTextStream>
 FileWriter::FileWriter()
 
 {
@@ -33,6 +34,8 @@ QString FileWriter::writeHeader(std::shared_ptr<MeasurementSequence> measurement
       header_.append(" degrees \n");
       }
 
+
+
 /*if (header_==""){
     return false;
 }
@@ -41,6 +44,20 @@ else{
 }*/
       return header_;
 }
+QString FileWriter::writeFileName(std::shared_ptr<MeasurementSequence> measurementSequence){
+    QString filename_;
+    filename_.append(measurementSequence->supraName());
+    filename_.append("_");
+    filename_.append(QString::number(measurementSequence->voltageAmplitude()));
+    filename_.append("_");
+    filename_.append(QString::number(measurementSequence->frequency()));
+    filename_.append("_");
+    filename_.append(QString::number(measurementSequence->magneticField()));
+    filename_.append("_");
+    filename_.append(QString::number(measurementSequence->coilAngle()));
+    return filename_;
+}
+
 
 bool FileWriter::append(std::shared_ptr<DataPoint> datapoint){
 
@@ -57,8 +74,9 @@ QString FileWriter::openFile(std::shared_ptr<MeasurementSequence> measurementSeq
         {
             return QString();
         }
-
-        writeHeader(measurementSequence);
-
+        if(file_->isWritable()){
+        file_->write(writeHeader(measurementSequence).toUtf8());
+        }
+        measurementSequence->setFileName(writeFileName(measurementSequence));
         return filepath;
 }

@@ -10,7 +10,7 @@ class ClassTestManager
 {
 public:
     ClassTestManager();
-    void startMeasurement(std::shared_ptr<MeasurementSequence> measurementsequence);
+    void startMeasurement(std::shared_ptr<MeasurementSequence> measurementsequence, QString filepath);
 private:
 
 };

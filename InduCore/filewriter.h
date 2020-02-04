@@ -16,10 +16,10 @@ public:
     FileWriter();
     QString openFile(std::shared_ptr<MeasurementSequence> measurementSequence, QString filepath);
     bool append(std::shared_ptr<DataPoint> datapoint);
-    QString writeHeader(std::shared_ptr<MeasurementSequence> measurementSequence);
+
 private:
-
-
+    QString writeHeader(std::shared_ptr<MeasurementSequence> measurementSequence);
+    QString writeFileName(std::shared_ptr<MeasurementSequence> measurementSequence);
 
 
     MeasurementSequence mfile_;
