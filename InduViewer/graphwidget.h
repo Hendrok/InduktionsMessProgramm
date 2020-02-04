@@ -1,5 +1,7 @@
 #ifndef GRAPHWIDGET_H
 #define GRAPHWIDGET_H
+
+//Eigene Klassen
 #include "../InduCore/datafile.h"
 
 //includes std

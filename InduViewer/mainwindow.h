@@ -1,10 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-#include "../InduCore/datafile.h"
 
 #include<string>
 #include <QMainWindow>
 #include <memory>
+
+//Eigene Klassen
+#include "../InduCore/datafile.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

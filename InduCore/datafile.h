@@ -35,7 +35,7 @@ inline QVector<double> Datafile::getTemperature()
 }
 
 inline void Datafile::setTemperatur(QVector<double> &temperature){
-    temperature_=temperature;
+    temperature_= temperature;
 }
 
 // Getter und Setter für Voltage
@@ -45,7 +45,7 @@ inline QVector<double> Datafile::getVoltage(){
 }
 
 inline void Datafile::setVoltage(QVector<double> &voltage){
-    voltage_=voltage;
+    voltage_= voltage;
 }
 
 // Getter und Setter für Filename
@@ -54,14 +54,14 @@ inline QString Datafile::getInputText(){
     return inputText_;
 }
 inline void Datafile::setInputText(QString &inputText){
-    inputText_=inputText;
+    inputText_= inputText;
 }
 
 inline QString Datafile::getFileName(){
     return filename_;
 }
 inline void Datafile::setFileName(QString &filename){
-    filename_=filename;
+    filename_= filename;
 }
 
 //parameter

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <memory>
 #include "../InduCore/measurementsequence.h"
+#include "../InduControlCore/indumanager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -22,6 +23,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    std::unique_ptr<InduManager> indumanager_;
     std::shared_ptr<MeasurementSequence> measurementSequence;
 };
 #endif // MAINWINDOW_H
