@@ -8,5 +8,7 @@ SUBDIRS += \
     InduViewer
 
 ClassTest.depends =InduCore
-ClassTest.depends =InduCore
+InduControlCore.depends=InduCore
+ClassTest.depends =InduControlCore
+
 

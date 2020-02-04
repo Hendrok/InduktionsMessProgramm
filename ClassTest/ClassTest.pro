@@ -16,12 +16,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    classtestmanager.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
-    classtestmanager.h \
     mainwindow.h
 
 FORMS += \
@@ -39,3 +37,4 @@ else:unix: LIBS += -L$$OUT_PWD/../InduCore/ -lInduCore
 
 INCLUDEPATH += $$PWD/../InduCore
 DEPENDPATH += $$PWD/../InduCore
+

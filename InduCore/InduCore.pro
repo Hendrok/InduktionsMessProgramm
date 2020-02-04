@@ -36,3 +36,8 @@ unix {
 }
 !isEmpty(target.path): INSTALLS += target
 
+
+unix|win32: LIBS += -L$$OUT_PWD/../InduControlCore/ -lInduControlCore
+
+INCLUDEPATH += $$PWD/../InduControlCore
+DEPENDPATH += $$PWD/../InduControlCore

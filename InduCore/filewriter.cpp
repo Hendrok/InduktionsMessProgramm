@@ -77,6 +77,5 @@ QString FileWriter::openFile(std::shared_ptr<MeasurementSequence> measurementSeq
         if(file_->isWritable()){
         file_->write(writeHeader(measurementSequence).toUtf8());
         }
-        measurementSequence->setFileName(writeFileName(measurementSequence));
         return filepath;
 }
