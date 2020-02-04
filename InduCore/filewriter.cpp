@@ -62,6 +62,10 @@ QString FileWriter::createFileName(std::shared_ptr<MeasurementSequence> measurem
 
 
 bool FileWriter::append(std::shared_ptr<DataPoint> datapoint){
+        if (file_->open(QIODevice::WriteOnly | QIODevice::Append)){
+        file_->write(QString::number(datapoint->pvTemp()).toUtf8() +" "+ QString::number(datapoint->pvVolt()).toUtf8() +" " + QString::number(datapoint->pvPhase()).toUtf8() +"\n");
+        file_->close();
+        }
 
     return true;
 }
@@ -85,15 +89,20 @@ QString FileWriter::openFile(std::shared_ptr<MeasurementSequence> measurementSeq
 
         file.open(QIODevice::WriteOnly);
         file_ = std::make_shared<QFile>(file.fileName());
+
         file_->open(QIODevice::WriteOnly | QIODevice::Text);
 
         if(!file_->isOpen())
         {
             return QString();
         }
+
         if(file_->isWritable()){
-        file_->write(writeHeader(measurementSequence).toUtf8());
+            file_->write(writeHeader(measurementSequence).toUtf8());
+
         }
 
-        return file.fileName();
+        file_->close();
+        return file_->fileName();
+
 }

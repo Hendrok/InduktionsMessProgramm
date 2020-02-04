@@ -6,6 +6,7 @@
 #include <QFile>
 #include "measurementsequence.h"
 #include "InduCore_global.h"
+#include "../InduCore/datapoint.h"
 
 //forward decleration (hier nur declariert, FileWriter ist z.B. declariert und definiert)
 class DataPoint;
@@ -21,7 +22,7 @@ public:
 private:
     QString createFileName(std::shared_ptr<MeasurementSequence> measurementSequence);
     QString writeHeader(std::shared_ptr<MeasurementSequence> measurementSequence);
-
+    QString filedir_;
 
 
 

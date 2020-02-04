@@ -13,15 +13,6 @@ InduManager::InduManager()
 
 void InduManager::startMeasurement(std::shared_ptr<MeasurementSequence> measurementSequence)
 {
-
     FileWriter fw;
-
-
-
     fw.openFile(measurementSequence);
-    //QFile file(path + measurementSequence->fileName() + ".txt");
-
-
-
-
 }
