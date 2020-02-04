@@ -14,16 +14,17 @@ class INDUCORE_EXPORT FileWriter
 {
 public:
     FileWriter();
-    QString openFile(std::shared_ptr<MeasurementSequence> measurementSequence, QString filepath);
+    QString openFile(std::shared_ptr<MeasurementSequence> measurementSequence/*, QString filedir*/);
     bool append(std::shared_ptr<DataPoint> datapoint);
-    QString writeFileName(std::shared_ptr<MeasurementSequence> measurementSequence);
+
 
 private:
+    QString createFileName(std::shared_ptr<MeasurementSequence> measurementSequence);
     QString writeHeader(std::shared_ptr<MeasurementSequence> measurementSequence);
 
 
 
-    MeasurementSequence mfile_;
+
     std::shared_ptr<QFile> file_;
 };
 

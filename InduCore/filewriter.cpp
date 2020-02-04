@@ -2,6 +2,7 @@
 
 #include <QString>
 #include <QTextStream>
+#include <QDir>
 FileWriter::FileWriter()
 
 {
@@ -44,7 +45,7 @@ else{
 }*/
       return header_;
 }
-QString FileWriter::writeFileName(std::shared_ptr<MeasurementSequence> measurementSequence){
+QString FileWriter::createFileName(std::shared_ptr<MeasurementSequence> measurementSequence){
     QString filename_;
     filename_.append(measurementSequence->supraName());
     filename_.append("_");
@@ -64,10 +65,27 @@ bool FileWriter::append(std::shared_ptr<DataPoint> datapoint){
     return true;
 }
 
-QString FileWriter::openFile(std::shared_ptr<MeasurementSequence> measurementSequence, QString filepath){
+QString FileWriter::openFile(std::shared_ptr<MeasurementSequence> measurementSequence /*, QString filedir*/){
+
+        QString path("SimulationsMessungen/");
+        QDir dir;  // ich erstelle QString mit dem Ordner, danach die direction
+        if (!dir.exists(path)) // Wenn nötig wird der Ordner erstellt
+        dir.mkpath(path); // You can check the success if needed
+        measurementSequence->setFileName(createFileName(measurementSequence));
 
 
-        file_ = std::make_shared<QFile>(filepath);
+        QFile file(path + measurementSequence->fileName() + ".txt");
+        for(int i=0; file.exists();i++)
+        {
+        if (file.exists()){
+            file.setFileName(path + measurementSequence->fileName() +"_("+QString::number(i)+")" ".txt");
+        }
+        }
+        file.open(QIODevice::WriteOnly);
+
+
+
+        file_ = std::make_shared<QFile>(file.fileName());
         file_->open(QIODevice::WriteOnly | QIODevice::Text);
 
         if(!file_->isOpen())
@@ -77,5 +95,6 @@ QString FileWriter::openFile(std::shared_ptr<MeasurementSequence> measurementSeq
         if(file_->isWritable()){
         file_->write(writeHeader(measurementSequence).toUtf8());
         }
-        return filepath;
+
+        return file.fileName();
 }
