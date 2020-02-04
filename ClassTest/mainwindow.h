@@ -24,6 +24,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     std::unique_ptr<InduManager> indumanager_;
-    std::shared_ptr<MeasurementSequence> measurementSequence;
+
 };
 #endif // MAINWINDOW_H

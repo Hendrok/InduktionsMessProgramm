@@ -28,6 +28,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     //die per Ui eingetragenen Attribute werden erstellt
+    std::shared_ptr<MeasurementSequence> measurementSequence;
     measurementSequence  = std::make_shared<MeasurementSequence>();
     QString SupraName;
     double StartTemp =ui->StartTemp->value();
