@@ -8,7 +8,7 @@
 
 //Eigene Klassen
 #include "../InduCore/measurementsequence.h"
-#include "classtestmanager.h"
+#include "../InduControlCore/indumanager.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -28,6 +28,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     //die per Ui eingetragenen Attribute werden erstellt
+    std::shared_ptr<MeasurementSequence> measurementSequence;
     measurementSequence  = std::make_shared<MeasurementSequence>();
     QString SupraName;
     double StartTemp =ui->StartTemp->value();
@@ -55,20 +56,11 @@ void MainWindow::on_pushButton_clicked()
                                                   tr("OPEN FILE"),
                                                   "C:",
                                                   tr("All files(*.*);;Text File(*.txt)")));*/
-    QString path("SimulationsMessungen/");
-    QDir dir;  // ich erstelle QString mit dem Ordner, danach die direction
-    if (!dir.exists(path)) // Wenn nötig wird der Ordner erstellt
-        dir.mkpath(path); // You can check the success if needed
 
 
-    QFile file(path + measurementSequence->fileName() + ".txt");
-    file.open(QIODevice::WriteOnly);
 
-    QString filepath=file.fileName();
-
-
-    ClassTestManager ctm;
-    ctm.startMeasurement(measurementSequence,filepath);
+    InduManager idm;
+    idm.startMeasurement(measurementSequence);
 
 
 

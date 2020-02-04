@@ -11,7 +11,7 @@ class INDUCONTROLCORE_EXPORT InduManager
 {
 public:
     InduManager();
-    void startMeasurement(std::shared_ptr<MeasurementSequence>);
+    void startMeasurement(std::shared_ptr<MeasurementSequence> measurementSequence);
 private:
     std::unique_ptr<InstrumentManager> instrumentmanager_;
 };

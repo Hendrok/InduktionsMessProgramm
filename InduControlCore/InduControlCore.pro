@@ -32,3 +32,19 @@ unix {
     target.path = /usr/lib
 }
 !isEmpty(target.path): INSTALLS += target
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/./ -lInduControlCore
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/./ -lInduControlCore
+else:unix: LIBS += -L$$OUT_PWD/./ -lInduControlCore
+
+INCLUDEPATH += $$PWD/.
+DEPENDPATH += $$PWD/.
+
+
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../InduCore/ -lInduCore
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../InduCore/ -lInduCore
+else:unix: LIBS += -L$$OUT_PWD/../InduCore/ -lInduCore
+
+INCLUDEPATH += $$PWD/../InduCore
+DEPENDPATH += $$PWD/../InduCore
