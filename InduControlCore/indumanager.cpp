@@ -13,12 +13,13 @@ InduManager::InduManager()
 
 }
 
-void InduManager::startMeasurement(std::shared_ptr<MeasurementSequence> &measurementSequence)
+void InduManager::startMeasurement(std::shared_ptr<MeasurementSequence> &measurementSequence, std::shared_ptr<DataPoint> &dataPoint)
 {
 
     fw.openFile(measurementSequence);
-    InstrumentManager Im(measurementSequence);
-    Im.createRandomDataPoints();
+    InstrumentManager* Im = new InstrumentManager();
+    Im->onPolling();
+    fw.append(dataPoint);
 
 }
 

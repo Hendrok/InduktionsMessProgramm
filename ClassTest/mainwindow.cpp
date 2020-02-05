@@ -61,8 +61,8 @@ void MainWindow::on_pushButton_clicked()
 
 
     InduManager idm;
-    idm.startMeasurement(measurementSequence);
-    idm.startAppending(measurementSequence, dataPoint);
+    idm.startMeasurement(measurementSequence,dataPoint);
+    //idm.startAppending(measurementSequence, dataPoint);
 
 
 

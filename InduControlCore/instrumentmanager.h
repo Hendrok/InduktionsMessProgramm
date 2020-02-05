@@ -2,12 +2,14 @@
 #define INSTRUMENTMANAGER_H
 #include "InduControlCore_global.h"
 #include <memory>
-#include "QObject"
 #include <QTimer>
+
 
 //Eigene Klassen
 #include "../InduCore/datapoint.h"
 #include "../InduCore/measurementsequence.h"
+
+class QObject;
 
 class INDUCONTROLCORE_EXPORT InstrumentManager: public QObject
 {
@@ -15,11 +17,11 @@ class INDUCONTROLCORE_EXPORT InstrumentManager: public QObject
 signals:
     void newData(std::shared_ptr<DataPoint> datapoint);
 public:
-    InstrumentManager(std::shared_ptr<MeasurementSequence> measurementSequence);
+    InstrumentManager();
     ~InstrumentManager();
     //void creatingRandomDataPoint(std::shared_ptr<MeasurementSequence> measurementSequence,std::shared_ptr<DataPoint> datapoint);
 public slots:
-    void createRandomDataPoints(/*std::shared_ptr<MeasurementSequence> measurementSequence*/);
+    void onPolling();
 private:
     QTimer* timer_;
     double starttemp_;
