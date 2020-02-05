@@ -15,15 +15,15 @@ InduManager::InduManager()
 
 void InduManager::startMeasurement(std::shared_ptr<MeasurementSequence> &measurementSequence, std::shared_ptr<DataPoint> &dataPoint)
 {
-
-    fw.openFile(measurementSequence);
+    std::unique_ptr <FileWriter> fw;
+    fw->openFile(measurementSequence);
     InstrumentManager* Im = new InstrumentManager();
     Im->onPolling();
-    fw.append(dataPoint);
+    fw->append(dataPoint);
 
 }
 
-void InduManager::startAppending(std::shared_ptr<MeasurementSequence> &measurementSequence, std::shared_ptr<DataPoint> &dataPoint)
+/*void InduManager::startAppending(std::shared_ptr<MeasurementSequence> &measurementSequence, std::shared_ptr<DataPoint> &dataPoint)
 {
 
     for(double Temp=measurementSequence->tempStart();Temp<measurementSequence->tempEnd();Temp=Temp+0.1)
@@ -36,3 +36,4 @@ void InduManager::startAppending(std::shared_ptr<MeasurementSequence> &measureme
     }
 
 }
+*/

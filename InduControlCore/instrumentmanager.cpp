@@ -25,7 +25,8 @@ void InstrumentManager::onPolling()
     auto datapoint =std::make_shared <DataPoint>();
     double test =QRandomGenerator::global()->bounded(1.0);
     datapoint->setpvVolt(test);
-
+    datapoint->setpvTemp(test);
+    datapoint->setpvPhase(test);
     qDebug()<<test;
 
 
