@@ -3,6 +3,7 @@
 #include <QDir>
 #include <memory>
 
+
 //Eigene Klassen
 
 
@@ -10,12 +11,11 @@
 
 InduManager::InduManager()
 {
-
 }
 
 void InduManager::startMeasurement(std::shared_ptr<MeasurementSequence> &measurementSequence, std::shared_ptr<DataPoint> &dataPoint)
 {
-    std::unique_ptr <FileWriter> fw;
+    std::unique_ptr <FileWriter> fw= std::make_unique<FileWriter>();
     fw->openFile(measurementSequence);
     InstrumentManager* Im = new InstrumentManager();
     Im->onPolling();

@@ -8,7 +8,6 @@
 #include "../InduCore/measurementsequence.h"
 #include "../InduCore/datapoint.h"
 #include "../InduCore/filewriter.h"
-#include "../InduCore/datafile.h"
 #include "instrumentmanager.h"
 class INDUCONTROLCORE_EXPORT InduManager
 {
