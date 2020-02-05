@@ -56,7 +56,7 @@ QString FileWriter::createFileName(std::shared_ptr<MeasurementSequence> measurem
 bool FileWriter::append(std::shared_ptr<DataPoint> datapoint){
             //öffnet die file, hängt die aktuell ausgelesen datenpunkte an, schließt die file
         if (file_->open(QIODevice::WriteOnly | QIODevice::Append)){
-        file_->write(QString::number(datapoint->pvTemp()).toUtf8() +" "+ QString::number(datapoint->pvVolt()).toUtf8() +" " + QString::number(datapoint->pvPhase()).toUtf8() +"\n");
+        file_->write(QString::number(datapoint->pvTemp()).toUtf8() + " " + QString::number(datapoint->pvVolt()).toUtf8() + " " + QString::number(datapoint->pvPhase()).toUtf8() +"\n");
         file_->close();
         }
 

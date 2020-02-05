@@ -5,10 +5,9 @@
 #include <memory>
 #include <QFile>
 #include <QFileDialog>
+#include <QDebug>
 
 //Eigene Klassen
-#include "../InduCore/measurementsequence.h"
-#include "../InduControlCore/indumanager.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -29,7 +28,10 @@ void MainWindow::on_pushButton_clicked()
 {
     //die per Ui eingetragenen Attribute werden erstellt
     std::shared_ptr<MeasurementSequence> measurementSequence;
+    std::shared_ptr<DataPoint> dataPoint;
+    std::shared_ptr<FileWriter> fileWriter=std::make_shared<FileWriter>();
     measurementSequence  = std::make_shared<MeasurementSequence>();
+    dataPoint =std::make_shared<DataPoint>();
     QString SupraName;
     double StartTemp =ui->StartTemp->value();
     double EndTemp=ui->EndTemp->value();
@@ -58,9 +60,15 @@ void MainWindow::on_pushButton_clicked()
                                                   tr("All files(*.*);;Text File(*.txt)")));*/
 
 
-
     InduManager idm;
     idm.startMeasurement(measurementSequence);
+    idm.startAppending(measurementSequence, dataPoint);
+
+
+
+
+
+
 
 
 

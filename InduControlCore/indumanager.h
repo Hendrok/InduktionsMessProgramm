@@ -6,14 +6,20 @@
 //Eigene Klassen
 #include "instrumentmanager.h"
 #include "../InduCore/measurementsequence.h"
-
+#include "../InduCore/datapoint.h"
+#include "../InduCore/filewriter.h"
+#include "../InduCore/datafile.h"
+#include "instrumentmanager.h"
 class INDUCONTROLCORE_EXPORT InduManager
 {
 public:
     InduManager();
-    void startMeasurement(std::shared_ptr<MeasurementSequence> measurementSequence);
+    void startMeasurement(std::shared_ptr<MeasurementSequence> &measurementSequence);
+    void startAppending(std::shared_ptr<MeasurementSequence> &measurementSequence, std::shared_ptr<DataPoint> &dataPoint);
 private:
     std::unique_ptr<InstrumentManager> instrumentmanager_;
+    FileWriter fw;
+
 };
 
 #endif // INDUMANAGER_H
