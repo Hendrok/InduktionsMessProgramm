@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
 #include <QString>
 #include <memory>
 #include <QFile>
@@ -61,7 +60,8 @@ void MainWindow::on_pushButton_clicked()
 
 
     InduManager idm;
-    idm.startMeasurement(measurementSequence,dataPoint);
+    idm.startMeasurement(measurementSequence);
+
     //idm.startAppending(measurementSequence, dataPoint);
 
 

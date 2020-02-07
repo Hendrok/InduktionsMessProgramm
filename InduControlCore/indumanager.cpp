@@ -7,24 +7,36 @@
 //Eigene Klassen
 
 
-InduManager::InduManager(){
+InduManager::InduManager()
+    :instrumentmanager_(new InstrumentManager())
+    ,fw_(nullptr)
+{
+    connect(instrumentmanager_, &InstrumentManager::newData,
+                this, &InduManager::onNewData);
 }
 
 InduManager::~InduManager()
 {
+    delete instrumentmanager_;
+}
+
+void InduManager::startMeasurement(std::shared_ptr<MeasurementSequence> &measurementSequence)
+{
+    fw_= std::make_unique<FileWriter>();
+    fw_->openFile(measurementSequence);
+
+    instrumentmanager_->onPolling();
 
 }
 
-void InduManager::startMeasurement(std::shared_ptr<MeasurementSequence> &measurementSequence, std::shared_ptr<DataPoint> &dataPoint)
+void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
-    std::unique_ptr <FileWriter> fw= std::make_unique<FileWriter>();
-    fw->openFile(measurementSequence);
+    emit newData(datapoint);
 
-    instrumentmanager_ = new InstrumentManager();
-
-    connect(instrumentmanager_,SIGNAL(InsturmentManager::newData(auto dataPoint)),
-           this,SLOT(fw->append(dataPoint)));
-    //fw->append(dataPoint);
+        if (fw_ != nullptr)
+        {
+            fw_->append(datapoint);
+        }
 
 }
 
