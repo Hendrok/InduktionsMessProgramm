@@ -22,9 +22,9 @@ void InduManager::startMeasurement(std::shared_ptr<MeasurementSequence> &measure
 
     instrumentmanager_ = new InstrumentManager();
 
-    connect(instrumentmanager_,SIGNAL(instrumentmanager_->newData),
-            this,SLOT(append(dataPoint)));
-    fw->append(dataPoint);
+    connect(instrumentmanager_,SIGNAL(InsturmentManager::newData(auto dataPoint)),
+           this,SLOT(fw->append(dataPoint)));
+    //fw->append(dataPoint);
 
 }
 

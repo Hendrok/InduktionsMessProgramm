@@ -15,7 +15,7 @@ class INDUCONTROLCORE_EXPORT InstrumentManager: public QObject
 {
     Q_OBJECT
 signals:
-    void newData(std::shared_ptr<DataPoint> datapoint);
+    void newData(std::shared_ptr<DataPoint> dataPoint);
 public:
     InstrumentManager();
     ~InstrumentManager();

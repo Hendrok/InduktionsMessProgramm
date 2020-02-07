@@ -22,15 +22,15 @@ InstrumentManager::~InstrumentManager()
 
 void InstrumentManager::onPolling()
 {
-    auto datapoint =std::make_shared <DataPoint>();
+    auto dataPoint =std::make_shared <DataPoint>();
     double test =QRandomGenerator::global()->bounded(1.0);
-    datapoint->setpvVolt(test);
-    datapoint->setpvTemp(test);
-    datapoint->setpvPhase(test);
+    dataPoint->setpvVolt(test);
+    dataPoint->setpvTemp(test);
+    dataPoint->setpvPhase(test);
     qDebug()<<test;
 
 
-    emit newData(datapoint);
+    emit newData(dataPoint);
 
 
 }

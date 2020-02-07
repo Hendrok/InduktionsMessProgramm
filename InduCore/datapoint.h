@@ -1,11 +1,15 @@
 #ifndef DATAPOINT_H
 #define DATAPOINT_H
-//gibt den in der aktuellen schleife aus     pvtemp_   was fehlt status int; jedes bit hat speziellen status. das auch hinzufügen rest bei marco gucken, wichtig das mit pv zu bezeichnen!
+
 #include "InduCore_global.h"
+#include <chrono>
 class INDUCORE_EXPORT DataPoint
 {
 public:
     DataPoint();
+
+    std::chrono::system_clock::time_point time() const;
+    void setTime(std::chrono::system_clock::time_point time);
     double pvTemp() const;
     void setpvTemp(double pvTemp);
     double pvField() const;
@@ -22,6 +26,7 @@ public:
     void setpvHeliumStatus(double &pvHeliumStatus_);
 
 private:
+    std::chrono::system_clock::time_point pvTime_;
     double pvTemp_;
     double pvField_;
     double pvAngle_;
@@ -30,6 +35,29 @@ private:
     int pvStatusPPMS_;
     double pvHeliumStatus_;
 };
+inline DataPoint::DataPoint()
+    :pvTime_(std::chrono::system_clock::now())
+    ,pvTemp_(0)
+    ,pvField_(0)
+    ,pvAngle_(0)
+    ,pvVolt_(0)
+    ,pvPhase_(0)
+    ,pvStatusPPMS_(0)
+    ,pvHeliumStatus_(0)
+{
+
+}
+
+
+inline std::chrono::system_clock::time_point DataPoint::time() const
+{
+    return pvTime_;
+}
+
+inline void DataPoint::setTime(std::chrono::system_clock::time_point time)
+{
+    pvTime_=time;
+}
 
 inline double DataPoint::pvTemp() const
 {

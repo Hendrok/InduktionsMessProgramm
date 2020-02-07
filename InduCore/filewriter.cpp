@@ -3,8 +3,8 @@
 #include <QString>
 #include <QTextStream>
 #include <QDir>
-FileWriter::FileWriter()
-
+FileWriter::FileWriter(QObject *parent)
+    :QObject(parent)
 {
 
 }
