@@ -3,6 +3,11 @@
 #include <QString>
 #include <QTextStream>
 #include <QDir>
+
+#include "measurementsequence.h"
+#include "datapoint.h"
+#include "filewriter.h"
+
 FileWriter::FileWriter(QObject *parent)
     :QObject(parent)
 {

@@ -4,13 +4,15 @@
 #include <QString>
 #include <memory>
 #include <QFile>
-#include "measurementsequence.h"
-#include "InduCore_global.h"
-#include "../InduCore/datapoint.h"
 #include <QObject>
 
+#include "InduCore_global.h"
+
 //forward decleration (hier nur declariert, FileWriter ist z.B. declariert und definiert)
+class MeasurementSequence;
+class FileWriter;
 class DataPoint;
+
 
 class INDUCORE_EXPORT FileWriter :QObject
 {

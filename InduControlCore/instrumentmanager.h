@@ -19,7 +19,6 @@ signals:
 public:
     InstrumentManager();
     ~InstrumentManager();
-    //void creatingRandomDataPoint(std::shared_ptr<MeasurementSequence> measurementSequence,std::shared_ptr<DataPoint> datapoint);
 public slots:
     void onPolling();
 private:

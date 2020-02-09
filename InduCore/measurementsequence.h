@@ -50,7 +50,18 @@ private:
     int harmonicWave_;
 
     };
-
+inline MeasurementSequence::MeasurementSequence()
+    :supraName_("")
+    ,fileName_("")
+    ,tempStart_(0)
+    ,tempEnd_(0)
+    ,temperatureRate_(1)
+    ,magneticField_(0)
+    ,coilAngle_(0)
+    ,frequency_(33)
+    ,voltageAmplitude_(1)
+    ,harmonicWave_(1)
+{}
 
 inline QString MeasurementSequence::supraName()
 {

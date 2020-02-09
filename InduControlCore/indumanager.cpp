@@ -4,8 +4,6 @@
 #include <memory>
 #include "instrumentmanager.h"
 
-//Eigene Klassen
-
 
 InduManager::InduManager()
     :instrumentmanager_(new InstrumentManager())
@@ -41,17 +39,3 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 }
 
 
-/*void InduManager::startAppending(std::shared_ptr<MeasurementSequence> &measurementSequence, std::shared_ptr<DataPoint> &dataPoint)
-{
-
-    for(double Temp=measurementSequence->tempStart();Temp<measurementSequence->tempEnd();Temp=Temp+0.1)
-    {
-        dataPoint->setpvTemp(Temp);
-        dataPoint->setpvVolt(30);
-        dataPoint->setpvPhase(180);
-
-        fw.append(dataPoint);
-    }
-
-}
-*/

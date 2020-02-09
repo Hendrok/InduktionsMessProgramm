@@ -9,7 +9,7 @@
 #include "../InduCore/measurementsequence.h"
 #include "../InduCore/datapoint.h"
 #include "../InduCore/filewriter.h"
-#include "instrumentmanager.h"
+
 class INDUCONTROLCORE_EXPORT InduManager :public QObject
 {
     Q_OBJECT
@@ -21,7 +21,6 @@ public:
     ~InduManager();
 
     void startMeasurement(std::shared_ptr<MeasurementSequence> &measurementSequence);
-    //void startAppending(std::shared_ptr<MeasurementSequence> &measurementSequence, std::shared_ptr<DataPoint> &dataPoint);
 private slots:
     void onNewData(std::shared_ptr<DataPoint> datapoint);
 private:

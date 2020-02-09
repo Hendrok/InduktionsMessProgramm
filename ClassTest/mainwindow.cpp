@@ -53,16 +53,10 @@ void MainWindow::on_pushButton_clicked()
     measurementSequence->setVoltageAmplitude(voltageAmplitude);
     measurementSequence->setHarmonicWave(harmonicWave);
 
-    /*QFile file(QFileDialog::getOpenFileName(this,
-                                                  tr("OPEN FILE"),
-                                                  "C:",
-                                                  tr("All files(*.*);;Text File(*.txt)")));*/
+    InduManager *idm= new InduManager;
+    idm->startMeasurement(measurementSequence);
 
 
-    InduManager idm;
-    idm.startMeasurement(measurementSequence);
-
-    //idm.startAppending(measurementSequence, dataPoint);
 
 
 
