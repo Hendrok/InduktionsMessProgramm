@@ -5,7 +5,7 @@
 
 #include "../InduCore/datapoint.h"
 #include "ppmssimulation.h"
-#include "../InduCore/measurementsequence.h"
+
 InstrumentManager::InstrumentManager()
     : timer_(new QTimer(this))
     , ppmssimu_(new PpmsSimulation())
@@ -18,7 +18,7 @@ InstrumentManager::InstrumentManager()
 }
 InstrumentManager::~InstrumentManager()
 {
-
+    timer_->stop();
 }
 
 
