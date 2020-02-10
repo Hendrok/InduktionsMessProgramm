@@ -3,7 +3,7 @@
 #include <QDir>
 #include <memory>
 #include "instrumentmanager.h"
-
+#include "ppmssimulation.h"
 
 InduManager::InduManager()
     :instrumentmanager_(new InstrumentManager())
@@ -22,7 +22,6 @@ void InduManager::startMeasurement(std::shared_ptr<MeasurementSequence> &measure
 {
     fw_= std::make_unique<FileWriter>();
     fw_->openFile(measurementSequence);
-
     instrumentmanager_->onPolling();
 
 }

@@ -4,12 +4,11 @@
 
 
 #include "../InduCore/datapoint.h"
-
+#include "ppmssimulation.h"
+#include "../InduCore/measurementsequence.h"
 InstrumentManager::InstrumentManager()
     : timer_(new QTimer(this))
-     ,starttemp_(80)
-     ,currenttemp_(starttemp_)
-     ,endtemp_(100)
+    , ppmssimu_(new PpmsSimulation())
 {
 
 
@@ -25,18 +24,10 @@ InstrumentManager::~InstrumentManager()
 
 void InstrumentManager::onPolling()
 {
-    auto dataPoint =std::make_shared <DataPoint>();
-    double test =QRandomGenerator::global()->bounded(1.0);
-    dataPoint->setpvVolt(test);
 
-    dataPoint->setpvTemp(currenttemp_);
-    currenttemp_=currenttemp_+1;
+    auto dataPoint = ppmssimu_->generateVariables();
 
-    dataPoint->setpvPhase(test);
-    qDebug()<<test;
-    if(currenttemp_>endtemp_){
-       timer_->stop();
-    }
+
 
     emit newData(dataPoint);
 

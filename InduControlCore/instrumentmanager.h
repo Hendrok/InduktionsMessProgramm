@@ -7,9 +7,11 @@
 
 //Eigene Klassen
 #include "../InduCore/datapoint.h"
-#include "../InduCore/measurementsequence.h"
+
 
 class QObject;
+class PpmsSimulation;
+class MeasurementSequence;
 
 class INDUCONTROLCORE_EXPORT InstrumentManager: public QObject
 {
@@ -23,9 +25,7 @@ public slots:
     void onPolling();
 private:
     QTimer* timer_;
-    double starttemp_;
-    double endtemp_;
-    double currenttemp_;
+    PpmsSimulation* ppmssimu_;
 };
 
 #endif // INSTRUMENTMANAGER_H
