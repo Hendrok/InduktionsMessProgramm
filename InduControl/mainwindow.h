@@ -1,10 +1,12 @@
-#ifndef MAINWINDOW_H                          //Aufgabe:QWidget Application(UI des Programms)User Interface von Messen
-#define MAINWINDOW_H                          //MainWindow-> erstellt MainWindow beim öffnen
-                                              //Widget mit dem man PPMS zeugs anzeigen kann
-#include <QMainWindow>
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
+#include <QMainWindow>
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+class QAction;
+class QMenu;
+class QPlainTextEdit;
+class QSessionManager;
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
@@ -14,8 +16,12 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+private slots:
 
 private:
-    Ui::MainWindow *ui;
+    void createStatusBar();
+    void createActions();
+
+    QPlainTextEdit *textEdit;
 };
 #endif // MAINWINDOW_H

@@ -1,15 +1,27 @@
+#include <QtWidgets>
+
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , textEdit(new QPlainTextEdit)
 {
-    ui->setupUi(this);
+    setCentralWidget(textEdit);
+    createStatusBar();
 }
 
 MainWindow::~MainWindow()
 {
-    delete ui;
 }
+
+void MainWindow::createActions()
+{
+
+}
+void MainWindow::createStatusBar()
+//! [32] //! [33]
+{
+    statusBar()->showMessage(tr("Ready"));
+}
+
 
