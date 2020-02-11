@@ -14,23 +14,44 @@
 #include <QtCharts/QCategoryAxis>
 #include <memory>
 #include <QDebug>
+#include <QtCharts/QChartView>
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QValueAxis>
+#include <QtDebug>
+#include <QtWidgets/QVBoxLayout>
+//includes std
+#include <algorithm>
 QT_CHARTS_USE_NAMESPACE
 
-graphDiagram::graphDiagram()
-    :filename1_("filename")
+
+GraphDiagram::GraphDiagram(QWidget *parent)
+    :QWidget(parent)
+    , filename1_("filename")
 {
 
 }
 
-void graphDiagram::createDataPoint(std::shared_ptr<DataPoint> datapoint)
+void GraphDiagram::appendDataPoint(std::shared_ptr<const DataPoint> datapoint)
 {
+    Q_UNUSED(datapoint);
+
     temps_={0,1,2,3,4,5,6,7,8};
-    volts_={0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1};
-
+    volts_={0.1,0.1,0.1,0.5,0.5,0.1,0.1,0.1,0.1};
 }
 
-void graphDiagram::createQlineDiagramm()
+QSize GraphDiagram::sizeHint() const
 {
+    return QSize(700, 500);
+}
+
+QSize GraphDiagram::minimumSizeHint() const
+{
+    return QSize(300, 200);
+}
+
+void GraphDiagram::createQlineDiagramm()
+{
+
     QVector <double> TemperaturVektordouble =temps_;
     QVector<double> VoltageVektordouble= volts_;
 
@@ -45,13 +66,13 @@ void graphDiagram::createQlineDiagramm()
    //erstelle das LinienDiagramm
    QLineSeries *series =new QLineSeries();
    // for schleife schmeißt daten in Diagramm
-   for(int j=0;j<TemperaturVektordouble.length()-2;j++)
+   for (int j = 0; j < TemperaturVektordouble.length() - 1; ++j)
    {
-   series->append(TemperaturVektordouble[j],VoltageVektordouble[j]);
+        series->append(TemperaturVektordouble[j],VoltageVektordouble[j]);
    }
 
    //chart des Diagramms
-   QChart *chart =new QChart();
+   QChart *chart = new QChart();
    chart->legend()->hide();
    chart->addSeries(series);
    //chart->createDefaultAxes();
@@ -83,9 +104,11 @@ void graphDiagram::createQlineDiagramm()
    //Durch Antialiasing passt sich chart an, wenn man größer kleiner macht (meine ich)
    QChartView *chartView = new QChartView(chart);
    chartView->setRenderHint(QPainter::Antialiasing);
-   // ich meine das dieser Befehl, die Chart im neuen Fenster öffnet, was danach noch auf die richtige Größe gesetzt wird
-   chartView->show();
-   chartView->resize(1000,800);
+
+    QVBoxLayout* mainLayout = new QVBoxLayout();
+    mainLayout->addWidget(chartView);
+
+    setLayout(mainLayout);
 }
 
 

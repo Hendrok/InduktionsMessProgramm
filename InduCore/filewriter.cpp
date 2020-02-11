@@ -14,7 +14,7 @@ FileWriter::FileWriter(QObject *parent)
 
 }
 
-QString FileWriter::writeHeader(std::shared_ptr<MeasurementSequence> measurementSequence){
+QString FileWriter::writeHeader(std::shared_ptr<const MeasurementSequence> measurementSequence){
         //wasobenintextdateisteht später!
         QString header_;
         header_.append("Material: ");
@@ -41,7 +41,7 @@ QString FileWriter::writeHeader(std::shared_ptr<MeasurementSequence> measurement
           }
         return header_;
 }
-QString FileWriter::createFileName(std::shared_ptr<MeasurementSequence> measurementSequence){
+QString FileWriter::createFileName(std::shared_ptr<const MeasurementSequence> measurementSequence){
         //Filename wird erstellt, damit man sofort sieht was in der Txt datei gemessen wurde!
         QString filename_;
         filename_.append(measurementSequence->supraName());
@@ -68,17 +68,18 @@ bool FileWriter::append(std::shared_ptr<DataPoint> datapoint){
     return true;
 }
 
-QString FileWriter::openFile(std::shared_ptr<MeasurementSequence> measurementSequence /*, QString filedir*/){
+QString FileWriter::openFile(std::shared_ptr<const MeasurementSequence> measurementSequence /*, QString filedir*/){
             //Schreibt den Erstellten Header und benennt die File nach Filename, achtet außerdem darauf, das die File nicht überschrieben wird!
         QString path("Messergebnisse/");
         QDir dir;  // ich erstelle QString mit dem Ordner, danach die direction
         if (!dir.exists(path)){ // Wenn nötig wird der Ordner erstellt
             dir.mkpath(path);
         }
-        measurementSequence->setFileName(createFileName(measurementSequence));
+
+        QString filepath = createFileName(measurementSequence);
 
         // der Filename und path wird gesezt, außerdem wird der name mit (i) verändert, wenn es die Txt datei schon  gibt
-        QFile file(path + measurementSequence->fileName() + ".txt");
+        QFile file(path + filepath + ".txt");
         for(int i=1; file.exists();i++)
         {
         if (file.exists()){

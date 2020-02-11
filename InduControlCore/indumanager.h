@@ -20,9 +20,11 @@ public:
     InduManager();
     ~InduManager();
 
-    void startMeasurement(std::shared_ptr<MeasurementSequence> &measurementSequence);
+    void startMeasurement(std::shared_ptr<const MeasurementSequence> &measurementSequence);
+
 private slots:
     void onNewData(std::shared_ptr<DataPoint> datapoint);
+
 private:
     InstrumentManager *instrumentmanager_;
     std::unique_ptr <FileWriter> fw_;

@@ -36,11 +36,11 @@ std::shared_ptr <DataPoint> PpmsSimulation::generateVariables()
 
     dataPoint->setpvPhase(test);
     qDebug()<<test;
-    if(currenttemp_>endtemp_+1)
+    /*if(currenttemp_>endtemp_+1)
     {
         InstrumentManager Im;
         Im.~InstrumentManager();
-    }
+    }*/
 
     return dataPoint;
 

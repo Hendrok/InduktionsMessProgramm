@@ -23,13 +23,13 @@ public slots:
     bool append(std::shared_ptr<DataPoint> datapoint);
 public:
     FileWriter(QObject *parent =0);
-    QString openFile(std::shared_ptr<MeasurementSequence> measurementSequence/*, QString filedir*/);
+    QString openFile(std::shared_ptr<const MeasurementSequence> measurementSequence/*, QString filedir*/);
     //bool append(std::shared_ptr<DataPoint> datapoint);
 
 
 private:
-    QString createFileName(std::shared_ptr<MeasurementSequence> measurementSequence);
-    QString writeHeader(std::shared_ptr<MeasurementSequence> measurementSequence);
+    QString createFileName(std::shared_ptr<const MeasurementSequence> measurementSequence);
+    QString writeHeader(std::shared_ptr<const MeasurementSequence> measurementSequence);
     QString filedir_;
 
 

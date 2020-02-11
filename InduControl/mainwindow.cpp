@@ -5,21 +5,26 @@
 #include "../InduCore/measurementsequence.h"
 #include "graphdiagram.h"
 #include "../InduCore/datapoint.h"
+#include "startdialog.h"
 #include <memory>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , datapoint_(std::shared_ptr<DataPoint>())
-    , textEdit(new QPlainTextEdit)
+    , graph_(new GraphDiagram(this))
+    , indumanager_(new InduManager())
 
-{
-    setCentralWidget(textEdit);
+{    
     createStatusBar();
     createActions();
+    createQLineDiagramm();
+
+    setCentralWidget(graph_);
 }
 
 MainWindow::~MainWindow()
 {
+    delete indumanager_;
 }
 
 void MainWindow::createActions()
@@ -28,22 +33,30 @@ void MainWindow::createActions()
     QToolBar *fileToolBar = addToolBar(tr("Messungen"));
     QAction *newAct = new QAction( tr("&Neue Messung"), this);
     newAct->setStatusTip(tr("Create a new measurement"));
-    connect(newAct, &QAction::triggered, this, &MainWindow::StartMessung);
-    connect(newAct, &QAction::triggered, this, &MainWindow::creatQLineDiagramm);
+    connect(newAct, &QAction::triggered, this, &MainWindow::onStartMessungButton);
+    //connect(newAct, &QAction::triggered, this, &MainWindow::createQLineDiagramm);
     fileMenu->addAction(newAct);
     fileToolBar->addAction(newAct);
 }
-void MainWindow::StartMessung(/*std::shared_ptr<MeasurementSequence> measurementSequence*/)
+void MainWindow::onStartMessungButton() // damit ich werte nacher eingeben kann muss hier measurementsequ. initialisiert werden
 {
-    InduManager *indumanager_= new InduManager;
-    measurementSequence_=std::make_shared <MeasurementSequence>();
-    indumanager_->startMeasurement(measurementSequence_);
+    StartDialog* startDialog = new StartDialog(this);
+    connect(startDialog, &StartDialog::startMeasurement,
+            this, &MainWindow::onStartMeasurement);
+
+    startDialog->show();
+
 }
-void MainWindow::creatQLineDiagramm() // wie kann ich connecten und gleichzeitig datapoints initialisieren?
+
+void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq)
 {
-    graphDiagram *gD=new graphDiagram;
-    gD->createDataPoint(datapoint_);
-    gD->createQlineDiagramm();
+    indumanager_->startMeasurement(mSeq);
+}
+
+void MainWindow::createQLineDiagramm()
+{
+    graph_->appendDataPoint(std::make_shared<const DataPoint>());
+    graph_->createQlineDiagramm();
 }
 void MainWindow::createStatusBar()
 //! [32] //! [33]

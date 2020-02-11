@@ -18,11 +18,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     graphdiagram.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    startdialog.cpp
 
 HEADERS += \
     graphdiagram.h \
-    mainwindow.h
+    mainwindow.h \
+    startdialog.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

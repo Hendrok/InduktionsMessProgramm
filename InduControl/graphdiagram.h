@@ -7,12 +7,18 @@
 #include <QWidget>
 class DataPoint;
 
-class graphDiagram
+class GraphDiagram: public QWidget
 {
+    Q_OBJECT
 public:
-    graphDiagram();
+
+    GraphDiagram(QWidget*parent =nullptr);
     void createQlineDiagramm();
-    void createDataPoint(std::shared_ptr<DataPoint> datapoint);
+    void appendDataPoint(std::shared_ptr<const DataPoint> datapoint);
+
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
+
 private:
     QVector<double> temps_;
     QVector<double> volts_;

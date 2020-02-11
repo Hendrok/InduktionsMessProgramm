@@ -17,7 +17,7 @@ InduManager::~InduManager()
     delete instrumentmanager_;
 }
 
-void InduManager::startMeasurement(std::shared_ptr<MeasurementSequence> &measurementSequence)
+void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> &measurementSequence)
 {
     fw_= std::make_unique<FileWriter>();
     fw_->openFile(measurementSequence);

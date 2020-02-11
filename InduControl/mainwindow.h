@@ -12,6 +12,8 @@ class QSessionManager;
 class InduManager;
 class MeasurementSequence;
 class DataPoint;
+class GraphDiagram;
+
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
@@ -21,15 +23,17 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
 private slots:
-     void StartMessung(/*std::shared_ptr<MeasurementSequence> measurementSequence*/);
+    void onStartMessungButton();
+    void onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq);
+
 private:
-    std::shared_ptr<DataPoint> datapoint_;
     void createStatusBar();
     void createActions();
-    void creatQLineDiagramm();
-    QPlainTextEdit *textEdit;
-    std::unique_ptr<InduManager> indumanager_;
-    std::shared_ptr<MeasurementSequence> measurementSequence_;
+    void createQLineDiagramm();
+
+    GraphDiagram *graph_;
+    InduManager* indumanager_;
 };
 #endif // MAINWINDOW_H

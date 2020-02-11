@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QDebug>
+#include <memory>
 
 //Eigene Klassen
 
@@ -26,10 +27,10 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     //die per Ui eingetragenen Attribute werden erstellt
-    std::shared_ptr<MeasurementSequence> measurementSequence;
+    MeasurementSequence measurementSequence;
     std::shared_ptr<DataPoint> dataPoint;
     std::shared_ptr<FileWriter> fileWriter=std::make_shared<FileWriter>();
-    measurementSequence  = std::make_shared<MeasurementSequence>();
+
     dataPoint =std::make_shared<DataPoint>();
     QString SupraName;
     double StartTemp =ui->StartTemp->value();
@@ -43,30 +44,19 @@ void MainWindow::on_pushButton_clicked()
 
     // die eingegeben Attribute werden in measurementSequence "gesettet"
     SupraName.append(ui->SupraName1->text());
-    measurementSequence->setSupraName(SupraName);
-    measurementSequence->setTempStart(StartTemp);
-    measurementSequence->setTempEnd(EndTemp);
-    measurementSequence->setTemperatureRate(temperatureRate);
-    measurementSequence->setMagneticField(magneticField);
-    measurementSequence->setCoilAngle(coilAngle);
-    measurementSequence->setFrequency(frequency);
-    measurementSequence->setVoltageAmplitude(voltageAmplitude);
-    measurementSequence->setHarmonicWave(harmonicWave);
+    measurementSequence.setSupraName(SupraName);
+    measurementSequence.setTempStart(StartTemp);
+    measurementSequence.setTempEnd(EndTemp);
+    measurementSequence.setTemperatureRate(temperatureRate);
+    measurementSequence.setMagneticField(magneticField);
+    measurementSequence.setCoilAngle(coilAngle);
+    measurementSequence.setFrequency(frequency);
+    measurementSequence.setVoltageAmplitude(voltageAmplitude);
+    measurementSequence.setHarmonicWave(harmonicWave);
 
-    InduManager *idm= new InduManager;
-    idm->startMeasurement(measurementSequence);
+    auto ptr = std::make_shared<const MeasurementSequence>(measurementSequence);
 
-
-
-
-
-
-
-
-
-
-
-
-
+    InduManager *idm = new InduManager;
+    idm->startMeasurement(ptr);
 }
 
