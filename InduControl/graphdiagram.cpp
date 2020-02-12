@@ -95,7 +95,7 @@ void GraphDiagram::createQlineDiagramm()
    pen.setWidth(2);
    series_->setPen(pen);
    // Animationen alle an, weil Animationen cool
-   chart_->setAnimationOptions(QChart::AllAnimations);
+   chart_->setAnimationOptions(QChart::NoAnimation);
 
    //Durch Antialiasing passt sich chart an, wenn man größer kleiner macht (meine ich)
    //QChartView *chartView = new QChartView(chart_);
