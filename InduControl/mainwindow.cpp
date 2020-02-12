@@ -7,7 +7,7 @@
 #include "../InduCore/datapoint.h"
 #include "startdialog.h"
 #include <memory>
-
+#include "../InduControlCore/ppmssimulation.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)

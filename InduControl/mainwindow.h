@@ -13,6 +13,7 @@ class InduManager;
 class MeasurementSequence;
 class DataPoint;
 class GraphDiagram;
+class PpmsSimulation;
 
 QT_END_NAMESPACE
 

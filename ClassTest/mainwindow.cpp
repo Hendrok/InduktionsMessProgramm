@@ -28,10 +28,8 @@ void MainWindow::on_pushButton_clicked()
 {
     //die per Ui eingetragenen Attribute werden erstellt
     MeasurementSequence measurementSequence;
-    std::shared_ptr<DataPoint> dataPoint;
-    std::shared_ptr<FileWriter> fileWriter=std::make_shared<FileWriter>();
 
-    dataPoint =std::make_shared<DataPoint>();
+
     QString SupraName;
     double StartTemp =ui->StartTemp->value();
     double EndTemp=ui->EndTemp->value();

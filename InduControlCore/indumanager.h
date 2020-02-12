@@ -4,11 +4,14 @@
 #include <memory>
 #include <QObject>
 
-//Eigene Klassen
-#include "instrumentmanager.h"
-#include "../InduCore/measurementsequence.h"
-#include "../InduCore/datapoint.h"
-#include "../InduCore/filewriter.h"
+
+//forward
+class PpmsSimulation;
+class MeasurementSequence;
+class DataPoint;
+class FileWriter;
+class InstrumentManager;
+
 
 class INDUCONTROLCORE_EXPORT InduManager :public QObject
 {
@@ -28,6 +31,7 @@ private slots:
 private:
     InstrumentManager *instrumentmanager_;
     std::unique_ptr <FileWriter> fw_;
+    std::shared_ptr <PpmsSimulation> PppmsS_;
 
 };
 

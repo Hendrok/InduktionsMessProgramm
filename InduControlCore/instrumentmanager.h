@@ -21,7 +21,7 @@ signals:
 public:
     InstrumentManager();
     ~InstrumentManager();
-public slots:
+private slots:
     void onPolling();
 private:
     QTimer* timer_;
