@@ -15,7 +15,6 @@ public:
     PpmsSimulation();
     void setTempSetpoint(double setpoint, double rate);
 
-    void getStartwerte(std::shared_ptr <MeasurementSequence> &measurementSequence);
 public slots:
     std::shared_ptr <DataPoint> generateVariables();
 private:

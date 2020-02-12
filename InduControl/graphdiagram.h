@@ -23,6 +23,9 @@ private:
     QVector<double> temps_;
     QVector<double> volts_;
     QString filename1_;
+    double temp_;
+    double volt_;
+    double phase_;
 };
 
 #endif // GRAPHDIAGRAM_H

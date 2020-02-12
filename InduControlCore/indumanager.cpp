@@ -25,7 +25,7 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> &m
 {
     fw_= std::make_unique<FileWriter>();
     fw_->openFile(measurementSequence);
-    PppmsS_->setTempSetpoint(measurementSequence->tempStart(),1);
+    instrumentmanager_->setTempSetpoint(measurementSequence->tempStart(), 1);
 
 
 }
@@ -34,7 +34,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
     emit newData(datapoint);
 
-        if (fw_ != nullptr)
+        if ((fw_ != nullptr) /*&& (datapoint->pvTemp()<=measurementSequence->tempEnd())*/)
         {
             fw_->append(datapoint);
         }

@@ -21,22 +21,28 @@
 #include <QtWidgets/QVBoxLayout>
 //includes std
 #include <algorithm>
+#include "../InduCore/datapoint.h"
 QT_CHARTS_USE_NAMESPACE
+
 
 
 GraphDiagram::GraphDiagram(QWidget *parent)
     :QWidget(parent)
     , filename1_("filename")
+    , temp_(0)
+    , volt_(0)
+    , phase_(0)
+
 {
 
 }
 
 void GraphDiagram::appendDataPoint(std::shared_ptr<const DataPoint> datapoint)
 {
-    Q_UNUSED(datapoint);
+    temp_ =datapoint->pvTemp();
+    volt_ =datapoint->pvVolt();
+    phase_ = datapoint->pvPhase();
 
-    temps_={0,1,2,3,4,5,6,7,8};
-    volts_={0.1,0.1,0.1,0.5,0.5,0.1,0.1,0.1,0.1};
 }
 
 QSize GraphDiagram::sizeHint() const
@@ -65,11 +71,8 @@ void GraphDiagram::createQlineDiagramm()
 
    //erstelle das LinienDiagramm
    QLineSeries *series =new QLineSeries();
-   // for schleife schmeißt daten in Diagramm
-   for (int j = 0; j < TemperaturVektordouble.length() - 1; ++j)
-   {
-        series->append(TemperaturVektordouble[j],VoltageVektordouble[j]);
-   }
+
+   series->append(temp_,volt_);
 
    //chart des Diagramms
    QChart *chart = new QChart();

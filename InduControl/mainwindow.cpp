@@ -57,6 +57,7 @@ void MainWindow::createQLineDiagramm()
 {
     graph_->appendDataPoint(std::make_shared<const DataPoint>());
     graph_->createQlineDiagramm();
+
 }
 void MainWindow::createStatusBar()
 //! [32] //! [33]

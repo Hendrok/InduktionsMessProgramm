@@ -21,11 +21,14 @@ signals:
 public:
     InstrumentManager();
     ~InstrumentManager();
+    void setTempSetpoint(double setpoint, double rate);
 private slots:
     void onPolling();
 private:
     QTimer* timer_;
     PpmsSimulation* ppmssimu_;
+    double tempSetpoint_;
+    double tempRate_;
 };
 
 #endif // INSTRUMENTMANAGER_H

@@ -31,7 +31,7 @@ private slots:
 private:
     InstrumentManager *instrumentmanager_;
     std::unique_ptr <FileWriter> fw_;
-    std::shared_ptr <PpmsSimulation> PppmsS_;
+
 
 };
 
