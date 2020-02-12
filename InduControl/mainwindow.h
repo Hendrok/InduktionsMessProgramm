@@ -28,6 +28,8 @@ public:
 private slots:
     void onStartMessungButton();
     void onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq);
+    void onNewData(std::shared_ptr<const DataPoint> datapoint);
+
 
 private:
     void createStatusBar();

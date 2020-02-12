@@ -1,37 +1,35 @@
 #include "graphdiagram.h"
-#include <QString>
-#include <QTextStream>
-#include <QDialog>
-#include <QFileDialog>
-#include <QMessageBox>
-#include <QApplication>
+
 #include <QtWidgets/QMainWindow>
 #include <QtCharts/QChartView>
 #include <QtCharts/QLegend>
-#include <QtCharts/QBarCategoryAxis>
-#include <QtCharts/QHorizontalStackedBarSeries>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QCategoryAxis>
 #include <memory>
 #include <QDebug>
 #include <QtCharts/QChartView>
-#include <QtCharts/QLineSeries>
 #include <QtCharts/QValueAxis>
-#include <QtDebug>
 #include <QtWidgets/QVBoxLayout>
-//includes std
-#include <algorithm>
-#include "../InduCore/datapoint.h"
-QT_CHARTS_USE_NAMESPACE
 
+
+#include "../InduCore/datapoint.h"
+#include "../InduCore/measurementsequence.h"
+QT_CHARTS_USE_NAMESPACE
 
 
 GraphDiagram::GraphDiagram(QWidget *parent)
     :QWidget(parent)
     , filename1_("filename")
-    , temp_(0)
-    , volt_(0)
+    , tempmin_(0)
+    , tempmax_(100)
+    , voltmin_(0)
+    , voltmax_(0)
     , phase_(0)
+    , series_(new QLineSeries())
+    , chart_(new QChart())
+    , chartView_(new QChartView(chart_))
+    , axisX_(new QValueAxis)
+    , axisY_(new QValueAxis)
 
 {
 
@@ -39,9 +37,15 @@ GraphDiagram::GraphDiagram(QWidget *parent)
 
 void GraphDiagram::appendDataPoint(std::shared_ptr<const DataPoint> datapoint)
 {
-    temp_ =datapoint->pvTemp();
-    volt_ =datapoint->pvVolt();
-    phase_ = datapoint->pvPhase();
+    if(voltmin_==0){voltmin_=datapoint->pvVolt();}
+    if(voltmin_>datapoint->pvVolt()){voltmin_=datapoint->pvVolt()-0.1;}
+    //if(voltmin_<0){voltmin_=0;}
+    if(voltmax_<datapoint->pvVolt()){voltmax_=datapoint->pvVolt()+0.1;}
+    series_->append(datapoint->pvTemp(), datapoint->pvVolt());
+    qDebug()<<datapoint->pvTemp();
+    axisY_->setRange(voltmin_,voltmax_);
+    axisX_->setMin(80);
+    axisX_->setMax(100);
 
 }
 
@@ -55,63 +59,50 @@ QSize GraphDiagram::minimumSizeHint() const
     return QSize(300, 200);
 }
 
+void GraphDiagram::setAxis(std::shared_ptr<const MeasurementSequence> mSeq)
+{
+    axisX_->setRange(mSeq->tempStart(),mSeq->tempEnd());
+}
+
 void GraphDiagram::createQlineDiagramm()
 {
 
-    QVector <double> TemperaturVektordouble =temps_;
-    QVector<double> VoltageVektordouble= volts_;
+   chart_->legend()->hide();
+   chart_->addSeries(series_);
+
+   axisX_->setTitleText("Temperatur in Kelvin");
 
 
-   QString filename_2 ="TCMessung: ";
-
-   QString filename=filename1_;
-   //qDebug()<<filename;
-   QString filename_3 = filename.section('/',-1);
-   filename_2.append(filename_3);
-
-   //erstelle das LinienDiagramm
-   QLineSeries *series =new QLineSeries();
-
-   series->append(temp_,volt_);
-
-   //chart des Diagramms
-   QChart *chart = new QChart();
-   chart->legend()->hide();
-   chart->addSeries(series);
-   //chart->createDefaultAxes();
-   //X-Achse plus Beschreibung
-   QValueAxis *axisX = new QValueAxis;
-   axisX->setTitleText("Temperatur in Kelvin");
-   //Y-Achse plus Beschreibung
-   QValueAxis *axisY= new QValueAxis;
-   axisY->setTitleText("Spannung in Volt");
-   chart->addAxis(axisX, Qt::AlignBottom);
-   chart->addAxis(axisY, Qt::AlignLeft);
-   series->attachAxis(axisX);
-   series->attachAxis(axisY);
+   axisY_->setTitleText("Spannung in Volt");
+   chart_->addAxis(axisX_, Qt::AlignBottom);
+   chart_->addAxis(axisY_, Qt::AlignLeft);
+   series_->attachAxis(axisX_);
+   series_->attachAxis(axisY_);
 
    //font Size
    QFont font;
    font.setPixelSize(18);
-   chart->setTitleFont(font);
+   chart_->setTitleFont(font);
    // Titel von oben einsetzen
-   chart->setTitle(filename_2);
+   chart_->setTitle("Tc Messung");
 
    // Dicke der Linie
    QPen pen(QRgb(0x000000));
    pen.setWidth(2);
-   series->setPen(pen);
+   series_->setPen(pen);
    // Animationen alle an, weil Animationen cool
-   chart->setAnimationOptions(QChart::AllAnimations);
+   chart_->setAnimationOptions(QChart::AllAnimations);
 
    //Durch Antialiasing passt sich chart an, wenn man größer kleiner macht (meine ich)
-   QChartView *chartView = new QChartView(chart);
-   chartView->setRenderHint(QPainter::Antialiasing);
+   //QChartView *chartView = new QChartView(chart_);
+   chartView_->setRenderHint(QPainter::Antialiasing);
 
     QVBoxLayout* mainLayout = new QVBoxLayout();
-    mainLayout->addWidget(chartView);
+    mainLayout->addWidget(chartView_);
 
     setLayout(mainLayout);
 }
+
+
 
 

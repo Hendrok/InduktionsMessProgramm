@@ -43,24 +43,33 @@ void MainWindow::onStartMessungButton() // damit ich werte nacher eingeben kann 
     StartDialog* startDialog = new StartDialog(this);
     connect(startDialog, &StartDialog::startMeasurement,
             this, &MainWindow::onStartMeasurement);
-
     startDialog->show();
+
 
 }
 
 void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq)
 {
+
     indumanager_->startMeasurement(mSeq);
+    connect(indumanager_,&InduManager::newData,
+            this,&MainWindow::onNewData);
+}
+
+void MainWindow::onNewData(std::shared_ptr<const DataPoint> datapoint)
+{
+
+    graph_->appendDataPoint(datapoint);
 }
 
 void MainWindow::createQLineDiagramm()
 {
-    graph_->appendDataPoint(std::make_shared<const DataPoint>());
+
     graph_->createQlineDiagramm();
+
 
 }
 void MainWindow::createStatusBar()
-//! [32] //! [33]
 {
     statusBar()->showMessage(tr("Ready"));
 }
