@@ -5,7 +5,7 @@
 
 class MeasurementSequence;
 class QDoubleSpinBox;
-
+class QLineEdit;
 class StartDialog : public QDialog
 {
     Q_OBJECT
@@ -26,8 +26,16 @@ private:
     void setupUI();
     std::shared_ptr<const MeasurementSequence> createSequence() const;
 
+    QLineEdit* sampleName_;
     QDoubleSpinBox* tempStart_;
     QDoubleSpinBox* tempEnd_;
+    QDoubleSpinBox* temperatureRate_;
+    QDoubleSpinBox* magneticField_;
+    QDoubleSpinBox* coilAngle_;
+    QDoubleSpinBox* frequency_;
+    QDoubleSpinBox* voltageAmplitude_;
+    QDoubleSpinBox* harmonicWave_;
+
 };
 
 #endif // STARTDIALOG_H
