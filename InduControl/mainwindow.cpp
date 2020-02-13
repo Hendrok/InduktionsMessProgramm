@@ -33,12 +33,11 @@ void MainWindow::createActions()
     QToolBar *fileToolBar = addToolBar(tr("Messungen"));
     QAction *newAct = new QAction( tr("&Neue Messung"), this);
     newAct->setStatusTip(tr("Create a new measurement"));
-    connect(newAct, &QAction::triggered, this, &MainWindow::onStartMessungButton);
-    //connect(newAct, &QAction::triggered, this, &MainWindow::createQLineDiagramm);
+    connect(newAct, &QAction::triggered, this, &MainWindow::onStartMessungButton); //Hier sende ich Signal ans Slot
     fileMenu->addAction(newAct);
     fileToolBar->addAction(newAct);
 }
-void MainWindow::onStartMessungButton() // damit ich werte nacher eingeben kann muss hier measurementsequ. initialisiert werden
+void MainWindow::onStartMessungButton()
 {
     StartDialog* startDialog = new StartDialog(this);
     connect(startDialog, &StartDialog::startMeasurement,
