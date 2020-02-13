@@ -31,7 +31,7 @@ void MainWindow::createActions()
 {
     QMenu *fileMenu = menuBar()->addMenu(tr("&Messungen"));
     QToolBar *fileToolBar = addToolBar(tr("Neue Messung"));
-    const QIcon measurementIcon =QIcon::fromTheme("MessungIcon", QIcon(":/Icons/Icons/play-button.png"));
+    const QIcon measurementIcon =QIcon::fromTheme("MessungIcon", QIcon(":/Icons/Icons/StartButton.png"));
     QAction *messungStarten = new QAction(measurementIcon, tr("&Neue Messung"), this);
     messungStarten->setStatusTip(tr("Create a new measurement"));
     connect(messungStarten, &QAction::triggered, this, &MainWindow::onStartMessungButton); //Hier sende ich Signal ans Slot
@@ -46,13 +46,10 @@ void MainWindow::onStartMessungButton()
     connect(startDialog, &StartDialog::startMeasurement,
             this, &MainWindow::onStartMeasurement);
     startDialog->show();
-
-
 }
 
 void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq)
 {
-
     indumanager_->startMeasurement(mSeq);
     connect(indumanager_,&InduManager::newData,
             this,&MainWindow::onNewData);

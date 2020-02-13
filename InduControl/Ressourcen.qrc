@@ -1,7 +1,5 @@
 <RCC>
     <qresource prefix="/Icons">
-        <file>Icons/helium.png</file>
-        <file>Icons/voltmeter.png</file>
-        <file>Icons/play-button.png</file>
+        <file>Icons/StartButton.png</file>
     </qresource>
 </RCC>
