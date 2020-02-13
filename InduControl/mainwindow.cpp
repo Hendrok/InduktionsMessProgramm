@@ -30,12 +30,15 @@ MainWindow::~MainWindow()
 void MainWindow::createActions()
 {
     QMenu *fileMenu = menuBar()->addMenu(tr("&Messungen"));
-    QToolBar *fileToolBar = addToolBar(tr("Messungen"));
-    QAction *newAct = new QAction( tr("&Neue Messung"), this);
-    newAct->setStatusTip(tr("Create a new measurement"));
-    connect(newAct, &QAction::triggered, this, &MainWindow::onStartMessungButton); //Hier sende ich Signal ans Slot
-    fileMenu->addAction(newAct);
-    fileToolBar->addAction(newAct);
+    QToolBar *fileToolBar = addToolBar(tr("Neue Messung"));
+    const QIcon measurementIcon =QIcon::fromTheme("MessungIcon", QIcon(":/Icons/Icons/play-button.png"));
+    QAction *messungStarten = new QAction(measurementIcon, tr("&Neue Messung"), this);
+    messungStarten->setStatusTip(tr("Create a new measurement"));
+    connect(messungStarten, &QAction::triggered, this, &MainWindow::onStartMessungButton); //Hier sende ich Signal ans Slot
+    fileMenu->addAction(messungStarten);
+    fileToolBar->addAction(messungStarten);
+
+
 }
 void MainWindow::onStartMessungButton()
 {
@@ -53,6 +56,7 @@ void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> m
     indumanager_->startMeasurement(mSeq);
     connect(indumanager_,&InduManager::newData,
             this,&MainWindow::onNewData);
+    graph_->setAxis(mSeq);
 }
 
 void MainWindow::onNewData(std::shared_ptr<const DataPoint> datapoint)

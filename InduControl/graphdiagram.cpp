@@ -48,8 +48,6 @@ void GraphDiagram::appendDataPoint(std::shared_ptr<const DataPoint> datapoint)
 
     // set Range Live
     axisY_->setRange(voltmin_,voltmax_);
-    axisX_->setMin(80);
-    axisX_->setMax(100);
 
 }
 

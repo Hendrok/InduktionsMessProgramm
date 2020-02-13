@@ -34,7 +34,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
     emit newData(datapoint);
 
-        if ((fw_ != nullptr) /*&& (datapoint->pvTemp()<=measurementSequence->tempEnd())*/)
+        if ((fw_ != nullptr) )
         {
             fw_->append(datapoint);
         }
