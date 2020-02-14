@@ -8,6 +8,7 @@ class INDUCORE_EXPORT MeasurementSequence
 {
 public:
     MeasurementSequence();
+    virtual ~MeasurementSequence()=0;
     //algemein
     QString supraName() const;
     void setSupraName(const QString supraName);
@@ -30,8 +31,6 @@ public:
     QString supraName_;
     QString fileName_;
     //PPMS
-
-
     double magneticField_;
     double coilAngle_;
     //Lockin
@@ -50,6 +49,11 @@ inline MeasurementSequence::MeasurementSequence()
 
     , harmonicWave_(1)
 {}
+
+inline MeasurementSequence::~MeasurementSequence()
+{
+
+}
 
 inline QString MeasurementSequence::supraName() const
 {

@@ -1,6 +1,7 @@
 #include "startdialog.h"
 #include "../InduCore/measurementsequence.h"
 #include "../InduCore/MeasSeqTc.h"
+#include "../InduCore/measseqjc.h"
 #include <QVBoxLayout>
 #include <QGridLayout>
 #include <QDoubleSpinBox>
@@ -143,9 +144,10 @@ void StartDialog::setupUI()
     setLayout(mainLayout);
 }
 
-std::shared_ptr<const MeasSeqTc> StartDialog::createSequence() const
+std::shared_ptr<const MeasurementSequence> StartDialog::createSequence() const
 {
     MeasSeqTc seq;
+
     seq.setSupraName(sampleName_->text());
     seq.setTempStart(tempStart_->value());
     seq.setTempEnd(tempEnd_->value());

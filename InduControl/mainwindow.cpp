@@ -48,7 +48,7 @@ void MainWindow::onStartMessungButton()
     startDialog->show();
 }
 
-void MainWindow::onStartMeasurement(std::shared_ptr<const MeasSeqTc> mSeq)
+void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq)
 {
     indumanager_->startMeasurement(mSeq);
     connect(indumanager_,&InduManager::newData,

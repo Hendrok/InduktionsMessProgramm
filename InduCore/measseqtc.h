@@ -22,7 +22,7 @@ public:
     double temperatureRate() const;
     void setTemperatureRate(double temperatureRate);
 
-private:
+protected:
     double tempStart_;
     double tempEnd_;
     double voltageAmplitude_;

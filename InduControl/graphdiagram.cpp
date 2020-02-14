@@ -62,11 +62,15 @@ QSize GraphDiagram::minimumSizeHint() const
     return QSize(300, 200);
 }
 
-void GraphDiagram::setStaticValues(std::shared_ptr<const MeasSeqTc> mSeq)
+void GraphDiagram::setStaticValues(std::shared_ptr<const MeasurementSequence> mSeq)
 {
-    axisX_->setRange(mSeq->tempStart(),mSeq->tempEnd());
+    auto seqTc = std::dynamic_pointer_cast <const MeasSeqTc> (mSeq);
+    if(seqTc !=nullptr)
+    {
+    axisX_->setRange(seqTc->tempStart(),seqTc->tempEnd());
     QString title= mSeq->fileName();
     chart_->setTitle("Tc Messung " + mSeq->fileName());
+    }
 }
 
 void GraphDiagram::createQlineDiagramm()

@@ -8,7 +8,7 @@
 #include <QtCharts>
 #include <QtCharts/QValueAxis>
 class DataPoint;
-class MeasSeqTc;
+class MeasurementSequence;
 
 class GraphDiagram: public QWidget
 {
@@ -37,7 +37,7 @@ private:
     QValueAxis *axisX_ ;
     QValueAxis *axisY_;
 public slots:
-    void setStaticValues(std::shared_ptr<const MeasSeqTc> mSeq);
+    void setStaticValues(std::shared_ptr<const MeasurementSequence> mSeq);
 };
 
 #endif // GRAPHDIAGRAM_H

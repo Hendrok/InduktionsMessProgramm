@@ -11,6 +11,7 @@ class QPlainTextEdit;
 class QSessionManager;
 class InduManager;
 class MeasSeqTc;
+class MeasurementSequence;
 class DataPoint;
 class GraphDiagram;
 class PpmsSimulation;
@@ -27,7 +28,7 @@ public:
 
 private slots:
     void onStartMessungButton();
-    void onStartMeasurement(std::shared_ptr<const MeasSeqTc> mSeq);
+    void onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq);
     void onNewData(std::shared_ptr<const DataPoint> datapoint);
 
 

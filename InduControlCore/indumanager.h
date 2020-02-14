@@ -8,6 +8,7 @@
 //forward
 class PpmsSimulation;
 class MeasSeqTc;
+class MeasurementSequence;
 class DataPoint;
 class FileWriter;
 class InstrumentManager;
@@ -23,7 +24,7 @@ public:
     InduManager();
     ~InduManager();
 
-    void startMeasurement(std::shared_ptr<const MeasSeqTc> &measurementSequence);
+    void startMeasurement(std::shared_ptr<const MeasurementSequence> &measurementSequence);
 
 private slots:
     void onNewData(std::shared_ptr<DataPoint> datapoint);
@@ -32,6 +33,8 @@ private:
     InstrumentManager *instrumentmanager_;
     std::unique_ptr <FileWriter> fw_;
     bool setPointStand;
+    double startTemp_;
+    double endTemp_;
 
 };
 

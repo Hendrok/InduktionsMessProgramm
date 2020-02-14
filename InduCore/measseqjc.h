@@ -11,6 +11,7 @@ class INDUCORE_EXPORT MeasSeqJc : public MeasurementSequence
 {
 public:
     MeasSeqJc();
+
     double voltStart() const;
     void setVoltStart(double voltStart);
 
@@ -23,7 +24,7 @@ public:
     double temperature() const;
     void setTemperature(double temperature);
 
-private:
+protected:
     double voltStart_;
     double voltEnd_;
     double voltRate_;
@@ -32,7 +33,7 @@ private:
 
 
 
-MeasSeqJc::MeasSeqJc()
+inline MeasSeqJc::MeasSeqJc()
     : voltStart_(0.1)
     , voltEnd_ (1)
     , voltRate_ (0.01)

@@ -22,7 +22,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
+/*
 //TODO: meine ui klappt nicht, bzw die werte aus der Ui den attributen hinzuzufügen
 void MainWindow::on_pushButton_clicked()
 {
@@ -55,6 +55,7 @@ void MainWindow::on_pushButton_clicked()
     auto ptr = std::make_shared<const MeasSeqTc>(measurementSequence);
 
     InduManager *idm = new InduManager;
-    idm->startMeasurement(ptr);
+    //idm->startMeasurement(ptr);
 }
 
+*/

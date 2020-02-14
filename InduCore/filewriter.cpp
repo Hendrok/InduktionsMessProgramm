@@ -3,11 +3,12 @@
 #include <QString>
 #include <QTextStream>
 #include <QDir>
-
 #include "measurementsequence.h"
 #include "MeasSeqTc.h"
+#include "measseqjc.h"
 #include "datapoint.h"
 #include "filewriter.h"
+
 
 FileWriter::FileWriter(QObject *parent)
     :QObject(parent)
@@ -15,47 +16,102 @@ FileWriter::FileWriter(QObject *parent)
 
 }
 
-QString FileWriter::writeHeader(std::shared_ptr<const MeasSeqTc> measurementSequence){
-        //wasobenintextdateisteht später!
-        QString header_;
-        header_.append("Material: ");
-        header_.append(measurementSequence->supraName());
-        header_.append("\n Voltage: ");
-        header_.append(QString::number(measurementSequence->voltageAmplitude()));
-        header_.append(" V \n Frequency: ");
-        header_.append(QString::number(measurementSequence->frequency()));
-        header_.append(" hz \n Magnetic Field: ");
-        header_.append(QString::number(measurementSequence->magneticField()));
-        header_.append(" mT \n Starting Temperature: ");
-        header_.append(QString::number(measurementSequence->tempStart()));
-        header_.append(" K \n Ending Temperature: ");
-        header_.append(QString::number(measurementSequence->tempEnd()));
-        header_.append(" K \n Temperature Rate: ");
-        header_.append(QString::number(measurementSequence->temperatureRate()));
-        header_.append(" K/min \n Harmonic Wave: ");
-        header_.append(QString::number(measurementSequence->harmonicWave()));
-        header_.append("\n CoilAngle: ");
-        header_.append(QString::number(measurementSequence->coilAngle()));
-        if(measurementSequence->coilAngle()==1) {header_.append(" degree \n"); }
-        else{
-          header_.append(" degrees \n");
-          }
-        return header_;
+QString FileWriter::writeHeader(std::shared_ptr<const MeasurementSequence> measurementSequence){
+        auto seqTc = std::dynamic_pointer_cast<const MeasSeqTc> (measurementSequence);
+        auto seqJc = std::dynamic_pointer_cast<const MeasSeqJc> (measurementSequence);
+        if(seqTc !=nullptr)
+        {
+            QString header_;
+            header_.append("Material: ");
+            header_.append(measurementSequence->supraName());
+            header_.append("\n Voltage: ");
+            header_.append(QString::number(seqTc->voltageAmplitude()));
+            header_.append(" V \n Frequency: ");
+            header_.append(QString::number(measurementSequence->frequency()));
+            header_.append(" hz \n Magnetic Field: ");
+            header_.append(QString::number(measurementSequence->magneticField()));
+            header_.append(" mT \n Starting Temperature: ");
+            header_.append(QString::number(seqTc->tempStart()));
+            header_.append(" K \n Ending Temperature: ");
+            header_.append(QString::number(seqTc->tempEnd()));
+            header_.append(" K \n Temperature Rate: ");
+            header_.append(QString::number(seqTc->temperatureRate()));
+            header_.append(" K/min \n Harmonic Wave: ");
+            header_.append(QString::number(measurementSequence->harmonicWave()));
+            header_.append("\n CoilAngle: ");
+            header_.append(QString::number(measurementSequence->coilAngle()));
+            if(measurementSequence->coilAngle()==1) {header_.append(" degree \n"); }
+            else{
+              header_.append(" degrees \n");
+              }
+            return header_;
+        }
+
+        else if (seqJc !=nullptr)
+        {
+            QString header_;
+            header_.append("Material: ");
+            header_.append(measurementSequence->supraName());
+            header_.append("\n Temperature: ");
+            header_.append(QString::number(seqJc->temperature()));
+            header_.append(" T \n Frequency: ");
+            header_.append(QString::number(measurementSequence->frequency()));
+            header_.append(" hz \n Magnetic Field: ");
+            header_.append(QString::number(measurementSequence->magneticField()));
+            header_.append(" mT \n Starting Voltage: ");
+            header_.append(QString::number(seqJc->voltStart()));
+            header_.append(" V \n Ending Voltage: ");
+            header_.append(QString::number(seqJc->voltEnd()));
+            header_.append(" V \n Voltage Rate: ");
+            header_.append(QString::number(seqJc->voltRate()));
+            header_.append(" V/min \n Harmonic Wave: ");
+            header_.append(QString::number(measurementSequence->harmonicWave()));
+            header_.append("\n CoilAngle: ");
+            header_.append(QString::number(measurementSequence->coilAngle()));
+            if(measurementSequence->coilAngle()==1) {header_.append(" degree \n"); }
+            else{
+              header_.append(" degrees \n");
+              }
+            return header_;
+        }
+
+        else{return "FEHLER UPSI";}
+
 }
-QString FileWriter::createFileName(std::shared_ptr<const MeasSeqTc> measurementSequence){
-        //Filename wird erstellt, damit man sofort sieht was in der Txt datei gemessen wurde!
-        QString filename_;
-        filename_.append(measurementSequence->supraName());
-        filename_.append("_");
-        filename_.append(QString::number(measurementSequence->voltageAmplitude()));
-        filename_.append("V_");
-        filename_.append(QString::number(measurementSequence->frequency()));
-        filename_.append("hz_");
-        filename_.append(QString::number(measurementSequence->magneticField()));
-        filename_.append("mT_");
-        filename_.append(QString::number(measurementSequence->coilAngle()));
-        filename_.append("d");
-        return filename_;
+QString FileWriter::createFileName(std::shared_ptr<const MeasurementSequence> measurementSequence){
+        auto seqTc = std::dynamic_pointer_cast<const MeasSeqTc> ( measurementSequence);
+        auto seqJc = std::dynamic_pointer_cast<const MeasSeqJc> (measurementSequence);
+        if(seqTc !=nullptr)
+        {
+            QString filename_= "Tc_";
+            filename_.append(measurementSequence->supraName());
+            filename_.append("_");
+            filename_.append(QString::number(seqTc->voltageAmplitude()));
+            filename_.append("V_");
+            filename_.append(QString::number(measurementSequence->frequency()));
+            filename_.append("hz_");
+            filename_.append(QString::number(measurementSequence->magneticField()));
+            filename_.append("mT_");
+            filename_.append(QString::number(measurementSequence->coilAngle()));
+            filename_.append("d");
+            return filename_;
+        }
+        else if(seqJc !=nullptr)
+        {
+            QString filename_= "Jc_";
+            filename_.append(measurementSequence->supraName());
+            filename_.append("_");
+            filename_.append(QString::number(seqJc->temperature()));
+            filename_.append("V_");
+            filename_.append(QString::number(measurementSequence->frequency()));
+            filename_.append("hz_");
+            filename_.append(QString::number(measurementSequence->magneticField()));
+            filename_.append("mT_");
+            filename_.append(QString::number(measurementSequence->coilAngle()));
+            filename_.append("d");
+            return filename_;
+        }
+        else {return "Weder Tc nohc Jc Messung";}
 }
 
 
@@ -69,7 +125,7 @@ bool FileWriter::append(std::shared_ptr<DataPoint> datapoint){
     return true;
 }
 
-QString FileWriter::openFile(std::shared_ptr<const MeasSeqTc> measurementSequence /*, QString filedir*/){
+QString FileWriter::openFile(std::shared_ptr<const MeasurementSequence> measurementSequence /*, QString filedir*/){
             //Schreibt den Erstellten Header und benennt die File nach Filename, achtet außerdem darauf, das die File nicht überschrieben wird!
         QString path("Messergebnisse/");
         QDir dir;  // ich erstelle QString mit dem Ordner, danach die direction

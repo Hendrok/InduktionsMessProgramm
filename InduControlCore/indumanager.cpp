@@ -10,9 +10,11 @@
 #include "../InduCore/filewriter.h"
 
 InduManager::InduManager()
-    :instrumentmanager_(new InstrumentManager())
-    ,fw_(nullptr)
+    : instrumentmanager_(new InstrumentManager())
+    , fw_(nullptr)
     , setPointStand(false)
+    , startTemp_ (80)
+    , endTemp_ (100)
 {
     connect(instrumentmanager_, &InstrumentManager::newData,
                 this, &InduManager::onNewData);
@@ -23,11 +25,17 @@ InduManager::~InduManager()
     delete instrumentmanager_;
 }
 
-void InduManager::startMeasurement(std::shared_ptr<const MeasSeqTc> &measurementSequence)
+void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> &measurementSequence)
 {
+    auto seqTc = std::dynamic_pointer_cast <const MeasSeqTc> (measurementSequence);
+
     fw_= std::make_unique<FileWriter>();
     fw_->openFile(measurementSequence);
-    instrumentmanager_->setTempSetpoint(measurementSequence->tempStart(), 1);
+    if(seqTc !=nullptr){
+        startTemp_ = seqTc->tempStart();
+        endTemp_ = seqTc->tempEnd();
+    instrumentmanager_->setTempSetpoint(startTemp_, 1);
+    }
 
 
 }
@@ -36,10 +44,12 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
     emit newData(datapoint);
 
+    //TODO: startTemp und Endtemp mit gettern von Setpoint ersetzen!
 
-    if(datapoint->pvTemp()==80&& setPointStand==false )
+    if(datapoint->pvTemp()==startTemp_&& setPointStand==false )
     {
         setPointStand =true;
+        instrumentmanager_->setTempSetpoint(endTemp_,1);
     }
 
 
@@ -48,7 +58,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
         fw_->append(datapoint);
     }
 
-    if(datapoint->pvTemp()==100 && setPointStand==true)
+    if(datapoint->pvTemp()==endTemp_ && setPointStand==true)
     {
         setPointStand=false;
     }
