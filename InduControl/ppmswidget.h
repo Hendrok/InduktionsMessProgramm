@@ -4,6 +4,7 @@
 #include <QWidget>
 
 class DataPoint;
+class QLineEdit;
 
 class PpmsWidget : public QWidget
 {
@@ -18,6 +19,21 @@ public:
 
 private:
     void createUI();
+
+    //tempBlock
+    QLineEdit* tempSetPoint_;
+    QLineEdit* tempRate_;
+    QLineEdit* tempStatus_;
+
+    //MagBlock
+    QLineEdit* magFeld_;
+    QLineEdit* magSetPoint_;
+    QLineEdit* magStatus_;
+
+    //RotationBlock
+    QLineEdit* rotSetPoint_;
+
+
 };
 
 #endif // PPPMSWIDGET_H

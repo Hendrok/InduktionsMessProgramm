@@ -1,8 +1,9 @@
 #include "ppmswidget.h"
+#include "../InduCore/datapoint.h"
 
 #include <QDebug>
-
-#include "../InduCore/datapoint.h"
+#include <QLabel>
+#include <QLineEdit>
 
 PpmsWidget::PpmsWidget(QWidget *parent)
     : QWidget (parent)
@@ -26,5 +27,10 @@ void PpmsWidget::newData(std::shared_ptr<const DataPoint> dpoint)
         // label auf Heliumlevel?
     }
     
+}
+
+void PpmsWidget::createUI()
+{
+
 }
 
