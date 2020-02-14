@@ -27,7 +27,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     //die per Ui eingetragenen Attribute werden erstellt
-    MeasurementSequence measurementSequence;
+    MeasSeqTc measurementSequence;
 
 
     QString SupraName;
@@ -52,7 +52,7 @@ void MainWindow::on_pushButton_clicked()
     measurementSequence.setVoltageAmplitude(voltageAmplitude);
     measurementSequence.setHarmonicWave(harmonicWave);
 
-    auto ptr = std::make_shared<const MeasurementSequence>(measurementSequence);
+    auto ptr = std::make_shared<const MeasSeqTc>(measurementSequence);
 
     InduManager *idm = new InduManager;
     idm->startMeasurement(ptr);

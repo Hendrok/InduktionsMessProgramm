@@ -1,5 +1,6 @@
 #include "startdialog.h"
 #include "../InduCore/measurementsequence.h"
+#include "../InduCore/MeasSeqTc.h"
 #include <QVBoxLayout>
 #include <QGridLayout>
 #include <QDoubleSpinBox>
@@ -142,9 +143,9 @@ void StartDialog::setupUI()
     setLayout(mainLayout);
 }
 
-std::shared_ptr<const MeasurementSequence> StartDialog::createSequence() const
+std::shared_ptr<const MeasSeqTc> StartDialog::createSequence() const
 {
-    MeasurementSequence seq;
+    MeasSeqTc seq;
     seq.setSupraName(sampleName_->text());
     seq.setTempStart(tempStart_->value());
     seq.setTempEnd(tempEnd_->value());
@@ -154,6 +155,12 @@ std::shared_ptr<const MeasurementSequence> StartDialog::createSequence() const
     seq.setFrequency(frequency_->value());
     seq.setVoltageAmplitude(voltageAmplitude_->value());
     seq.setHarmonicWave(harmonicWave_->value());
+    seq.setFileName(sampleName_->text() + "_" +
+                    QString::number(voltageAmplitude_->value()) + "V_" +
+                    QString::number(frequency_->value()) + "hz_" +
+                    QString::number(magneticField_->value()) + "mT_" +
+                    QString::number(coilAngle_->value()) + "d"
+                    );
 
-    return std::make_shared<const MeasurementSequence>(seq);
+    return std::make_shared<const MeasSeqTc>(seq);
 }

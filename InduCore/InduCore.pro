@@ -27,6 +27,8 @@ HEADERS += \
     datapoint.h \
     filereader.h \
     filewriter.h \
+    measseqjc.h \
+    measseqtc.h \
     measurementsequence.h
 
 # Default rules for deployment.

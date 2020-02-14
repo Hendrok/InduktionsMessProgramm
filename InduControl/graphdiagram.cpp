@@ -14,6 +14,7 @@
 
 #include "../InduCore/datapoint.h"
 #include "../InduCore/measurementsequence.h"
+#include "../InduCore/MeasSeqTc.h"
 QT_CHARTS_USE_NAMESPACE
 
 
@@ -61,9 +62,11 @@ QSize GraphDiagram::minimumSizeHint() const
     return QSize(300, 200);
 }
 
-void GraphDiagram::setAxis(std::shared_ptr<const MeasurementSequence> mSeq)
+void GraphDiagram::setStaticValues(std::shared_ptr<const MeasSeqTc> mSeq)
 {
     axisX_->setRange(mSeq->tempStart(),mSeq->tempEnd());
+    QString title= mSeq->fileName();
+    chart_->setTitle("Tc Messung " + mSeq->fileName());
 }
 
 void GraphDiagram::createQlineDiagramm()
@@ -85,8 +88,8 @@ void GraphDiagram::createQlineDiagramm()
    QFont font;
    font.setPixelSize(18);
    chart_->setTitleFont(font);
-   // Titel von oben einsetzen
-   chart_->setTitle("Tc Messung");
+
+
 
    // Dicke der Linie
    QPen pen(QRgb(0x000000));

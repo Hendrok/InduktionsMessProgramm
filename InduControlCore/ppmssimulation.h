@@ -6,7 +6,7 @@
 #include "../InduCore/datapoint.h"
 
 class QObject;
-class MeasurementSequence;
+class MeasSeqTc;
 
 class INDUCONTROLCORE_EXPORT PpmsSimulation: public QObject
 {
@@ -23,6 +23,7 @@ private:
     double tempRate_;
     double fieldSetpoint_;
     double fieldRate_;
+    double ppmsHelium_;
 };
 
 #endif // PPMSSIMULATION_H

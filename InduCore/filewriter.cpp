@@ -5,6 +5,7 @@
 #include <QDir>
 
 #include "measurementsequence.h"
+#include "MeasSeqTc.h"
 #include "datapoint.h"
 #include "filewriter.h"
 
@@ -14,7 +15,7 @@ FileWriter::FileWriter(QObject *parent)
 
 }
 
-QString FileWriter::writeHeader(std::shared_ptr<const MeasurementSequence> measurementSequence){
+QString FileWriter::writeHeader(std::shared_ptr<const MeasSeqTc> measurementSequence){
         //wasobenintextdateisteht später!
         QString header_;
         header_.append("Material: ");
@@ -41,7 +42,7 @@ QString FileWriter::writeHeader(std::shared_ptr<const MeasurementSequence> measu
           }
         return header_;
 }
-QString FileWriter::createFileName(std::shared_ptr<const MeasurementSequence> measurementSequence){
+QString FileWriter::createFileName(std::shared_ptr<const MeasSeqTc> measurementSequence){
         //Filename wird erstellt, damit man sofort sieht was in der Txt datei gemessen wurde!
         QString filename_;
         filename_.append(measurementSequence->supraName());
@@ -68,7 +69,7 @@ bool FileWriter::append(std::shared_ptr<DataPoint> datapoint){
     return true;
 }
 
-QString FileWriter::openFile(std::shared_ptr<const MeasurementSequence> measurementSequence /*, QString filedir*/){
+QString FileWriter::openFile(std::shared_ptr<const MeasSeqTc> measurementSequence /*, QString filedir*/){
             //Schreibt den Erstellten Header und benennt die File nach Filename, achtet außerdem darauf, das die File nicht überschrieben wird!
         QString path("Messergebnisse/");
         QDir dir;  // ich erstelle QString mit dem Ordner, danach die direction

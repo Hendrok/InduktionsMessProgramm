@@ -3,7 +3,7 @@
 
 #include <QDialog>
 
-class MeasurementSequence;
+class MeasSeqTc;
 class QDoubleSpinBox;
 class QLineEdit;
 class StartDialog : public QDialog
@@ -11,7 +11,7 @@ class StartDialog : public QDialog
     Q_OBJECT
 
 signals:
-    void startMeasurement(std::shared_ptr<const MeasurementSequence>);
+    void startMeasurement(std::shared_ptr<const MeasSeqTc>);
 
 public:
     explicit StartDialog(QWidget* parent = nullptr);
@@ -24,7 +24,7 @@ protected:
 
 private:
     void setupUI();
-    std::shared_ptr<const MeasurementSequence> createSequence() const;
+    std::shared_ptr<const MeasSeqTc> createSequence() const;
 
     QLineEdit* sampleName_;
     QDoubleSpinBox* tempStart_;

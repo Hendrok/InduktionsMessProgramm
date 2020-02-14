@@ -13,7 +13,7 @@ InstrumentManager::InstrumentManager()
 
 
     connect(timer_, &QTimer::timeout, this, &InstrumentManager::onPolling);
-    timer_->start(2000);
+    timer_->start(200);
 
 
 }

@@ -19,11 +19,13 @@ SOURCES += \
     graphdiagram.cpp \
     main.cpp \
     mainwindow.cpp \
+    ppmswidget.cpp \
     startdialog.cpp
 
 HEADERS += \
     graphdiagram.h \
     mainwindow.h \
+    ppmswidget.h \
     startdialog.h
 
 # Default rules for deployment.

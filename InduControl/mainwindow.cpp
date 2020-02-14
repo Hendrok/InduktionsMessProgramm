@@ -48,12 +48,12 @@ void MainWindow::onStartMessungButton()
     startDialog->show();
 }
 
-void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq)
+void MainWindow::onStartMeasurement(std::shared_ptr<const MeasSeqTc> mSeq)
 {
     indumanager_->startMeasurement(mSeq);
     connect(indumanager_,&InduManager::newData,
             this,&MainWindow::onNewData);
-    graph_->setAxis(mSeq);
+    graph_->setStaticValues(mSeq);
 }
 
 void MainWindow::onNewData(std::shared_ptr<const DataPoint> datapoint)

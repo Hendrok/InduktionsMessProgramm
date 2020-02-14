@@ -15,7 +15,7 @@ public:
     std::shared_ptr<Datafile> readFile();
 private:
     Datafile dfile_;
-     std::shared_ptr<MeasurementSequence> readData(QString readheader);
+     std::shared_ptr<MeasSeqTc> readData(QString readheader);
 };
 
 #endif // FILEREADER_H

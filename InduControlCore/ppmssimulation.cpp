@@ -13,6 +13,7 @@ PpmsSimulation::PpmsSimulation()
      , tempRate_(1)
      , fieldSetpoint_(0)
      , fieldRate_(10)
+     , ppmsHelium_(100)
 {
 }
 
@@ -26,12 +27,13 @@ std::shared_ptr <DataPoint> PpmsSimulation::generateVariables()
 {
     auto dataPoint =std::make_shared <DataPoint>();
     double test =QRandomGenerator::global()->bounded(1.0);
-    dataPoint->setpvVolt(test);
+    ppmsHelium_ =QRandomGenerator::global()->bounded(1.0)+60;
 
+    dataPoint->setpvVolt(test);
     dataPoint->setpvTemp(tempSetpoint_);
     tempSetpoint_=tempSetpoint_+1;
-
     dataPoint->setpvPhase(test);
+    dataPoint->setpvHeliumStatus(ppmsHelium_);
     qDebug()<<test;
 
     return dataPoint;

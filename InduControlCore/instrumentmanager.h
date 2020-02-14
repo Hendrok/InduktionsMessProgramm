@@ -11,7 +11,7 @@
 
 class QObject;
 class PpmsSimulation;
-class MeasurementSequence;
+class MeasSeqTc;
 
 class INDUCONTROLCORE_EXPORT InstrumentManager: public QObject
 {

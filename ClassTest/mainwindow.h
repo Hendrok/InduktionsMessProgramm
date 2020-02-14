@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <memory>
 #include "../InduCore/measurementsequence.h"
+#include "../InduCore/MeasSeqTc.h"
 #include "../InduControlCore/indumanager.h"
 
 QT_BEGIN_NAMESPACE
