@@ -49,7 +49,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
     if(datapoint->pvTemp()==startTemp_&& setPointStand==false )
     {
         setPointStand =true;
-        instrumentmanager_->setTempSetpoint(endTemp_,1);
+        //instrumentmanager_->setTempSetpoint(endTemp_,1);
     }
 
 
