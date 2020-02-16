@@ -27,7 +27,7 @@ public:
     void startMeasurement(std::shared_ptr<const MeasurementSequence> &measurementSequence);
 
 private slots:
-    void onNewData(std::shared_ptr<DataPoint> datapoint);
+    std::shared_ptr<DataPoint> onNewData(std::shared_ptr<DataPoint> datapoint);
 
 private:
     InstrumentManager *instrumentmanager_;
@@ -35,6 +35,7 @@ private:
     bool setPointStand;
     double startTemp_;
     double endTemp_;
+    double temprate_;
 
 };
 

@@ -12,9 +12,9 @@
 InduManager::InduManager()
     : instrumentmanager_(new InstrumentManager())
     , fw_(nullptr)
-    , setPointStand(false)
     , startTemp_ (80)
     , endTemp_ (100)
+    , temprate_ (20)
 {
     connect(instrumentmanager_, &InstrumentManager::newData,
                 this, &InduManager::onNewData);
@@ -34,34 +34,40 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> &m
     if(seqTc !=nullptr){
         startTemp_ = seqTc->tempStart();
         endTemp_ = seqTc->tempEnd();
-    instrumentmanager_->setTempSetpoint(startTemp_, 1);
+        temprate_ = seqTc->temperatureRate();
+        instrumentmanager_->setTempSetpoint(startTemp_, temprate_);
     }
 
 
 }
 
-void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
+std::shared_ptr<DataPoint> InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
     emit newData(datapoint);
 
-    //TODO: startTemp und Endtemp mit gettern von Setpoint ersetzen!
 
-    if(datapoint->pvTemp()==startTemp_&& setPointStand==false )
+    if(datapoint->pvMeasurementOn()==false && std::abs(startTemp_ - datapoint->pvTemp()) < temprate_)
     {
-        setPointStand =true;
-        //instrumentmanager_->setTempSetpoint(endTemp_,1);
+        instrumentmanager_->SetMeasRunning(true);
+        instrumentmanager_->setTempSetpoint(endTemp_, temprate_);
+        fw_->append(datapoint);
     }
 
-
-    if ((fw_ != nullptr) && (setPointStand==true))
+    if ((fw_ != nullptr) && (datapoint->pvMeasurementOn()==true))
     {
         fw_->append(datapoint);
     }
 
-    if(datapoint->pvTemp()==endTemp_ && setPointStand==true)
+    qDebug()<<datapoint->pvMeasurementOn();
+
+    if(datapoint->pvTemp()==endTemp_ && (datapoint->pvMeasurementOn()==true))
     {
-        setPointStand=false;
+
+        instrumentmanager_->SetMeasRunning(false);
     }
+
+
+    return  datapoint;
 }
 
 

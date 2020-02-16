@@ -45,11 +45,12 @@ void GraphDiagram::appendDataPoint(std::shared_ptr<const DataPoint> datapoint)
     if(voltmax_<datapoint->pvVolt()){voltmax_=datapoint->pvVolt()+0.1;}
 
     //append
+    if(datapoint->pvMeasurementOn()==true)
+    {
     series_->append(datapoint->pvTemp(), datapoint->pvVolt());
-
     // set Range Live
     axisY_->setRange(voltmin_,voltmax_);
-
+    }
 }
 
 QSize GraphDiagram::sizeHint() const
@@ -66,11 +67,19 @@ void GraphDiagram::setStaticValues(std::shared_ptr<const MeasurementSequence> mS
 {
     auto seqTc = std::dynamic_pointer_cast <const MeasSeqTc> (mSeq);
     if(seqTc !=nullptr)
-    {
-    axisX_->setRange(seqTc->tempStart(),seqTc->tempEnd());
-    QString title= mSeq->fileName();
-    chart_->setTitle("Tc Messung " + mSeq->fileName());
-    }
+        {
+        if(seqTc->tempStart() <= seqTc->tempEnd())
+        {
+            axisX_->setRange(seqTc->tempStart(),seqTc->tempEnd());
+        }
+        else
+        {
+            axisX_->setRange(seqTc->tempEnd(),seqTc->tempStart());
+        }
+
+        QString title= mSeq->fileName();
+        chart_->setTitle("Tc Messung " + mSeq->fileName());
+        }
 }
 
 void GraphDiagram::createQlineDiagramm()

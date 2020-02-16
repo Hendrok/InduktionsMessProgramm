@@ -22,8 +22,11 @@ public:
     void setpvPhase(double pvPhase);
     int pvStatusPPMS() const;
     void setpvStatusPPMS(int &pvStatusPPMS);
-    double getpvHeliumStatus() const;
+    double pvHeliumStatus() const;
     void setpvHeliumStatus(double &pvHeliumStatus_);
+
+    bool pvMeasurementOn() const;
+    void setPvMeasurementOn(bool pvMeasurementOn);
 
 private:
     std::chrono::system_clock::time_point pvTime_;
@@ -34,16 +37,19 @@ private:
     double pvPhase_;
     int pvStatusPPMS_;
     double pvHeliumStatus_;
+    bool pvMeasurementOn_;
 };
 inline DataPoint::DataPoint()
-    :pvTime_(std::chrono::system_clock::now())
-    ,pvTemp_(0)
-    ,pvField_(0)
-    ,pvAngle_(0)
-    ,pvVolt_(0)
-    ,pvPhase_(0)
-    ,pvStatusPPMS_(0)
-    ,pvHeliumStatus_(0)
+    : pvTime_(std::chrono::system_clock::now())
+    , pvTemp_(0)
+    , pvField_(0)
+    , pvAngle_(0)
+    , pvVolt_(0)
+    , pvPhase_(0)
+    , pvStatusPPMS_(0)
+    , pvHeliumStatus_(0)
+    , pvMeasurementOn_(false)
+
 {
 
 }
@@ -118,7 +124,7 @@ inline void DataPoint::setpvStatusPPMS(int &pvStatusPPMS)
 {
     pvStatusPPMS_=pvStatusPPMS;
 }
-inline double DataPoint::getpvHeliumStatus() const
+inline double DataPoint::pvHeliumStatus() const
 {
     return pvHeliumStatus_;
 }
@@ -126,6 +132,16 @@ inline double DataPoint::getpvHeliumStatus() const
 inline void DataPoint::setpvHeliumStatus(double &pvHeliumStatus)
 {
     pvHeliumStatus_ = pvHeliumStatus;
+}
+
+inline bool DataPoint::pvMeasurementOn() const
+{
+return pvMeasurementOn_;
+}
+
+inline void DataPoint::setPvMeasurementOn(bool pvMeasurementOn)
+{
+pvMeasurementOn_ = pvMeasurementOn;
 }
 
 

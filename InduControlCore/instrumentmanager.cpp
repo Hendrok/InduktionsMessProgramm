@@ -13,7 +13,7 @@ InstrumentManager::InstrumentManager()
 
 
     connect(timer_, &QTimer::timeout, this, &InstrumentManager::onPolling);
-    timer_->start(2000);
+    timer_->start(200);
 
 
 }
@@ -25,7 +25,10 @@ InstrumentManager::~InstrumentManager()
 void InstrumentManager::setTempSetpoint(double setpoint, double rate)
 {
     ppmssimu_->setTempSetpoint(setpoint, rate);
-
+}
+void InstrumentManager::SetMeasRunning (bool measrunning)
+{
+    ppmssimu_->SetMeasRunning(measrunning);
 }
 void InstrumentManager::onPolling()
 {

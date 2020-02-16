@@ -58,16 +58,12 @@ void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> m
 
 void MainWindow::onNewData(std::shared_ptr<const DataPoint> datapoint)
 {
-
     graph_->appendDataPoint(datapoint);
 }
 
 void MainWindow::createQLineDiagramm()
 {
-
     graph_->createQlineDiagramm();
-
-
 }
 void MainWindow::createStatusBar()
 {
