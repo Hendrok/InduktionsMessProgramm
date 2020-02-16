@@ -101,14 +101,14 @@ void StartDialog::setupUI()
     harmonicWave_->setValue(1);
 
     QLabel* labelSampleName = new QLabel("Sample Name:");
-    QLabel* labelTempStart = new QLabel("Start temperature:");
+    QLabel* labelTempStart = new QLabel("Start Temperature:");
     QLabel* labelTempEnd = new QLabel("End Temperature:");
-    QLabel* labeltemperatureRate = new QLabel("TemperatureRate:");
-    QLabel* labelMagneticField = new QLabel("MagneticField:");
-    QLabel* labelCoilAngle = new QLabel("CoilAngle:");
+    QLabel* labeltemperatureRate = new QLabel("Temperature Rate:");
+    QLabel* labelMagneticField = new QLabel("Magnetic Field:");
+    QLabel* labelCoilAngle = new QLabel("Coil Angle:");
     QLabel* labelFrequency = new QLabel("Frequency:");
-    QLabel* labelVoltageAmplitude = new QLabel("VoltageAmplitude:");
-    QLabel* labelHarmonicWave = new QLabel("HarmonicWave:");
+    QLabel* labelVoltageAmplitude = new QLabel("Voltage Amplitude:");
+    QLabel* labelHarmonicWave = new QLabel("Harmonic Wave:");
 
     gridLayout->addWidget(labelSampleName, 0, 0);
     gridLayout->addWidget(sampleName_, 0, 1);

@@ -78,7 +78,7 @@ void GraphDiagram::setStaticValues(std::shared_ptr<const MeasurementSequence> mS
         }
 
         QString title= mSeq->fileName();
-        chart_->setTitle("Tc Messung " + mSeq->fileName());
+        chart_->setTitle("Tc Measurement " + mSeq->fileName());
         }
 }
 
@@ -88,10 +88,10 @@ void GraphDiagram::createQlineDiagramm()
    chart_->legend()->hide();
    chart_->addSeries(series_);
 
-   axisX_->setTitleText("Temperatur in Kelvin");
+   axisX_->setTitleText("Temperature in Kelvin");
 
 
-   axisY_->setTitleText("Spannung in Volt");
+   axisY_->setTitleText("Voltage in Volt");
    chart_->addAxis(axisX_, Qt::AlignBottom);
    chart_->addAxis(axisY_, Qt::AlignLeft);
    series_->attachAxis(axisX_);

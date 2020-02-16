@@ -66,7 +66,7 @@ std::shared_ptr <DataPoint> PpmsSimulation::generateVariables()
 
 
 
-    qDebug()<<test;
+    qDebug()<<tempNow_;
 
     return dataPoint;
 

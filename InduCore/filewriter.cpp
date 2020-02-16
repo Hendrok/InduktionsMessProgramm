@@ -22,28 +22,29 @@ QString FileWriter::writeHeader(std::shared_ptr<const MeasurementSequence> measu
         if(seqTc !=nullptr)
         {
             QString header_;
-            header_.append("Material: ");
+            header_.append("Sample Name: ");
             header_.append(measurementSequence->supraName());
-            header_.append("\n Voltage: ");
+            header_.append("\nVoltage: ");
             header_.append(QString::number(seqTc->voltageAmplitude()));
-            header_.append(" V \n Frequency: ");
+            header_.append(" V \nFrequency: ");
             header_.append(QString::number(measurementSequence->frequency()));
-            header_.append(" hz \n Magnetic Field: ");
+            header_.append(" hz \nMagnetic Field: ");
             header_.append(QString::number(measurementSequence->magneticField()));
-            header_.append(" mT \n Starting Temperature: ");
+            header_.append(" mT \nStarting Temperature: ");
             header_.append(QString::number(seqTc->tempStart()));
-            header_.append(" K \n Ending Temperature: ");
+            header_.append(" K \nEnding Temperature: ");
             header_.append(QString::number(seqTc->tempEnd()));
-            header_.append(" K \n Temperature Rate: ");
+            header_.append(" K \nTemperature Rate: ");
             header_.append(QString::number(seqTc->temperatureRate()));
-            header_.append(" K/min \n Harmonic Wave: ");
+            header_.append(" K/min \nHarmonic Wave: ");
             header_.append(QString::number(measurementSequence->harmonicWave()));
-            header_.append("\n CoilAngle: ");
+            header_.append("\nCoilAngle: ");
             header_.append(QString::number(measurementSequence->coilAngle()));
             if(measurementSequence->coilAngle()==1) {header_.append(" degree \n"); }
             else{
               header_.append(" degrees \n");
               }
+            header_.append("Temperature Voltage Phase \n");
             return header_;
         }
 
