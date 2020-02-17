@@ -3,9 +3,8 @@
 
 #include "InduCore_global.h"
 #include "datafile.h"
-#include "measurementsequence.h"
 #include <memory>
-#include <QString>
+
 
 
 class INDUCORE_EXPORT FileReader

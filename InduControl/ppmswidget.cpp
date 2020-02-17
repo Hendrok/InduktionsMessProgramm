@@ -39,7 +39,9 @@ QSize PpmsWidget::minimumSizeHint() const
 void PpmsWidget::newData(std::shared_ptr<const DataPoint> dpoint)
 {
     if(dpoint != nullptr){
-        // label auf Heliumlevel?
+        tempLive_->setText(QString::number(dpoint->pvTemp()));
+        magFeldLive_->setText(QString::number(dpoint->pvField()));
+        rotLive_->setText(QString::number(dpoint->pvAngle()));
     }
     
 }
@@ -99,7 +101,7 @@ void PpmsWidget::setupUI()
     QGridLayout* ChamberGridLayout = new QGridLayout();
 
     TempGridLayout->addWidget(labelTempLive, 0, 0);
-    TempGridLayout->addWidget(tempLive_, 0, 0);
+    TempGridLayout->addWidget(tempLive_, 0, 1);
     TempGridLayout->addWidget(labelTempSetPoint, 1, 0);
     TempGridLayout->addWidget(tempSetPoint_ , 1, 1);
     TempGridLayout->addWidget(labelTempRate, 2, 0);
@@ -108,7 +110,7 @@ void PpmsWidget::setupUI()
     TempGridLayout->addWidget(tempStatus_, 3, 1);
 
     MagGridLayout->addWidget(labelMagFeldLive, 0, 0);
-    MagGridLayout->addWidget(magFeldLive_, 0, 0);
+    MagGridLayout->addWidget(magFeldLive_, 0, 1);
     MagGridLayout->addWidget(labelMagSetPoint, 1, 0);
     MagGridLayout->addWidget(magSetPoint_ , 1, 1);
     MagGridLayout->addWidget(labelMagStatus, 2, 0);
@@ -117,7 +119,7 @@ void PpmsWidget::setupUI()
     MagGridLayout->addWidget(labelempty, 3, 1);
 
     RotGridLayout->addWidget(labelRotLive, 0, 0);
-    RotGridLayout->addWidget(rotLive_, 0, 0);
+    RotGridLayout->addWidget(rotLive_, 0, 1);
     RotGridLayout->addWidget(labelRotSetPoint, 1, 0);
     RotGridLayout->addWidget(rotSetPoint_ , 1, 1);
     RotGridLayout->addWidget(labelRotStatus, 2, 0);
@@ -126,11 +128,11 @@ void PpmsWidget::setupUI()
     RotGridLayout->addWidget(labelempty, 3, 1);
 
     ChamberGridLayout->addWidget(labelChamberLevel, 0, 0);
-    ChamberGridLayout->addWidget(chamberLevel_, 0, 0);
+    ChamberGridLayout->addWidget(chamberLevel_, 0, 1);
     ChamberGridLayout->addWidget(labelChamberStatus, 1, 0);
     ChamberGridLayout->addWidget(chamberStatus_ , 1, 1);
-    ChamberGridLayout->addWidget(labelempty, 3, 0);
-    ChamberGridLayout->addWidget(labelempty, 3, 1);
+    ChamberGridLayout->addWidget(labelempty, 2, 0);
+    ChamberGridLayout->addWidget(labelempty, 2, 1);
     ChamberGridLayout->addWidget(labelempty, 3, 0);
     ChamberGridLayout->addWidget(labelempty, 3, 1);
 
@@ -149,8 +151,8 @@ void PpmsWidget::setupUI()
     mainLayout->addWidget(magWidget);
     mainLayout->addWidget(rotWidget);
     mainLayout->addWidget(chamberWidget);
-
     setLayout(mainLayout);
+
 
 
 }

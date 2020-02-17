@@ -36,13 +36,16 @@ private slots:
 
 
 private:
+    void setupUi();
     void createStatusBar();
     void createActions();
     void createQLineDiagramm();
 
+
     GraphDiagram *graph_;
     InduManager* indumanager_;
     PpmsWidget* ppmsWidget_;
+    QWidget* mainLayoutWidget;
 
 };
 #endif // MAINWINDOW_H

@@ -5,7 +5,7 @@
 #include <memory>
 #include "InduCore_global.h" //hier ist das export macro, sonst kann ich INDUCORE_EXPORT nicht benutzen beim deklarieren der Klasse
 #include "measurementsequence.h"
-#include "MeasSeqTc.h"
+#include "measseqtc.h"
 class INDUCORE_EXPORT Datafile
 {
 public:

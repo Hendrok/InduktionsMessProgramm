@@ -4,7 +4,7 @@
 #include <QTextStream>
 #include <QDir>
 #include "measurementsequence.h"
-#include "MeasSeqTc.h"
+#include "measseqtc.h"
 #include "measseqjc.h"
 #include "datapoint.h"
 #include "filewriter.h"

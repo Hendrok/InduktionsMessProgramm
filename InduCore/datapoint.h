@@ -35,7 +35,7 @@ private:
     double pvAngle_;
     double pvVolt_;
     double pvPhase_;
-    int pvStatusPPMS_;
+    int pvChamberStatusPPMS_;
     double pvHeliumStatus_;
     bool pvMeasurementOn_;
 };
@@ -46,7 +46,7 @@ inline DataPoint::DataPoint()
     , pvAngle_(0)
     , pvVolt_(0)
     , pvPhase_(0)
-    , pvStatusPPMS_(0)
+    , pvChamberStatusPPMS_(0)
     , pvHeliumStatus_(0)
     , pvMeasurementOn_(false)
 
@@ -117,12 +117,12 @@ inline void DataPoint::setpvPhase(double phase)
 
 inline int DataPoint::pvStatusPPMS() const
 {
-    return pvStatusPPMS_;
+    return pvChamberStatusPPMS_;
 }
 
 inline void DataPoint::setpvStatusPPMS(int &pvStatusPPMS)
 {
-    pvStatusPPMS_=pvStatusPPMS;
+    pvChamberStatusPPMS_=pvStatusPPMS;
 }
 inline double DataPoint::pvHeliumStatus() const
 {

@@ -12,6 +12,7 @@ class PpmsWidget : public QWidget
 public:
     explicit PpmsWidget(QWidget *parent = nullptr);
 
+
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
 

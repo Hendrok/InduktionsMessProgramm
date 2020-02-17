@@ -15,19 +15,21 @@ MainWindow::MainWindow(QWidget *parent)
     , graph_(new GraphDiagram(this))
     , indumanager_(new InduManager())
     , ppmsWidget_(new PpmsWidget())
+    , mainLayoutWidget(new QWidget())
 
 {    
+    setupUi();
     createStatusBar();
     createActions();
     createQLineDiagramm();
-
-    setCentralWidget(graph_);
+    setCentralWidget(mainLayoutWidget);
 }
 
 MainWindow::~MainWindow()
 {
     delete indumanager_;
 }
+
 
 QSize MainWindow::sizeHint() const
 {
@@ -39,6 +41,17 @@ QSize MainWindow::minimumSizeHint() const
     return QSize(800, 400);
 
 }
+
+void MainWindow::setupUi()
+{
+    QVBoxLayout* mainLayout = new QVBoxLayout();
+    mainLayout->addWidget(graph_);
+    mainLayout->addSpacing(10);
+    ppmsWidget_->setMaximumHeight(150);
+    mainLayout->addWidget(ppmsWidget_);
+    mainLayoutWidget->setLayout(mainLayout);
+}
+
 
 void MainWindow::createActions()
 {
@@ -72,6 +85,7 @@ void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> m
 void MainWindow::onNewData(std::shared_ptr<const DataPoint> datapoint)
 {
     graph_->appendDataPoint(datapoint);
+    ppmsWidget_->newData(datapoint);
 }
 
 void MainWindow::createQLineDiagramm()
