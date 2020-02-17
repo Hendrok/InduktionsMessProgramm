@@ -14,7 +14,7 @@
 
 #include "../InduCore/datapoint.h"
 #include "../InduCore/measurementsequence.h"
-#include "../InduCore/MeasSeqTc.h"
+#include "../InduCore/measseqtc.h"
 QT_CHARTS_USE_NAMESPACE
 
 

@@ -1,13 +1,12 @@
 #include "startdialog.h"
 #include "../InduCore/measurementsequence.h"
-#include "../InduCore/MeasSeqTc.h"
+#include "../InduCore/measseqtc.h"
 #include "../InduCore/measseqjc.h"
 #include <QVBoxLayout>
 #include <QGridLayout>
 #include <QDoubleSpinBox>
 #include <QLabel>
 #include <QDialogButtonBox>
-#include <QVBoxLayout>
 #include <QLineEdit>
 
 StartDialog::StartDialog(QWidget *parent)

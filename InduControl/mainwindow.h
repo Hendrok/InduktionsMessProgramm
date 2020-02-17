@@ -15,6 +15,7 @@ class MeasurementSequence;
 class DataPoint;
 class GraphDiagram;
 class PpmsSimulation;
+class PpmsWidget;
 
 QT_END_NAMESPACE
 
@@ -25,6 +26,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
 
 private slots:
     void onStartMessungButton();
@@ -39,5 +42,7 @@ private:
 
     GraphDiagram *graph_;
     InduManager* indumanager_;
+    PpmsWidget* ppmsWidget_;
+
 };
 #endif // MAINWINDOW_H

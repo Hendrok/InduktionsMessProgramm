@@ -5,7 +5,6 @@
 
 #include "../InduCore/datapoint.h"
 #include "instrumentmanager.h"
-#include "../InduCore/measurementsequence.h"
 
 PpmsSimulation::PpmsSimulation()
      : datapoint_(DataPoint())

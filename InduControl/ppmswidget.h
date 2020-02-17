@@ -4,7 +4,7 @@
 #include <QWidget>
 
 class DataPoint;
-class QLineEdit;
+class QLabel;
 
 class PpmsWidget : public QWidget
 {
@@ -18,20 +18,27 @@ public:
     void newData(std::shared_ptr<const DataPoint> dpoint);
 
 private:
-    void createUI();
+    void setupUI();
 
     //tempBlock
-    QLineEdit* tempSetPoint_;
-    QLineEdit* tempRate_;
-    QLineEdit* tempStatus_;
+    QLabel* tempSetPoint_;
+    QLabel* tempLive_;
+    QLabel* tempRate_;
+    QLabel* tempStatus_;
 
     //MagBlock
-    QLineEdit* magFeld_;
-    QLineEdit* magSetPoint_;
-    QLineEdit* magStatus_;
+    QLabel* magSetPoint_;
+    QLabel* magFeldLive_;
+    QLabel* magStatus_;
 
     //RotationBlock
-    QLineEdit* rotSetPoint_;
+    QLabel* rotSetPoint_;
+    QLabel* rotLive_;
+    QLabel* rotStatus_;
+
+    //Chamber
+    QLabel* chamberStatus_;
+    QLabel* chamberLevel_;
 
 
 };

@@ -5,7 +5,7 @@
 #include "instrumentmanager.h"
 #include "ppmssimulation.h"
 #include "../InduCore/measurementsequence.h"
-#include "../InduCore/MeasSeqTc.h"
+#include "../InduCore/measseqtc.h"
 #include "../InduCore/datapoint.h"
 #include "../InduCore/filewriter.h"
 

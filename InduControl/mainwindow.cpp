@@ -1,4 +1,5 @@
 #include <QtWidgets>
+#include <memory>
 
 #include "mainwindow.h"
 #include "../InduControlCore/indumanager.h"
@@ -6,13 +7,14 @@
 #include "graphdiagram.h"
 #include "../InduCore/datapoint.h"
 #include "startdialog.h"
-#include <memory>
 #include "../InduControlCore/ppmssimulation.h"
+#include "ppmswidget.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , graph_(new GraphDiagram(this))
     , indumanager_(new InduManager())
+    , ppmsWidget_(new PpmsWidget())
 
 {    
     createStatusBar();
@@ -25,6 +27,17 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete indumanager_;
+}
+
+QSize MainWindow::sizeHint() const
+{
+    return QSize(1600, 800);
+}
+
+QSize MainWindow::minimumSizeHint() const
+{
+    return QSize(800, 400);
+
 }
 
 void MainWindow::createActions()
