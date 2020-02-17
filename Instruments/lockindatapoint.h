@@ -1,7 +1,6 @@
 #ifndef LOCKINDATAPOINT_H
 #define LOCKINDATAPOINT_H
 
-#endif // LOCKINDATAPOINT_H
 
 #include "Instruments_global.h"
 
@@ -70,3 +69,6 @@ inline void LockInDataPoint::setPvPhase(double pvPhase)
 {
 pvPhase_ = pvPhase;
 }
+
+
+#endif // LOCKINDATAPOINT_H

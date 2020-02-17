@@ -10,6 +10,7 @@ class INSTRUMENTS_EXPORT PpmsDataPoint
 public:
     PpmsDataPoint();
 
+
     double pvTempSetPoint() const;
     void setPvTempSetPoint(double pvTempSetPoint);
 
@@ -57,7 +58,6 @@ private:
 
     int pvStatusPpms_;
 };
-
 inline PpmsDataPoint::PpmsDataPoint()
     : pvTempSetPoint_(300)
     , pvTempLive_(300)
@@ -71,96 +71,96 @@ inline PpmsDataPoint::PpmsDataPoint()
 {
 }
 
-
 inline double PpmsDataPoint::pvTempSetPoint() const
 {
-return pvTempSetPoint_;
+    return pvTempSetPoint_;
 }
 
 inline void PpmsDataPoint::setPvTempSetPoint(double pvTempSetPoint)
 {
-pvTempSetPoint_ = pvTempSetPoint;
+    pvTempSetPoint_ = pvTempSetPoint;
 }
 
 inline double PpmsDataPoint::pvTempLive() const
 {
-return pvTempLive_;
+    return pvTempLive_;
 }
 
 inline void PpmsDataPoint::setPvTempLive(double pvTempLive)
 {
-pvTempLive_ = pvTempLive;
+    pvTempLive_ = pvTempLive;
 }
 
 inline double PpmsDataPoint::pvTempRate() const
 {
-return pvTempRate_;
+    return pvTempRate_;
 }
 
 inline void PpmsDataPoint::setPvTempRate(double pvTempRate)
 {
-pvTempRate_ = pvTempRate;
+    pvTempRate_ = pvTempRate;
 }
 
 inline double PpmsDataPoint::pvMagSetPoint() const
 {
-return pvMagSetPoint_;
+    return pvMagSetPoint_;
 }
 
 inline void PpmsDataPoint::setPvMagSetPoint(double pvMagSetPoint)
 {
-pvMagSetPoint_ = pvMagSetPoint;
+    pvMagSetPoint_ = pvMagSetPoint;
 }
 
 inline double PpmsDataPoint::pvMagFieldLive() const
 {
-return pvMagFieldLive_;
+    return pvMagFieldLive_;
 }
 
 inline void PpmsDataPoint::setPvMagFieldLive(double pvMagFieldLive)
 {
-pvMagFieldLive_ = pvMagFieldLive;
+    pvMagFieldLive_ = pvMagFieldLive;
 }
 
 inline double PpmsDataPoint::pvRotSetPoint() const
 {
-return pvRotSetPoint_;
+    return pvRotSetPoint_;
 }
 
 inline void PpmsDataPoint::setPvRotSetPoint(double pvRotSetPoint)
 {
-pvRotSetPoint_ = pvRotSetPoint;
+    pvRotSetPoint_ = pvRotSetPoint;
 }
 
-double PpmsDataPoint::pvRotLive() const
+inline double PpmsDataPoint::pvRotLive() const
 {
-return pvRotLive_;
+    return pvRotLive_;
 }
 
 inline void PpmsDataPoint::setPvRotLive(double pvRotLive)
 {
-pvRotLive_ = pvRotLive;
+    pvRotLive_ = pvRotLive;
 }
 
 inline double PpmsDataPoint::pvChamberLevel() const
 {
-return pvChamberLevel_;
+    return pvChamberLevel_;
 }
 
 inline void PpmsDataPoint::setPvChamberLevel(double pvChamberLevel)
 {
-pvChamberLevel_ = pvChamberLevel;
+    pvChamberLevel_ = pvChamberLevel;
 }
 
-int PpmsDataPoint::pvStatusPpms() const
+inline int PpmsDataPoint::pvStatusPpms() const
 {
-return pvStatusPpms_;
+    return pvStatusPpms_;
 }
 
-void PpmsDataPoint::setPvStatusPpms(int pvStatusPpms)
+inline void PpmsDataPoint::setPvStatusPpms(int pvStatusPpms)
 {
-pvStatusPpms_ = pvStatusPpms;
+    pvStatusPpms_ = pvStatusPpms;
 }
+
 
 
 #endif // PPMSDATAPOINT_H

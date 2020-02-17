@@ -29,3 +29,13 @@ unix {
     target.path = /usr/lib
 }
 !isEmpty(target.path): INSTALLS += target
+
+unix|win32: LIBS += -L$$OUT_PWD/../InduControlCore/ -lInduControlCore
+
+INCLUDEPATH += $$PWD/../InduControlCore
+DEPENDPATH += $$PWD/../InduControlCore
+
+unix|win32: LIBS += -L$$OUT_PWD/../InduCore/ -lInduCore
+
+INCLUDEPATH += $$PWD/../InduCore
+DEPENDPATH += $$PWD/../InduCore

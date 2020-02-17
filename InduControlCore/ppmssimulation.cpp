@@ -34,9 +34,7 @@ std::shared_ptr <DataPoint> PpmsSimulation::generateVariables()
 {
     auto dataPoint =std::make_shared <DataPoint>();
     double test =QRandomGenerator::global()->bounded(1.0);
-    ppmsHelium_ =QRandomGenerator::global()->bounded(1.0)+60;
-    dataPoint->setpvPhase(test);
-    dataPoint->setpvHeliumStatus(ppmsHelium_);
+    dataPoint->setpvPhase(test);   
     dataPoint->setpvVolt(test);
 
     if(measrunning_==true)

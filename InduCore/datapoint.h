@@ -132,12 +132,12 @@ inline void DataPoint::setpvStatusPPMS(int &pvStatusPPMS)
 
 inline bool DataPoint::pvMeasurementOn() const
 {
-return pvMeasurementOn_;
+    return pvMeasurementOn_;
 }
 
 inline void DataPoint::setPvMeasurementOn(bool pvMeasurementOn)
 {
-pvMeasurementOn_ = pvMeasurementOn;
+    pvMeasurementOn_ = pvMeasurementOn;
 }
 
 
