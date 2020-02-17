@@ -1,7 +1,7 @@
 QT -= gui
 
 TEMPLATE = lib
-DEFINES += INDUCORE_LIBRARY
+DEFINES += INSTRUMENTS_LIBRARY
 
 CONFIG += c++17
 
@@ -16,34 +16,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-SOURCES += \
-    filereader.cpp \
-    filewriter.cpp \
-    measurementsequence.cpp
+SOURCES +=
 
 HEADERS += \
-    InduCore_global.h \
-    datafile.h \
-    datapoint.h \
-    filereader.h \
-    filewriter.h \
-    measseqjc.h \
-    measseqtc.h \
-    measurementsequence.h
+    Instruments_global.h \
+    instrument.h \
+    lockindatapoint.h \
+    ppmsdatapoint.h
 
 # Default rules for deployment.
 unix {
     target.path = /usr/lib
 }
 !isEmpty(target.path): INSTALLS += target
-
-
-unix|win32: LIBS += -L$$OUT_PWD/../InduControlCore/ -lInduControlCore
-
-INCLUDEPATH += $$PWD/../InduControlCore
-DEPENDPATH += $$PWD/../InduControlCore
-
-unix|win32: LIBS += -L$$OUT_PWD/../Instruments/ -lInstruments
-
-INCLUDEPATH += $$PWD/../Instruments
-DEPENDPATH += $$PWD/../Instruments

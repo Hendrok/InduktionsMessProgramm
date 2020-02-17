@@ -29,7 +29,7 @@ private:
 
     //MagBlock
     QLabel* magSetPoint_;
-    QLabel* magFeldLive_;
+    QLabel* magFieldLive_;
     QLabel* magStatus_;
 
     //RotationBlock

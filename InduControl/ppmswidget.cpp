@@ -15,7 +15,7 @@ PpmsWidget::PpmsWidget(QWidget *parent)
     , tempRate_ (nullptr)
     , tempStatus_(nullptr)
     , magSetPoint_(nullptr)
-    , magFeldLive_ (nullptr)
+    , magFieldLive_ (nullptr)
     , magStatus_ (nullptr)
     , rotSetPoint_(nullptr)
     , rotLive_ (nullptr)
@@ -40,7 +40,7 @@ void PpmsWidget::newData(std::shared_ptr<const DataPoint> dpoint)
 {
     if(dpoint != nullptr){
         tempLive_->setText(QString::number(dpoint->pvTemp()));
-        magFeldLive_->setText(QString::number(dpoint->pvField()));
+        magFieldLive_->setText(QString::number(dpoint->pvField()));
         rotLive_->setText(QString::number(dpoint->pvAngle()));
     }
     
@@ -59,8 +59,8 @@ void PpmsWidget::setupUI()
 
     magSetPoint_ = new QLabel();
     magSetPoint_->setText("");
-    magFeldLive_ = new QLabel();
-    magFeldLive_->setText("");
+    magFieldLive_ = new QLabel();
+    magFieldLive_->setText("");
     magStatus_ = new QLabel();
     magStatus_->setText("");
 
@@ -110,7 +110,7 @@ void PpmsWidget::setupUI()
     TempGridLayout->addWidget(tempStatus_, 3, 1);
 
     MagGridLayout->addWidget(labelMagFeldLive, 0, 0);
-    MagGridLayout->addWidget(magFeldLive_, 0, 1);
+    MagGridLayout->addWidget(magFieldLive_, 0, 1);
     MagGridLayout->addWidget(labelMagSetPoint, 1, 0);
     MagGridLayout->addWidget(magSetPoint_ , 1, 1);
     MagGridLayout->addWidget(labelMagStatus, 2, 0);

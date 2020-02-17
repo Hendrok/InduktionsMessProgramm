@@ -4,7 +4,8 @@ SUBDIRS += \
     InduControl \
     InduControlCore \
     InduCore \
-    InduViewer
+    InduViewer \
+    Instruments
 
 
 

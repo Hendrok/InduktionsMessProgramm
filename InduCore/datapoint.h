@@ -3,6 +3,10 @@
 
 #include "InduCore_global.h"
 #include <chrono>
+#include <memory>
+#include "../Instruments/ppmsdatapoint.h"
+#include "../Instruments/lockindatapoint.h"
+
 class INDUCORE_EXPORT DataPoint
 {
 public:
@@ -22,8 +26,6 @@ public:
     void setpvPhase(double pvPhase);
     int pvStatusPPMS() const;
     void setpvStatusPPMS(int &pvStatusPPMS);
-    double pvHeliumStatus() const;
-    void setpvHeliumStatus(double &pvHeliumStatus_);
 
     bool pvMeasurementOn() const;
     void setPvMeasurementOn(bool pvMeasurementOn);
@@ -35,8 +37,11 @@ private:
     double pvAngle_;
     double pvVolt_;
     double pvPhase_;
-    int pvChamberStatusPPMS_;
-    double pvHeliumStatus_;
+    int pvPpmsStatus_;
+
+    std::shared_ptr<const PpmsDataPoint> ppmsdata_;
+    std::shared_ptr<const LockInDataPoint> lockindata_;
+
     bool pvMeasurementOn_;
 };
 inline DataPoint::DataPoint()
@@ -46,12 +51,12 @@ inline DataPoint::DataPoint()
     , pvAngle_(0)
     , pvVolt_(0)
     , pvPhase_(0)
-    , pvChamberStatusPPMS_(0)
-    , pvHeliumStatus_(0)
+    , pvPpmsStatus_(0)
+    , ppmsdata_(std::make_shared<const PpmsDataPoint>())
+    , lockindata_(std::make_shared<const LockInDataPoint>())
     , pvMeasurementOn_(false)
 
 {
-
 }
 
 
@@ -117,21 +122,12 @@ inline void DataPoint::setpvPhase(double phase)
 
 inline int DataPoint::pvStatusPPMS() const
 {
-    return pvChamberStatusPPMS_;
+    return pvPpmsStatus_;
 }
 
 inline void DataPoint::setpvStatusPPMS(int &pvStatusPPMS)
 {
-    pvChamberStatusPPMS_=pvStatusPPMS;
-}
-inline double DataPoint::pvHeliumStatus() const
-{
-    return pvHeliumStatus_;
-}
-
-inline void DataPoint::setpvHeliumStatus(double &pvHeliumStatus)
-{
-    pvHeliumStatus_ = pvHeliumStatus;
+    pvPpmsStatus_=pvStatusPPMS;
 }
 
 inline bool DataPoint::pvMeasurementOn() const

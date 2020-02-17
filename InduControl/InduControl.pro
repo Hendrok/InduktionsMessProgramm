@@ -45,3 +45,8 @@ DEPENDPATH += $$PWD/../InduCore
 
 RESOURCES += \
     Ressourcen.qrc
+
+unix|win32: LIBS += -L$$OUT_PWD/../Instruments/ -lInstruments
+
+INCLUDEPATH += $$PWD/../Instruments
+DEPENDPATH += $$PWD/../Instruments

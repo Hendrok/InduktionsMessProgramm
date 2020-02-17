@@ -48,3 +48,8 @@ else:unix: LIBS += -L$$OUT_PWD/../InduCore/ -lInduCore
 
 INCLUDEPATH += $$PWD/../InduCore
 DEPENDPATH += $$PWD/../InduCore
+
+unix|win32: LIBS += -L$$OUT_PWD/../Instruments/ -lInstruments
+
+INCLUDEPATH += $$PWD/../Instruments
+DEPENDPATH += $$PWD/../Instruments
