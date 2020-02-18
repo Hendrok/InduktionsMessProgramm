@@ -24,8 +24,9 @@ signals:
 public:
     explicit InduManager();
     ~InduManager();
-    enum class state {idle, approachStart, approachEnd};
+    enum class state { Idle, ApproachStart, ApproachEnd};
     state measurementState;
+
     void startMeasurement(std::shared_ptr<const MeasurementSequence> &measurementSequence);
 
 private slots:
