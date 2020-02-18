@@ -84,8 +84,14 @@ void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> m
 
 void MainWindow::onNewData(std::shared_ptr<const DataPoint> datapoint)
 {
+    if(indumanager_->getMeasurementState()==InduManager::State::ApproachEnd)
+    {
     graph_->appendDataPoint(datapoint);
+    }
+
     ppmsWidget_->newData(datapoint);
+
+
 }
 
 void MainWindow::createQLineDiagramm()

@@ -24,10 +24,10 @@ signals:
 public:
     explicit InduManager();
     ~InduManager();
-    enum class state { Idle, ApproachStart, ApproachEnd};
-    state measurementState;
-
+    enum class State { Idle, ApproachStart, ApproachEnd};
     void startMeasurement(std::shared_ptr<const MeasurementSequence> &measurementSequence);
+
+    State getMeasurementState() const;
 
 private slots:
     std::shared_ptr<DataPoint> onNewData(std::shared_ptr<DataPoint> datapoint);
@@ -38,6 +38,7 @@ private:
     bool setPointStand;
     std::shared_ptr <MeasSeqTc> mSeqTc_;
 
+    State measurementState;
 
 };
 

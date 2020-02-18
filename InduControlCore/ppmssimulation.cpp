@@ -37,14 +37,6 @@ std::shared_ptr <DataPoint> PpmsSimulation::generateVariables()
     dataPoint->setpvPhase(test);   
     dataPoint->setpvVolt(test);
 
-    if(measrunning_==true)
-    {
-        dataPoint->setPvMeasurementOn(true);
-    }
-    if (measrunning_==false)
-    {
-        dataPoint->setPvMeasurementOn(false);
-    }
 
     if (tempNow_< tempSetpoint_)
     {

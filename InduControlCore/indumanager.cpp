@@ -10,10 +10,10 @@
 #include "../InduCore/filewriter.h"
 
 InduManager::InduManager()
-    : measurementState(state::Idle)
-    , instrumentmanager_(new InstrumentManager())
+    : instrumentmanager_(new InstrumentManager())
     , fw_(nullptr)
     , mSeqTc_(std::make_shared <MeasSeqTc>())
+    , measurementState(State::Idle)
 
 
 {
@@ -37,7 +37,7 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> &m
         mSeqTc_->setTempEnd(seqTc->tempEnd());
         mSeqTc_->setTemperatureRate(seqTc->temperatureRate());
         instrumentmanager_->setTempSetpoint(mSeqTc_->tempStart(), mSeqTc_->temperatureRate());
-        measurementState= state::ApproachStart;
+        measurementState= State::ApproachStart;
     }
 }
 
@@ -47,28 +47,32 @@ std::shared_ptr<DataPoint> InduManager::onNewData(std::shared_ptr<DataPoint> dat
     emit newData(datapoint);
 
 
-    if(measurementState== state::ApproachStart && std::abs(mSeqTc_->tempStart() - datapoint->pvTemp()) < mSeqTc_->temperatureRate())
+    if(measurementState== State::ApproachStart && std::abs(mSeqTc_->tempStart() - datapoint->pvTemp()) < mSeqTc_->temperatureRate())
     {
-        measurementState = state::ApproachEnd;
+        measurementState = State::ApproachEnd;
         instrumentmanager_->setTempSetpoint(mSeqTc_->tempEnd(), mSeqTc_->temperatureRate());
         fw_->append(datapoint);
     }
 
-    if ((fw_ != nullptr) && (measurementState==state::ApproachEnd))
+    if ((fw_ != nullptr) && (measurementState==State::ApproachEnd))
     {
         fw_->append(datapoint);
     }
 
-    qDebug()<<datapoint->pvMeasurementOn();
 
-    if(datapoint->pvTemp()==mSeqTc_->tempEnd() && (measurementState==state::ApproachEnd))
+    if(datapoint->pvTemp()==mSeqTc_->tempEnd() && (measurementState==State::ApproachEnd))
     {
 
-        measurementState= state::Idle;
+        measurementState= State::Idle;
     }
 
 
     return  datapoint;
+}
+
+InduManager::State InduManager::getMeasurementState() const
+{
+    return measurementState;
 }
 
 

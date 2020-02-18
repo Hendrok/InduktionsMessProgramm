@@ -9,6 +9,7 @@
 #include <QtCharts/QValueAxis>
 class DataPoint;
 class MeasurementSequence;
+class InduManager;
 
 class GraphDiagram: public QWidget
 {
@@ -31,6 +32,7 @@ private:
     double voltmin_;
     double voltmax_;
     double phase_;
+    bool graphMeas_;
     QLineSeries *series_;
     QChart *chart_;
     QChartView *chartView_;
@@ -38,6 +40,7 @@ private:
     QValueAxis *axisY_;
 public slots:
     void setStaticValues(std::shared_ptr<const MeasurementSequence> mSeq);
+
 };
 
 #endif // GRAPHDIAGRAM_H

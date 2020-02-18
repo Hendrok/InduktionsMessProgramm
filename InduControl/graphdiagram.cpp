@@ -15,6 +15,7 @@
 #include "../InduCore/datapoint.h"
 #include "../InduCore/measurementsequence.h"
 #include "../InduCore/measseqtc.h"
+#include "../InduControlCore/indumanager.h"
 QT_CHARTS_USE_NAMESPACE
 
 
@@ -26,6 +27,7 @@ GraphDiagram::GraphDiagram(QWidget *parent)
     , voltmin_(0)
     , voltmax_(0)
     , phase_(0)
+    , graphMeas_(false)
     , series_(new QLineSeries())
     , chart_(new QChart())
     , chartView_(new QChartView(chart_))
@@ -36,6 +38,7 @@ GraphDiagram::GraphDiagram(QWidget *parent)
 
 }
 
+
 void GraphDiagram::appendDataPoint(std::shared_ptr<const DataPoint> datapoint)
 {
     //für die Range
@@ -45,12 +48,13 @@ void GraphDiagram::appendDataPoint(std::shared_ptr<const DataPoint> datapoint)
     if(voltmax_<datapoint->pvVolt()){voltmax_=datapoint->pvVolt()+0.1;}
 
     //append
-    if(datapoint->pvMeasurementOn()==true)
-    {
+
+
     series_->append(datapoint->pvTemp(), datapoint->pvVolt());
+
     // set Range Live
     axisY_->setRange(voltmin_,voltmax_);
-    }
+
 }
 
 QSize GraphDiagram::sizeHint() const
@@ -79,7 +83,7 @@ void GraphDiagram::setStaticValues(std::shared_ptr<const MeasurementSequence> mS
 
         QString title= mSeq->fileName();
         chart_->setTitle("Tc Measurement " + mSeq->fileName());
-        }
+    }
 }
 
 void GraphDiagram::createQlineDiagramm()

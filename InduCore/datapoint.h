@@ -27,8 +27,7 @@ public:
     int pvStatusPPMS() const;
     void setpvStatusPPMS(int &pvStatusPPMS);
 
-    bool pvMeasurementOn() const;
-    void setPvMeasurementOn(bool pvMeasurementOn);
+
 
 private:
     std::chrono::system_clock::time_point pvTime_;
@@ -42,7 +41,7 @@ private:
     std::shared_ptr<const PpmsDataPoint> ppmsdata_;
     std::shared_ptr<const LockInDataPoint> lockindata_;
 
-    bool pvMeasurementOn_;
+
 };
 inline DataPoint::DataPoint()
     : pvTime_(std::chrono::system_clock::now())
@@ -54,7 +53,7 @@ inline DataPoint::DataPoint()
     , pvPpmsStatus_(0)
     , ppmsdata_(std::make_shared<const PpmsDataPoint>())
     , lockindata_(std::make_shared<const LockInDataPoint>())
-    , pvMeasurementOn_(false)
+
 
 {
 }
@@ -128,16 +127,6 @@ inline int DataPoint::pvStatusPPMS() const
 inline void DataPoint::setpvStatusPPMS(int &pvStatusPPMS)
 {
     pvPpmsStatus_=pvStatusPPMS;
-}
-
-inline bool DataPoint::pvMeasurementOn() const
-{
-    return pvMeasurementOn_;
-}
-
-inline void DataPoint::setPvMeasurementOn(bool pvMeasurementOn)
-{
-    pvMeasurementOn_ = pvMeasurementOn;
 }
 
 
