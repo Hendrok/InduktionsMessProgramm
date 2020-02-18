@@ -29,6 +29,13 @@ private:
 
     double pvPhase_;
 };
+inline LockInDataPoint::LockInDataPoint()
+    : pvVoltSetPoint_(0)
+    , pvVoltLive_(0)
+    , pvVoltRate_(0)
+    , pvPhase_(0)
+{
+}
 
 inline double LockInDataPoint::pvVoltSetPoint() const
 {

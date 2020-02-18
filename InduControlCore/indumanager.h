@@ -5,6 +5,7 @@
 #include <QObject>
 
 
+
 //forward
 class PpmsSimulation;
 class MeasSeqTc;
@@ -21,9 +22,10 @@ class INDUCONTROLCORE_EXPORT InduManager :public QObject
 signals:
     void newData(std::shared_ptr<const DataPoint>);
 public:
-    InduManager();
+    explicit InduManager();
     ~InduManager();
-
+    enum class state {idle, approachStart, approachEnd};
+    state measurementState;
     void startMeasurement(std::shared_ptr<const MeasurementSequence> &measurementSequence);
 
 private slots:
@@ -33,9 +35,8 @@ private:
     InstrumentManager *instrumentmanager_;
     std::unique_ptr <FileWriter> fw_;
     bool setPointStand;
-    double startTemp_;
-    double endTemp_;
-    double temprate_;
+    std::shared_ptr <MeasSeqTc> mSeqTc_;
+
 
 };
 

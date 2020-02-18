@@ -10,11 +10,12 @@
 #include "../InduCore/filewriter.h"
 
 InduManager::InduManager()
-    : instrumentmanager_(new InstrumentManager())
+    : measurementState(idle)
+    , instrumentmanager_(new InstrumentManager())
     , fw_(nullptr)
-    , startTemp_ (80)
-    , endTemp_ (100)
-    , temprate_ (20)
+    , mSeqTc_(std::make_shared <MeasSeqTc>())
+
+
 {
     connect(instrumentmanager_, &InstrumentManager::newData,
                 this, &InduManager::onNewData);
@@ -32,24 +33,23 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> &m
     fw_= std::make_unique<FileWriter>();
     fw_->openFile(measurementSequence);
     if(seqTc !=nullptr){
-        startTemp_ = seqTc->tempStart();
-        endTemp_ = seqTc->tempEnd();
-        temprate_ = seqTc->temperatureRate();
-        instrumentmanager_->setTempSetpoint(startTemp_, temprate_);
+        mSeqTc_->setTempStart(seqTc->tempStart());
+        mSeqTc_->setTempEnd(seqTc->tempEnd());
+        mSeqTc_->setTemperatureRate(seqTc->temperatureRate());
+        instrumentmanager_->setTempSetpoint(mSeqTc_->tempStart(), mSeqTc_->temperatureRate());
     }
-
-
 }
+
 
 std::shared_ptr<DataPoint> InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
     emit newData(datapoint);
 
 
-    if(datapoint->pvMeasurementOn()==false && std::abs(startTemp_ - datapoint->pvTemp()) < temprate_)
+    if(datapoint->pvMeasurementOn()==false && std::abs(mSeqTc_->tempStart() - datapoint->pvTemp()) < mSeqTc_->temperatureRate())
     {
         instrumentmanager_->SetMeasRunning(true);
-        instrumentmanager_->setTempSetpoint(endTemp_, temprate_);
+        instrumentmanager_->setTempSetpoint(mSeqTc_->tempEnd(), mSeqTc_->temperatureRate());
         fw_->append(datapoint);
     }
 
@@ -60,7 +60,7 @@ std::shared_ptr<DataPoint> InduManager::onNewData(std::shared_ptr<DataPoint> dat
 
     qDebug()<<datapoint->pvMeasurementOn();
 
-    if(datapoint->pvTemp()==endTemp_ && (datapoint->pvMeasurementOn()==true))
+    if(datapoint->pvTemp()==mSeqTc_->tempEnd() && (datapoint->pvMeasurementOn()==true))
     {
 
         instrumentmanager_->SetMeasRunning(false);
