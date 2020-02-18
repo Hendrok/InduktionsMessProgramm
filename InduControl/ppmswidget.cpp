@@ -22,6 +22,10 @@ PpmsWidget::PpmsWidget(QWidget *parent)
     , rotStatus_(nullptr)
     , chamberStatus_(nullptr)
     , chamberLevel_(nullptr)
+    , voltageLive_(nullptr)
+    , voltageSetPoint_(nullptr)
+    , voltageRate_(nullptr)
+    , phaseLive_(nullptr)
 {    
     setupUI();
 }
@@ -39,9 +43,22 @@ QSize PpmsWidget::minimumSizeHint() const
 void PpmsWidget::newData(std::shared_ptr<const DataPoint> dpoint)
 {
     if(dpoint != nullptr){
-        tempLive_->setText(QString::number(dpoint->pvTemp()));
-        magFieldLive_->setText(QString::number(dpoint->pvField()));
-        rotLive_->setText(QString::number(dpoint->pvAngle()));
+        tempLive_->setText(QString::number(dpoint->ppmsdata()->pvTempLive()));
+        tempSetPoint_->setText(QString::number(dpoint->ppmsdata()->pvTempSetPoint()));
+        tempRate_->setText(QString::number(dpoint->ppmsdata()->pvTempRate()));
+
+        magFieldLive_->setText(QString::number(dpoint->ppmsdata()->pvMagFieldLive()));
+        magSetPoint_->setText(QString::number(dpoint->ppmsdata()->pvMagSetPoint()));
+
+        rotLive_->setText(QString::number(dpoint->ppmsdata()->pvRotLive()));
+        rotSetPoint_->setText(QString::number(dpoint->ppmsdata()->pvRotSetPoint()));
+
+        chamberLevel_->setText(QString::number(dpoint->ppmsdata()->pvChamberLevel()));
+
+        voltageLive_->setText(QString::number(dpoint->lockindata()->pvVoltLive()));
+        voltageSetPoint_->setText(QString::number(dpoint->lockindata()->pvVoltSetPoint()));
+        voltageRate_->setText(QString::number(dpoint->lockindata()->pvVoltRate()));
+        phaseLive_->setText(QString::number(dpoint->lockindata()->pvPhase()));
     }
     
 }
@@ -76,6 +93,15 @@ void PpmsWidget::setupUI()
     chamberLevel_ = new QLabel();
     chamberLevel_->setText("");
 
+    voltageLive_ = new QLabel();
+    voltageLive_->setText("");
+    voltageSetPoint_ = new QLabel();
+    voltageSetPoint_->setText("");
+    voltageRate_ = new QLabel();
+    voltageRate_->setText("");
+    phaseLive_ = new QLabel();
+    phaseLive_->setText("");
+
     //label
     QLabel* labelTempLive = new QLabel ("Temperature:");
     QLabel* labelTempSetPoint = new QLabel ("Set Point:");
@@ -87,11 +113,17 @@ void PpmsWidget::setupUI()
     QLabel* labelMagStatus = new QLabel ("Status:");
 
     QLabel* labelRotLive = new QLabel ("Rotation:");
-    QLabel* labelRotSetPoint = new QLabel ("SetPoint:");
+    QLabel* labelRotSetPoint = new QLabel ("Set Point:");
     QLabel* labelRotStatus = new QLabel ("Status:");
 
     QLabel* labelChamberLevel = new QLabel ("Helium Level:");
     QLabel* labelChamberStatus = new QLabel ("Status:");
+
+    QLabel* labelVoltageLive = new QLabel ("Voltage:");
+    QLabel* labelVoltageSetPoint = new QLabel ("Set Point:");
+    QLabel* labelVoltageRate = new QLabel ("Volt. Rate:");
+    QLabel* labelPhaseLive = new QLabel ("Phase:");
+
     QLabel* labelempty = new QLabel ("");
 
     //Grid Layouts:
@@ -99,6 +131,7 @@ void PpmsWidget::setupUI()
     QGridLayout* MagGridLayout = new QGridLayout();
     QGridLayout* RotGridLayout = new QGridLayout();
     QGridLayout* ChamberGridLayout = new QGridLayout();
+    QGridLayout* VoltageGridLayout = new QGridLayout();
 
     TempGridLayout->addWidget(labelTempLive, 0, 0);
     TempGridLayout->addWidget(tempLive_, 0, 1);
@@ -136,6 +169,15 @@ void PpmsWidget::setupUI()
     ChamberGridLayout->addWidget(labelempty, 3, 0);
     ChamberGridLayout->addWidget(labelempty, 3, 1);
 
+    VoltageGridLayout->addWidget(labelVoltageLive, 0, 0);
+    VoltageGridLayout->addWidget(voltageLive_, 0, 1);
+    VoltageGridLayout->addWidget(phaseLive_, 1, 1);
+    VoltageGridLayout->addWidget(labelPhaseLive, 1, 0);
+    VoltageGridLayout->addWidget(labelVoltageSetPoint, 2, 0);
+    VoltageGridLayout->addWidget(voltageSetPoint_ , 2, 1);
+    VoltageGridLayout->addWidget(labelVoltageRate, 3, 0);
+    VoltageGridLayout->addWidget(voltageRate_, 3, 1);
+
     QWidget* tempWidget = new QWidget();
     tempWidget->setLayout(TempGridLayout);
     QWidget* magWidget = new QWidget();
@@ -144,13 +186,15 @@ void PpmsWidget::setupUI()
     rotWidget->setLayout(RotGridLayout);
     QWidget* chamberWidget = new QWidget();
     chamberWidget->setLayout(ChamberGridLayout);
-
+    QWidget* voltageWidget = new QWidget();
+    voltageWidget->setLayout(VoltageGridLayout);
 
     QHBoxLayout* mainLayout = new QHBoxLayout();
     mainLayout->addWidget(tempWidget);
     mainLayout->addWidget(magWidget);
     mainLayout->addWidget(rotWidget);
     mainLayout->addWidget(chamberWidget);
+    mainLayout->addWidget(voltageWidget);
     setLayout(mainLayout);
 
 

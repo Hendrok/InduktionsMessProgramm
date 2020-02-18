@@ -41,6 +41,12 @@ private:
     QLabel* chamberStatus_;
     QLabel* chamberLevel_;
 
+    //Lockin
+    QLabel* voltageLive_;
+    QLabel* voltageSetPoint_;
+    QLabel* voltageRate_;
+    QLabel* phaseLive_;
+
 
 };
 

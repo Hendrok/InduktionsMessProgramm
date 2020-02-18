@@ -47,7 +47,7 @@ void MainWindow::setupUi()
     QVBoxLayout* mainLayout = new QVBoxLayout();
     mainLayout->addWidget(graph_);
     mainLayout->addSpacing(10);
-    ppmsWidget_->setMaximumHeight(150);
+    ppmsWidget_->setMaximumHeight(120);
     mainLayout->addWidget(ppmsWidget_);
     mainLayoutWidget->setLayout(mainLayout);
 }
@@ -84,12 +84,13 @@ void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> m
 
 void MainWindow::onNewData(std::shared_ptr<const DataPoint> datapoint)
 {
+    ppmsWidget_->newData(datapoint);
     if(indumanager_->getMeasurementState()==InduManager::State::ApproachEnd)
     {
     graph_->appendDataPoint(datapoint);
     }
 
-    ppmsWidget_->newData(datapoint);
+
 
 
 }

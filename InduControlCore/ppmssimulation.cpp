@@ -6,6 +6,7 @@
 #include "../InduCore/datapoint.h"
 #include "instrumentmanager.h"
 #include "../Instruments/ppmsdatapoint.h"
+#include "../Instruments/lockindatapoint.h"
 
 PpmsSimulation::PpmsSimulation()
      : datapoint_(DataPoint())
@@ -30,12 +31,17 @@ void PpmsSimulation::setTempSetpoint(double setpoint, double rate)
 std::shared_ptr <DataPoint> PpmsSimulation::generateVariables()
 {
     PpmsDataPoint ppmsDpoint;
+    LockInDataPoint lockingDpoint;
 
     auto dataPoint =std::make_shared <DataPoint>();
     double test =QRandomGenerator::global()->bounded(1.0);
 
-    dataPoint->setpvPhase(test);   
-    dataPoint->setpvVolt(test);
+    ppmsDpoint.setPvTempSetPoint(tempSetpoint_);
+    ppmsDpoint.setPvTempRate(tempRate_);
+    lockingDpoint.setPvVoltLive(test);
+    lockingDpoint.setPvPhase(test);
+
+
 
 
     if (tempNow_< tempSetpoint_)
@@ -50,8 +56,7 @@ std::shared_ptr <DataPoint> PpmsSimulation::generateVariables()
     ppmsDpoint.setPvTempLive(tempNow_);
 
     dataPoint->setPpmsdata(std::make_shared<const PpmsDataPoint> (ppmsDpoint));
-
-    dataPoint->setpvTemp(tempNow_);
+    dataPoint->setLockindata(std::make_shared<const LockInDataPoint> (lockingDpoint));
     return dataPoint;
 
 }

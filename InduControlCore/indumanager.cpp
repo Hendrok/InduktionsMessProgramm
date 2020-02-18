@@ -47,9 +47,7 @@ std::shared_ptr<DataPoint> InduManager::onNewData(std::shared_ptr<DataPoint> dat
 {
     emit newData(datapoint);
 
-    qDebug()<<datapoint->ppmsdata()->pvTempLive();
-
-    if(measurementState== State::ApproachStart && std::abs(mSeqTc_->tempStart() - datapoint->pvTemp()) < mSeqTc_->temperatureRate())
+    if(measurementState== State::ApproachStart && std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
     {
         measurementState = State::ApproachEnd;
         instrumentmanager_->setTempSetpoint(mSeqTc_->tempEnd(), mSeqTc_->temperatureRate());
@@ -62,7 +60,7 @@ std::shared_ptr<DataPoint> InduManager::onNewData(std::shared_ptr<DataPoint> dat
     }
 
 
-    if(datapoint->pvTemp()==mSeqTc_->tempEnd() && (measurementState==State::ApproachEnd))
+    if(datapoint->ppmsdata()->pvTempLive()==mSeqTc_->tempEnd() && (measurementState==State::ApproachEnd))
     {
 
         measurementState= State::Idle;

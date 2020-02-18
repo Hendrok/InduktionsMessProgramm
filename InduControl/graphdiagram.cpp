@@ -42,15 +42,15 @@ GraphDiagram::GraphDiagram(QWidget *parent)
 void GraphDiagram::appendDataPoint(std::shared_ptr<const DataPoint> datapoint)
 {
     //für die Range
-    if(voltmin_==0){voltmin_=datapoint->pvVolt();}
-    if(voltmin_>datapoint->pvVolt()){voltmin_=datapoint->pvVolt()-0.1;}
+    if(voltmin_==0){voltmin_=datapoint->lockindata()->pvVoltLive();}
+    if(voltmin_>datapoint->lockindata()->pvVoltLive()){voltmin_=datapoint->lockindata()->pvVoltLive()-0.1;}
     //if(voltmin_<0){voltmin_=0;}
-    if(voltmax_<datapoint->pvVolt()){voltmax_=datapoint->pvVolt()+0.1;}
+    if(voltmax_<datapoint->lockindata()->pvVoltLive()){voltmax_=datapoint->lockindata()->pvVoltLive()+0.1;}
 
     //append
 
 
-    series_->append(datapoint->pvTemp(), datapoint->pvVolt());
+    series_->append(datapoint->ppmsdata()->pvTempLive(), datapoint->lockindata()->pvVoltLive());
 
     // set Range Live
     axisY_->setRange(voltmin_,voltmax_);

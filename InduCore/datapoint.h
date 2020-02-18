@@ -12,32 +12,14 @@ class INDUCORE_EXPORT DataPoint
 public:
     DataPoint();
 
-    std::chrono::system_clock::time_point time() const;
-    void setTime(std::chrono::system_clock::time_point time);
-    double pvTemp() const;
-    void setpvTemp(double pvTemp);
-    double pvField() const;
-    void setpvField(double pvField);
-    double pvAngle() const;
-    void setpvAngle(double pvAngle);
-    double pvVolt() const;
-    void setpvVolt(double pvVolt);
-    double pvPhase() const;
-    void setpvPhase(double pvPhase);
-    int pvStatusPPMS() const;
-    void setpvStatusPPMS(int &pvStatusPPMS);
-
     std::shared_ptr<const PpmsDataPoint> ppmsdata() const;
     void setPpmsdata(const std::shared_ptr<const PpmsDataPoint> &ppmsdata);
 
+    std::shared_ptr<const LockInDataPoint> lockindata() const;
+    void setLockindata(const std::shared_ptr<const LockInDataPoint> &lockindata);
+
 private:
-    std::chrono::system_clock::time_point pvTime_;
-    double pvTemp_;
-    double pvField_;
-    double pvAngle_;
-    double pvVolt_;
-    double pvPhase_;
-    int pvPpmsStatus_;
+
 
     std::shared_ptr<const PpmsDataPoint> ppmsdata_;
     std::shared_ptr<const LockInDataPoint> lockindata_;
@@ -45,90 +27,12 @@ private:
 
 };
 inline DataPoint::DataPoint()
-    : pvTime_(std::chrono::system_clock::now())
-    , pvTemp_(0)
-    , pvField_(0)
-    , pvAngle_(0)
-    , pvVolt_(0)
-    , pvPhase_(0)
-    , pvPpmsStatus_(0)
-    , ppmsdata_(std::make_shared<const PpmsDataPoint>())
+    : ppmsdata_(std::make_shared<const PpmsDataPoint>())
     , lockindata_(std::make_shared<const LockInDataPoint>())
-
-
 {
 }
 
 
-inline std::chrono::system_clock::time_point DataPoint::time() const
-{
-    return pvTime_;
-}
-
-inline void DataPoint::setTime(std::chrono::system_clock::time_point time)
-{
-    pvTime_=time;
-}
-
-inline double DataPoint::pvTemp() const
-{
-    return pvTemp_;
-}
-
-inline void DataPoint::setpvTemp(double temp)
-{
-    pvTemp_ = temp;
-}
-
-inline double DataPoint::pvField() const
-{
-    return pvField_;
-}
-
-inline void DataPoint::setpvField(double field)
-{
-    pvField_ = field;
-}
-
-inline double DataPoint::pvAngle() const
-{
-    return pvAngle_;
-}
-
-inline void DataPoint::setpvAngle(double angle)
-{
-    pvAngle_ = angle;
-}
-
-inline double DataPoint::pvVolt() const
-{
-    return pvVolt_;
-}
-
-inline void DataPoint::setpvVolt(double volt)
-{
-    pvVolt_ = volt;
-}
-
-inline double DataPoint::pvPhase() const
-{
-    return pvPhase_;
-}
-
-inline void DataPoint::setpvPhase(double phase)
-{
-    pvPhase_ = phase;
-}
-
-inline int DataPoint::pvStatusPPMS() const
-{
-    return pvPpmsStatus_;
-}
-
-inline void DataPoint::setpvStatusPPMS(int &pvStatusPPMS)
-{
-    pvPpmsStatus_=pvStatusPPMS;
-}
 
 inline std::shared_ptr<const PpmsDataPoint> DataPoint::ppmsdata() const
 {
@@ -138,6 +42,16 @@ return ppmsdata_;
 inline void DataPoint::setPpmsdata(const std::shared_ptr<const PpmsDataPoint> &ppmsdata)
 {
 ppmsdata_ = ppmsdata;
+}
+
+inline std::shared_ptr<const LockInDataPoint> DataPoint::lockindata() const
+{
+return lockindata_;
+}
+
+inline void DataPoint::setLockindata(const std::shared_ptr<const LockInDataPoint> &lockindata)
+{
+lockindata_ = lockindata;
 }
 
 
