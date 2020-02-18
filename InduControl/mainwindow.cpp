@@ -76,10 +76,13 @@ void MainWindow::onStartMessungButton()
 
 void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq)
 {
+    if(indumanager_->getMeasurementState()==InduManager::State::Idle)
+    {
     indumanager_->startMeasurement(mSeq);
     connect(indumanager_,&InduManager::newData,
             this,&MainWindow::onNewData);
     graph_->setStaticValues(mSeq);
+    }
 }
 
 void MainWindow::onNewData(std::shared_ptr<const DataPoint> datapoint)

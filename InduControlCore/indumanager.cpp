@@ -60,7 +60,7 @@ std::shared_ptr<DataPoint> InduManager::onNewData(std::shared_ptr<DataPoint> dat
     }
 
 
-    if(datapoint->ppmsdata()->pvTempLive()==mSeqTc_->tempEnd() && (measurementState==State::ApproachEnd))
+    if( (measurementState==State::ApproachEnd) && std::abs(mSeqTc_->tempEnd() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
     {
 
         measurementState= State::Idle;
