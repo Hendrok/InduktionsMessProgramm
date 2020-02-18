@@ -8,6 +8,7 @@
 #include "../InduCore/measseqtc.h"
 #include "../InduCore/datapoint.h"
 #include "../InduCore/filewriter.h"
+#include "../Instruments/ppmsdatapoint.h"
 
 InduManager::InduManager()
     : instrumentmanager_(new InstrumentManager())
@@ -46,6 +47,7 @@ std::shared_ptr<DataPoint> InduManager::onNewData(std::shared_ptr<DataPoint> dat
 {
     emit newData(datapoint);
 
+    qDebug()<<datapoint->ppmsdata()->pvTempLive();
 
     if(measurementState== State::ApproachStart && std::abs(mSeqTc_->tempStart() - datapoint->pvTemp()) < mSeqTc_->temperatureRate())
     {
@@ -65,7 +67,6 @@ std::shared_ptr<DataPoint> InduManager::onNewData(std::shared_ptr<DataPoint> dat
 
         measurementState= State::Idle;
     }
-
 
     return  datapoint;
 }

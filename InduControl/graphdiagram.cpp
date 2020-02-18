@@ -69,6 +69,7 @@ QSize GraphDiagram::minimumSizeHint() const
 
 void GraphDiagram::setStaticValues(std::shared_ptr<const MeasurementSequence> mSeq)
 {
+    series_->clear();
     auto seqTc = std::dynamic_pointer_cast <const MeasSeqTc> (mSeq);
     if(seqTc !=nullptr)
         {
@@ -88,7 +89,6 @@ void GraphDiagram::setStaticValues(std::shared_ptr<const MeasurementSequence> mS
 
 void GraphDiagram::createQlineDiagramm()
 {
-
    chart_->legend()->hide();
    chart_->addSeries(series_);
 

@@ -5,8 +5,10 @@
 #include <memory>
 #include "../InduCore/datapoint.h"
 
+
 class QObject;
 class MeasSeqTc;
+
 
 class INDUCONTROLCORE_EXPORT PpmsSimulation: public QObject
 {
@@ -14,7 +16,7 @@ class INDUCONTROLCORE_EXPORT PpmsSimulation: public QObject
 public:
     PpmsSimulation();
     void setTempSetpoint(double setpoint, double rate);
-    void SetMeasRunning (bool measrunning);
+
 public slots:
     std::shared_ptr <DataPoint> generateVariables();
 private:
@@ -26,6 +28,7 @@ private:
     double fieldRate_;
     double ppmsHelium_;
     double tempNow_;
+
 };
 
 #endif // PPMSSIMULATION_H

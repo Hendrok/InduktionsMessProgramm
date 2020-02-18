@@ -22,7 +22,7 @@ public:
     InstrumentManager();
     ~InstrumentManager();
     void setTempSetpoint(double setpoint, double rate);
-    void SetMeasRunning (bool measrunning);
+
 private slots:
     void onPolling();
 private:

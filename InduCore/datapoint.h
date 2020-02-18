@@ -27,7 +27,8 @@ public:
     int pvStatusPPMS() const;
     void setpvStatusPPMS(int &pvStatusPPMS);
 
-
+    std::shared_ptr<const PpmsDataPoint> ppmsdata() const;
+    void setPpmsdata(const std::shared_ptr<const PpmsDataPoint> &ppmsdata);
 
 private:
     std::chrono::system_clock::time_point pvTime_;
@@ -129,6 +130,15 @@ inline void DataPoint::setpvStatusPPMS(int &pvStatusPPMS)
     pvPpmsStatus_=pvStatusPPMS;
 }
 
+inline std::shared_ptr<const PpmsDataPoint> DataPoint::ppmsdata() const
+{
+return ppmsdata_;
+}
+
+inline void DataPoint::setPpmsdata(const std::shared_ptr<const PpmsDataPoint> &ppmsdata)
+{
+ppmsdata_ = ppmsdata;
+}
 
 
 
