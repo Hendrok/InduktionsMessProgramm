@@ -10,20 +10,20 @@
 #include "../InduCore/filewriter.h"
 #include "../Instruments/ppmsdatapoint.h"
 InduManager::InduManager()
-    : instrumentmanager_(std::make_unique<InstrumentManager>())
+    : measurementNumber_(0)
+    , instrumentmanager_(std::vector <std::make_unique<InstrumentManager>>())
     , fw_(nullptr)
     , mSeqTc_(std::make_shared <MeasSeqTc>())
     , measurementState(State::Idle)
 
 
 {
-    connect(instrumentmanager_.get(), &InstrumentManager::newData,
+    connect(instrumentmanager_[measurementNumber_].get(), &InstrumentManager::newData,
                 this, &InduManager::onNewData);
 }
 
 InduManager::~InduManager()
 {
-
 }
 
 void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence)
@@ -36,7 +36,7 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
         mSeqTc_->setTempStart(seqTc->tempStart());
         mSeqTc_->setTempEnd(seqTc->tempEnd());
         mSeqTc_->setTemperatureRate(seqTc->temperatureRate());
-        instrumentmanager_->setTempSetpoint(mSeqTc_->tempStart(), mSeqTc_->temperatureRate());
+        instrumentmanager_[measurementNumber_]->setTempSetpoint(mSeqTc_->tempStart(), mSeqTc_->temperatureRate());
         measurementState= State::ApproachStart;
     }
 }
@@ -49,7 +49,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
     if(measurementState== State::ApproachStart && std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
     {
         measurementState = State::ApproachEnd;
-        instrumentmanager_->setTempSetpoint(mSeqTc_->tempEnd(), mSeqTc_->temperatureRate());
+        instrumentmanager_[measurementNumber_]->setTempSetpoint(mSeqTc_->tempEnd(), mSeqTc_->temperatureRate());
         fw_->append(datapoint);
     }
 

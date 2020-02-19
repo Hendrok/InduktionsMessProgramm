@@ -3,7 +3,7 @@
 #include "InduControlCore_global.h"
 #include <memory>
 #include <QObject>
-
+#include <vector>
 
 
 //forward
@@ -32,10 +32,11 @@ public:
 private slots:
     void onNewData(std::shared_ptr<DataPoint> datapoint);
 
-private:
-    std::unique_ptr <InstrumentManager> instrumentmanager_;
-    std::unique_ptr <FileWriter> fw_;    
-    std::shared_ptr <MeasSeqTc> mSeqTc_;  // muss ich noch auf measurementsequence wechsekln
+private:   
+    int measurementNumber_;
+    std::vector <std::unique_ptr <InstrumentManager>> instrumentmanager_;
+    std::unique_ptr <FileWriter> fw_;        
+    std::shared_ptr <MeasSeqTc> mSeqTc_;  // muss ich noch auf measurementsequence wechseln
     State measurementState;
 };
 
