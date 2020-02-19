@@ -9,25 +9,24 @@
 #include "../InduCore/datapoint.h"
 #include "../InduCore/filewriter.h"
 #include "../Instruments/ppmsdatapoint.h"
-
 InduManager::InduManager()
-    : instrumentmanager_(new InstrumentManager())
+    : instrumentmanager_(std::make_unique<InstrumentManager>())
     , fw_(nullptr)
     , mSeqTc_(std::make_shared <MeasSeqTc>())
     , measurementState(State::Idle)
 
 
 {
-    connect(instrumentmanager_, &InstrumentManager::newData,
+    connect(instrumentmanager_.get(), &InstrumentManager::newData,
                 this, &InduManager::onNewData);
 }
 
 InduManager::~InduManager()
 {
-    delete instrumentmanager_;
+
 }
 
-void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> &measurementSequence)
+void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence)
 {
     auto seqTc = std::dynamic_pointer_cast <const MeasSeqTc> (measurementSequence);
 
@@ -43,7 +42,7 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> &m
 }
 
 
-std::shared_ptr<DataPoint> InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
+void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
     emit newData(datapoint);
 
@@ -66,7 +65,6 @@ std::shared_ptr<DataPoint> InduManager::onNewData(std::shared_ptr<DataPoint> dat
         measurementState= State::Idle;
     }
 
-    return  datapoint;
 }
 
 InduManager::State InduManager::getMeasurementState() const

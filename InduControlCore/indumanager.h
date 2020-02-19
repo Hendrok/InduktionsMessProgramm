@@ -25,21 +25,18 @@ public:
     explicit InduManager();
     ~InduManager();
     enum class State { Idle, ApproachStart, ApproachEnd};
-    void startMeasurement(std::shared_ptr<const MeasurementSequence> &measurementSequence);
+    void startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence);
 
     State getMeasurementState() const;
 
 private slots:
-    std::shared_ptr<DataPoint> onNewData(std::shared_ptr<DataPoint> datapoint);
+    void onNewData(std::shared_ptr<DataPoint> datapoint);
 
 private:
-    InstrumentManager *instrumentmanager_;
-    std::unique_ptr <FileWriter> fw_;
-    bool setPointStand;
-    std::shared_ptr <MeasSeqTc> mSeqTc_;
-
+    std::unique_ptr <InstrumentManager> instrumentmanager_;
+    std::unique_ptr <FileWriter> fw_;    
+    std::shared_ptr <MeasSeqTc> mSeqTc_;  // muss ich noch auf measurementsequence wechsekln
     State measurementState;
-
 };
 
 #endif // INDUMANAGER_H

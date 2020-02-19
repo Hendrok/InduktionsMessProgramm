@@ -38,15 +38,12 @@ unix|win32: LIBS += -L$$OUT_PWD/../InduControlCore/ -lInduControlCore
 INCLUDEPATH += $$PWD/../InduControlCore
 DEPENDPATH += $$PWD/../InduControlCore
 
-unix|win32: LIBS += -L$$OUT_PWD/../InduCore/ -lInduCore
+
+
+unix:!macx|win32: LIBS += -L$$OUT_PWD/../InduCore/ -lInduCore
 
 INCLUDEPATH += $$PWD/../InduCore
 DEPENDPATH += $$PWD/../InduCore
 
 RESOURCES += \
     Ressourcen.qrc
-
-unix|win32: LIBS += -L$$OUT_PWD/../Instruments/ -lInstruments
-
-INCLUDEPATH += $$PWD/../Instruments
-DEPENDPATH += $$PWD/../Instruments
