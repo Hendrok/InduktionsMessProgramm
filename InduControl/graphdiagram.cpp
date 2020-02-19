@@ -11,7 +11,7 @@
 #include <QtCharts/QValueAxis>
 #include <QtWidgets/QVBoxLayout>
 
-
+// eigene Sachen
 #include "../InduCore/datapoint.h"
 #include "../InduCore/measurementsequence.h"
 #include "../InduCore/measseqtc.h"
