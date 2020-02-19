@@ -8,6 +8,7 @@
 #include <QLabel>
 #include <QDialogButtonBox>
 #include <QLineEdit>
+#include <vector>
 
 StartDialog::StartDialog(QWidget *parent)
     : QDialog(parent)

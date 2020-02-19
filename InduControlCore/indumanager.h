@@ -34,9 +34,9 @@ private slots:
 
 private:   
     int measurementNumber_;
-    std::vector <std::unique_ptr <InstrumentManager>> instrumentmanager_;
+    std::unique_ptr <InstrumentManager> instrumentmanager_;
     std::unique_ptr <FileWriter> fw_;        
-    std::shared_ptr <MeasSeqTc> mSeqTc_;  // muss ich noch auf measurementsequence wechseln
+    std::shared_ptr <MeasurementSequence> mSeq_;  // muss ich noch auf measurementsequence wechseln
     State measurementState;
 };
 

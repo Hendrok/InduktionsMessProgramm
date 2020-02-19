@@ -11,14 +11,14 @@
 #include "../Instruments/ppmsdatapoint.h"
 InduManager::InduManager()
     : measurementNumber_(0)
-    , instrumentmanager_(std::vector <std::make_unique<InstrumentManager>>())
+    , instrumentmanager_(std::make_unique<InstrumentManager>())
     , fw_(nullptr)
-    , mSeqTc_(std::make_shared <MeasSeqTc>())
+    , mSeq_(std::make_shared <MeasurementSequence>())
     , measurementState(State::Idle)
 
 
 {
-    connect(instrumentmanager_[measurementNumber_].get(), &InstrumentManager::newData,
+    connect(instrumentmanager_.get(), &InstrumentManager::newData,
                 this, &InduManager::onNewData);
 }
 
@@ -29,14 +29,14 @@ InduManager::~InduManager()
 void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence)
 {
     auto seqTc = std::dynamic_pointer_cast <const MeasSeqTc> (measurementSequence);
-
+    auto mSeqTc_ = std::dynamic_pointer_cast <MeasSeqTc> (mSeq_);
     fw_= std::make_unique<FileWriter>();
     fw_->openFile(measurementSequence);
     if(seqTc !=nullptr){
         mSeqTc_->setTempStart(seqTc->tempStart());
         mSeqTc_->setTempEnd(seqTc->tempEnd());
         mSeqTc_->setTemperatureRate(seqTc->temperatureRate());
-        instrumentmanager_[measurementNumber_]->setTempSetpoint(mSeqTc_->tempStart(), mSeqTc_->temperatureRate());
+        instrumentmanager_->setTempSetpoint(mSeqTc_->tempStart(), mSeqTc_->temperatureRate());
         measurementState= State::ApproachStart;
     }
 }
@@ -46,10 +46,12 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
     emit newData(datapoint);
 
+    auto mSeqTc_ = std::dynamic_pointer_cast <MeasSeqTc> (mSeq_);
+
     if(measurementState== State::ApproachStart && std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
     {
         measurementState = State::ApproachEnd;
-        instrumentmanager_[measurementNumber_]->setTempSetpoint(mSeqTc_->tempEnd(), mSeqTc_->temperatureRate());
+        instrumentmanager_->setTempSetpoint(mSeqTc_->tempEnd(), mSeqTc_->temperatureRate());
         fw_->append(datapoint);
     }
 
