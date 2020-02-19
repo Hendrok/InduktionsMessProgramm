@@ -69,20 +69,27 @@ void MainWindow::createActions()
 void MainWindow::onStartMessungButton()
 {
     StartDialog* startDialog = new StartDialog(this);
-    connect(startDialog, &StartDialog::startMeasurement,
-            this, &MainWindow::onStartMeasurement);
+    connect(startDialog, &StartDialog::createMeasurement,
+            this, &MainWindow::onCreateMeasurement);
     startDialog->show();
 }
 
-void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq)
+void MainWindow::onCreateMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mSeq)
 {
-    if(indumanager_->getMeasurementState()==InduManager::State::Idle)
-    {
+    indumanager_->createMeasurement(mSeq);
+
+    connect(indumanager_, &InduManager::createMeasurement,
+            this, &MainWindow::onStartMeasurement);
+}
+
+
+
+void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq)
+{    
     indumanager_->startMeasurement(mSeq);
     connect(indumanager_,&InduManager::newData,
             this,&MainWindow::onNewData);
     graph_->setStaticValues(mSeq);
-    }
 }
 
 void MainWindow::onNewData(std::shared_ptr<const DataPoint> datapoint)
@@ -92,10 +99,6 @@ void MainWindow::onNewData(std::shared_ptr<const DataPoint> datapoint)
     {
     graph_->appendDataPoint(datapoint);
     }
-
-
-
-
 }
 
 void MainWindow::createQLineDiagramm()

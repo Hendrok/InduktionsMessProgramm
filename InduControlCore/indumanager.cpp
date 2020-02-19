@@ -11,9 +11,9 @@
 #include "../Instruments/ppmsdatapoint.h"
 InduManager::InduManager()
     : measurementNumber_(0)
-    , instrumentmanager_(std::make_unique<InstrumentManager>())
+    , instrumentmanager_ (std::make_unique<InstrumentManager>())
     , fw_(nullptr)
-    , mSeq_(std::make_shared <MeasurementSequence>())
+    , mSeqTc_(std::make_shared <MeasSeqTc>())
     , measurementState(State::Idle)
 
 
@@ -26,10 +26,17 @@ InduManager::~InduManager()
 {
 }
 
+void InduManager::createMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq)
+{
+    if(mVecSeq[measurementNumber_]!=nullptr && measurementState == State::Idle)
+    {
+        emit startNewMeasurement(mVecSeq[measurementNumber_]);
+    }
+}
+
 void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence)
 {
     auto seqTc = std::dynamic_pointer_cast <const MeasSeqTc> (measurementSequence);
-    auto mSeqTc_ = std::dynamic_pointer_cast <MeasSeqTc> (mSeq_);
     fw_= std::make_unique<FileWriter>();
     fw_->openFile(measurementSequence);
     if(seqTc !=nullptr){
@@ -41,12 +48,9 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
     }
 }
 
-
 void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
     emit newData(datapoint);
-
-    auto mSeqTc_ = std::dynamic_pointer_cast <MeasSeqTc> (mSeq_);
 
     if(measurementState== State::ApproachStart && std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
     {
@@ -60,13 +64,12 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
         fw_->append(datapoint);
     }
 
-
     if( (measurementState==State::ApproachEnd) && std::abs(mSeqTc_->tempEnd() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
     {
-
         measurementState= State::Idle;
-    }
 
+        measurementNumber_++;   //starte neue Messung
+    }
 }
 
 InduManager::State InduManager::getMeasurementState() const

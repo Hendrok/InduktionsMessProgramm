@@ -1,8 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include<memory>
-
+#include <memory>
+#include <vector>
 #include <QMainWindow>
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -31,6 +31,7 @@ public:
 
 private slots:
     void onStartMessungButton();
+    void onCreateMeasurement(std::vector<std::shared_ptr<const MeasurementSequence>> mSeq);
     void onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq);
     void onNewData(std::shared_ptr<const DataPoint> datapoint);
 
