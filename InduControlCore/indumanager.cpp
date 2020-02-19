@@ -9,28 +9,34 @@
 #include "../InduCore/datapoint.h"
 #include "../InduCore/filewriter.h"
 #include "../Instruments/ppmsdatapoint.h"
-
 InduManager::InduManager()
-    : instrumentmanager_(new InstrumentManager())
+    : measurementNumber_(0)
+    , instrumentmanager_ (std::make_unique<InstrumentManager>())
     , fw_(nullptr)
     , mSeqTc_(std::make_shared <MeasSeqTc>())
     , measurementState(State::Idle)
 
 
 {
-    connect(instrumentmanager_, &InstrumentManager::newData,
+    connect(instrumentmanager_.get(), &InstrumentManager::newData,
                 this, &InduManager::onNewData);
 }
 
 InduManager::~InduManager()
 {
-    delete instrumentmanager_;
 }
 
-void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> &measurementSequence)
+void InduManager::createMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq)
+{
+    if(mVecSeq[measurementNumber_]!=nullptr && measurementState == State::Idle)
+    {
+        emit startNewMeasurement(mVecSeq[measurementNumber_]);
+    }
+}
+
+void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence)
 {
     auto seqTc = std::dynamic_pointer_cast <const MeasSeqTc> (measurementSequence);
-
     fw_= std::make_unique<FileWriter>();
     fw_->openFile(measurementSequence);
     if(seqTc !=nullptr){
@@ -42,8 +48,7 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> &m
     }
 }
 
-
-std::shared_ptr<DataPoint> InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
+void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
     emit newData(datapoint);
 
@@ -59,14 +64,12 @@ std::shared_ptr<DataPoint> InduManager::onNewData(std::shared_ptr<DataPoint> dat
         fw_->append(datapoint);
     }
 
-
     if( (measurementState==State::ApproachEnd) && std::abs(mSeqTc_->tempEnd() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
     {
-
         measurementState= State::Idle;
-    }
 
-    return  datapoint;
+        measurementNumber_++;   //starte neue Messung
+    }
 }
 
 InduManager::State InduManager::getMeasurementState() const

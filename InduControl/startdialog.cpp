@@ -8,6 +8,7 @@
 #include <QLabel>
 #include <QDialogButtonBox>
 #include <QLineEdit>
+#include <vector>
 
 StartDialog::StartDialog(QWidget *parent)
     : QDialog(parent)
@@ -20,6 +21,7 @@ StartDialog::StartDialog(QWidget *parent)
     , frequency_(nullptr)
     , voltageAmplitude_(nullptr)
     , harmonicWave_(nullptr)
+    , measurement_(0)
 {
     setupUI();
 }
@@ -36,9 +38,11 @@ QSize StartDialog::minimumSizeHint() const
 
 void StartDialog::accept()
 {
-    auto seq = createSequence();
+    auto vecSeq = createSequence();
 
-    emit startMeasurement(seq);
+    emit createMeasurement(vecSeq);  //-> weiter gehts bei Mainwindow bei onCreateMeasurement
+
+    measurement_++; // wir bewegen uns im Pointer eins hoch!
 
     close();
 }
@@ -143,8 +147,8 @@ void StartDialog::setupUI()
     setLayout(mainLayout);
 }
 
-std::shared_ptr<const MeasurementSequence> StartDialog::createSequence() const
-{
+std::vector <std::shared_ptr<const MeasurementSequence>> StartDialog::createSequence() const
+{ 
     MeasSeqTc seq;
 
     seq.setSupraName(sampleName_->text());
@@ -163,5 +167,9 @@ std::shared_ptr<const MeasurementSequence> StartDialog::createSequence() const
                     QString::number(coilAngle_->value()) + "d"
                     );
 
-    return std::make_shared<const MeasSeqTc>(seq);
+    std::vector <std::shared_ptr<const MeasurementSequence>> vecSeq;
+    vecSeq[measurement_] = std::make_shared<const MeasSeqTc>(seq);
+
+
+    return vecSeq;
 }

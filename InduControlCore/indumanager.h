@@ -3,7 +3,7 @@
 #include "InduControlCore_global.h"
 #include <memory>
 #include <QObject>
-
+#include <vector>
 
 
 //forward
@@ -21,25 +21,25 @@ class INDUCONTROLCORE_EXPORT InduManager :public QObject
 
 signals:
     void newData(std::shared_ptr<const DataPoint>);
+    void startNewMeasurement(std::shared_ptr<const MeasurementSequence>);
 public:
     explicit InduManager();
     ~InduManager();
     enum class State { Idle, ApproachStart, ApproachEnd};
-    void startMeasurement(std::shared_ptr<const MeasurementSequence> &measurementSequence);
+    void createMeasurement(std::vector <std::shared_ptr<const MeasurementSequence>> mVecSeq);
+    void startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence);
 
     State getMeasurementState() const;
 
 private slots:
-    std::shared_ptr<DataPoint> onNewData(std::shared_ptr<DataPoint> datapoint);
+    void onNewData(std::shared_ptr<DataPoint> datapoint);
 
-private:
-    InstrumentManager *instrumentmanager_;
-    std::unique_ptr <FileWriter> fw_;
-    bool setPointStand;
-    std::shared_ptr <MeasSeqTc> mSeqTc_;
-
+private:   
+    int measurementNumber_;
+    std::unique_ptr <InstrumentManager> instrumentmanager_;
+    std::unique_ptr <FileWriter> fw_;        
+    std::shared_ptr <MeasSeqTc> mSeqTc_;  // muss ich noch auf measurementsequence wechseln
     State measurementState;
-
 };
 
 #endif // INDUMANAGER_H

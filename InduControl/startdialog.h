@@ -12,7 +12,7 @@ class StartDialog : public QDialog
     Q_OBJECT
 
 signals:
-    void startMeasurement(std::shared_ptr<const MeasurementSequence>);
+    void createMeasurement(std::vector <std::shared_ptr<const MeasurementSequence>>);
 
 public:
     explicit StartDialog(QWidget* parent = nullptr);
@@ -25,7 +25,7 @@ protected:
 
 private:
     void setupUI();
-    std::shared_ptr<const MeasurementSequence> createSequence() const;
+    std::vector <std::shared_ptr<const MeasurementSequence>> createSequence() const;
 
     QLineEdit* sampleName_;
     QDoubleSpinBox* tempStart_;
@@ -36,6 +36,8 @@ private:
     QDoubleSpinBox* frequency_;
     QDoubleSpinBox* voltageAmplitude_;
     QDoubleSpinBox* harmonicWave_;
+
+    int measurement_;
 
 };
 
