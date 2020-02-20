@@ -23,6 +23,9 @@ MainWindow::MainWindow(QWidget *parent)
     createActions();
     createQLineDiagramm();
     setCentralWidget(mainLayoutWidget);
+
+    connect(indumanager_, &InduManager::startNewMeasurement,
+            this, &MainWindow::onStartMeasurement);
 }
 
 MainWindow::~MainWindow()
@@ -79,8 +82,6 @@ void MainWindow::onCreateMeasurement(std::vector<std::shared_ptr<const Measureme
 {
     indumanager_->createMeasurement(mSeq);
 
-    connect(indumanager_, &InduManager::startNewMeasurement,
-            this, &MainWindow::onStartMeasurement);
 }
 
 

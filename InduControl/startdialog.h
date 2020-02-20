@@ -36,9 +36,6 @@ private:
     QDoubleSpinBox* frequency_;
     QDoubleSpinBox* voltageAmplitude_;
     QDoubleSpinBox* harmonicWave_;
-
-    int measurement_;
-
 };
 
 #endif // STARTDIALOG_H
