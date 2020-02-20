@@ -27,6 +27,7 @@ public:
     ~InduManager();
     enum class State { Idle, ApproachStart, ApproachEnd};
     void appendMeasurement(std::vector <std::shared_ptr<const MeasurementSequence>> mVecSeq);
+    void checkStartMeasurement();
     void startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence);
 
     State getMeasurementState() const;
