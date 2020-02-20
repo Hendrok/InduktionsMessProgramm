@@ -16,7 +16,7 @@ std::shared_ptr<Datafile> FileReader::readFile(){
 
     QString text=dfile_.getInputText();         // rufe getinput auf, aus der file dfile_
     // ich erstelle eine Regular Expression die den String in 2 Listen aufteilt: vor und nach dem bestimmten Punkt:
-    QRegExp rx("K\\s*V\\s*Deg\\s*\n*Temperature\\s*Voltage\\s*Phase");
+    QRegExp rx("Temperature\\s*Voltage\\s*Phase");
     // ich teile die Text datei in 2 teile:
     QStringList RegExpAufteilungListe = text.split(rx);
     //Ich splitte den 2ten Teil der nurnoch nummern enthält auf in die einzelnen Zahlen und schreibe diese in eine Liste

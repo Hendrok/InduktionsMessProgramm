@@ -120,7 +120,7 @@ bool FileWriter::append(std::shared_ptr<DataPoint> datapoint){
             //öffnet die file, hängt die aktuell ausgelesen datenpunkte an, schließt die file
         if (file_->open(QIODevice::WriteOnly | QIODevice::Append)){
         file_->write(QString::number(datapoint->ppmsdata()->pvTempLive()).toUtf8() +
-                     " " + QString::number(datapoint->lockindata()->pvVoltLive()).toUtf8() +
+                     " " + QString::number(datapoint->ppmsdata()->pvVoltLive()).toUtf8() +
                      " " + QString::number(datapoint->lockindata()->pvPhase()).toUtf8() +"\n");
         file_->close();
         }
