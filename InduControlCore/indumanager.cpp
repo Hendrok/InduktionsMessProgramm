@@ -22,7 +22,7 @@ InduManager::InduManager()
 {
     connect(instrumentmanager_.get(), &InstrumentManager::newData,
                 this, &InduManager::onNewData);
-    mVecSeq_ = std::vector<std::make_shared<MeasurementSequence>>();  // diese nicht gut
+    //mVecSeq_ = std::vector<std::make_shared<MeasurementSequence>>();  // diese nicht gut
 }
 
 InduManager::~InduManager()
@@ -39,7 +39,7 @@ void InduManager::appendMeasurement(std::vector<std::shared_ptr<const Measuremen
 
 void InduManager::checkStartMeasurement()
 {
-    if(mVecSeq_[measurementNumber_]!=nullptr && measurementState == State::Idle)
+    if(mVecSeq_.size()> measurementNumber_ && measurementState == State::Idle)
     {
         emit startNewMeasurement(mVecSeq_[measurementNumber_]);
     }
