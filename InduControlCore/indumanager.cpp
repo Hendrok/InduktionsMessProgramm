@@ -12,7 +12,7 @@
 #include "../Instruments/ppmsdatapoint.h"
 InduManager::InduManager()
     : measurementNumber_(0)
-    //, mVecSeq_ (std::vector <std::make_shared<MeasurementSequence>>()) // wie geht dieses
+    , mVecSeq_ (std::vector <std::make_shared<MeasurementSequence>>()) // wie geht dieses
     , instrumentmanager_ (std::make_unique<InstrumentManager>())
     , fw_(nullptr)
     , mSeqTc_(std::make_shared <MeasSeqTc>())
@@ -30,15 +30,18 @@ InduManager::~InduManager()
 
 void InduManager::appendMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq)
 {
-    mVecSeq_=mVecSeq;
+    for (unsigned i=0; i< mVecSeq.size();i++)
+    {
+        mVecSeq_.push_back(mVecSeq[i]);
+    }
 }
 
 void InduManager::checkStartMeasurement()
 {
-    if(mVecSeq_[measurementNumber_]!=nullptr && measurementState == State::Idle)
+    /*if(mVecSeq_[measurementNumber_]!=nullptr && measurementState == State::Idle)
     {
         emit startNewMeasurement(mVecSeq_[measurementNumber_]);
-    }
+    }*/
 }
 
 
