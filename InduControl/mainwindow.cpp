@@ -60,7 +60,8 @@ void MainWindow::createActions()
     const QIcon measurementIcon =QIcon::fromTheme("MessungIcon", QIcon(":/Icons/Icons/Tc.svg"));
     QAction *messungStarten = new QAction(measurementIcon, tr("&New Measurement"), this);
     messungStarten->setStatusTip(tr("Create a new measurement"));
-    connect(messungStarten, &QAction::triggered, this, &MainWindow::onStartMessungButton); //Hier sende ich Signal ans Slot
+    connect(messungStarten, &QAction::triggered,
+            this, &MainWindow::onStartMessungButton);
     fileMenu->addAction(messungStarten);
     fileToolBar->addAction(messungStarten);
 
@@ -78,7 +79,7 @@ void MainWindow::onCreateMeasurement(std::vector<std::shared_ptr<const Measureme
 {
     indumanager_->createMeasurement(mSeq);
 
-    connect(indumanager_, &InduManager::createMeasurement,
+    connect(indumanager_, &InduManager::startNewMeasurement,
             this, &MainWindow::onStartMeasurement);
 }
 
