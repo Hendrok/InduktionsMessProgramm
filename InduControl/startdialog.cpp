@@ -21,7 +21,6 @@ StartDialog::StartDialog(QWidget *parent)
     , frequency_(nullptr)
     , voltageAmplitude_(nullptr)
     , harmonicWave_(nullptr)
-    , measurement_(0)
 {
     setupUI();
 }
@@ -42,7 +41,7 @@ void StartDialog::accept()
 
     emit createMeasurement(vecSeq);  //-> weiter gehts bei Mainwindow bei onCreateMeasurement
 
-    measurement_++; // wir bewegen uns im Pointer eins hoch!
+
 
     close();
 }
@@ -168,7 +167,7 @@ std::vector <std::shared_ptr<const MeasurementSequence>> StartDialog::createSequ
                     );
 
     std::vector <std::shared_ptr<const MeasurementSequence>> vecSeq;
-    vecSeq[measurement_] = std::make_shared<const MeasSeqTc>(seq);
+    vecSeq.push_back(std::make_shared<const MeasSeqTc>(seq));
 
 
     return vecSeq;
