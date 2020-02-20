@@ -55,7 +55,7 @@ void PpmsWidget::newData(std::shared_ptr<const DataPoint> dpoint)
 
         chamberLevel_->setText(QString::number(dpoint->ppmsdata()->pvChamberLevel()));
 
-        voltageLive_->setText(QString::number(dpoint->lockindata()->pvVoltLive()));
+        voltageLive_->setText(QString::number(dpoint->ppmsdata()->pvVoltLive()));
         voltageSetPoint_->setText(QString::number(dpoint->lockindata()->pvVoltSetPoint()));
         voltageRate_->setText(QString::number(dpoint->lockindata()->pvVoltRate()));
         phaseLive_->setText(QString::number(dpoint->lockindata()->pvPhase()));

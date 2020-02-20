@@ -24,14 +24,14 @@ public:
 
 private:
     double pvVoltSetPoint_;     //höchstwahrscheinlich mit logik verbunden
-    double pvVoltLive_;
+    double pvVoltInputLive_;
     double pvVoltRate_;         //auch mit Logik verbunden
 
     double pvPhase_;
 };
 inline LockInDataPoint::LockInDataPoint()
     : pvVoltSetPoint_(0)
-    , pvVoltLive_(0)
+    , pvVoltInputLive_(0)
     , pvVoltRate_(0)
     , pvPhase_(0)
 {
@@ -49,12 +49,12 @@ pvVoltSetPoint_ = pvVoltSetPoint;
 
 inline double LockInDataPoint::pvVoltLive() const
 {
-return pvVoltLive_;
+return pvVoltInputLive_;
 }
 
 inline void LockInDataPoint::setPvVoltLive(double pvVoltLive)
 {
-pvVoltLive_ = pvVoltLive;
+pvVoltInputLive_ = pvVoltLive;
 }
 
 inline double LockInDataPoint::pvVoltRate() const

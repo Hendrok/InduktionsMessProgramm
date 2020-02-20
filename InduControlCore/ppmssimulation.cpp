@@ -38,7 +38,7 @@ std::shared_ptr <DataPoint> PpmsSimulation::generateVariables()
 
     ppmsDpoint.setPvTempSetPoint(tempSetpoint_);
     ppmsDpoint.setPvTempRate(tempRate_);
-    lockingDpoint.setPvVoltLive(test);
+    ppmsDpoint.setPvVoltLive(test);
     lockingDpoint.setPvPhase(test);
 
 
