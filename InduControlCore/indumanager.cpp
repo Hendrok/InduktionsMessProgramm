@@ -1,6 +1,7 @@
 #include "indumanager.h"
 #include <QDebug>
 #include <memory>
+#include <vector>
 //Eigene Klassen
 #include "instrumentmanager.h"
 #include "ppmssimulation.h"
@@ -11,6 +12,7 @@
 #include "../Instruments/ppmsdatapoint.h"
 InduManager::InduManager()
     : measurementNumber_(0)
+    //, mVecSeq_ (std::vector <std::make_shared<MeasurementSequence>>())
     , instrumentmanager_ (std::make_unique<InstrumentManager>())
     , fw_(nullptr)
     , mSeqTc_(std::make_shared <MeasSeqTc>())
@@ -26,19 +28,27 @@ InduManager::~InduManager()
 {
 }
 
-void InduManager::checkForMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq)
+void InduManager::appendMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq)
 {
-    if(mVecSeq[measurementNumber_]!=nullptr && measurementState == State::Idle)
+    mVecSeq_=mVecSeq;
+}
+
+void InduManager::checkStartMeasurement()
+{
+    if(mVecSeq_[measurementNumber_]!=nullptr && measurementState == State::Idle)
     {
-        emit startNewMeasurement(mVecSeq[measurementNumber_]);
+        emit startNewMeasurement(mVecSeq_[measurementNumber_]);
     }
 }
 
+
 void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence)
 {
-    auto seqTc = std::dynamic_pointer_cast <const MeasSeqTc> (measurementSequence);
+
+    auto seqTc = std::dynamic_pointer_cast <const MeasSeqTc> (mVecSeq_[measurementNumber_]);
     fw_= std::make_unique<FileWriter>();
-    fw_->openFile(measurementSequence);
+
+    fw_->openFile(mVecSeq_[measurementNumber_]);
     if(seqTc !=nullptr){
         mSeqTc_->setTempStart(seqTc->tempStart());
         mSeqTc_->setTempEnd(seqTc->tempEnd());
@@ -48,10 +58,10 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
     }
 }
 
+
 void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
     emit newData(datapoint);
-
     if(measurementState== State::ApproachStart && std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
     {
         measurementState = State::ApproachEnd;
@@ -70,6 +80,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 
         measurementNumber_++;   //starte neue Messung
     }
+
 }
 
 InduManager::State InduManager::getMeasurementState() const

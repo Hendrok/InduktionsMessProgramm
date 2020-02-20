@@ -82,19 +82,18 @@ void MainWindow::onStartMessungButton()
 
 void MainWindow::onCreateMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mSeq)
 { 
-    indumanager_->checkForMeasurement(mSeq);
+    indumanager_->appendMeasurement(mSeq);
 }
-
-
 
 void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq)
 {    
-    indumanager_->startMeasurement(mSeq);  
+    indumanager_->startMeasurement(mSeq);
     graph_->setStaticValues(mSeq);
 }
 
 void MainWindow::onNewData(std::shared_ptr<const DataPoint> datapoint)
 {
+    indumanager_->checkStartMeasurement();
     ppmsWidget_->newData(datapoint);
     if(indumanager_->getMeasurementState()==InduManager::State::ApproachEnd)
     {
