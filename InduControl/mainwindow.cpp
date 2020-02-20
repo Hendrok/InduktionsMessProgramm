@@ -26,6 +26,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(indumanager_, &InduManager::startNewMeasurement,
             this, &MainWindow::onStartMeasurement);
+    connect(indumanager_,&InduManager::newData,
+            this,&MainWindow::onNewData);
 }
 
 MainWindow::~MainWindow()
@@ -79,18 +81,15 @@ void MainWindow::onStartMessungButton()
 }
 
 void MainWindow::onCreateMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mSeq)
-{
-    indumanager_->createMeasurement(mSeq);
-
+{ 
+    indumanager_->checkForMeasurement(mSeq);
 }
 
 
 
 void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq)
 {    
-    indumanager_->startMeasurement(mSeq);
-    connect(indumanager_,&InduManager::newData,
-            this,&MainWindow::onNewData);
+    indumanager_->startMeasurement(mSeq);  
     graph_->setStaticValues(mSeq);
 }
 
@@ -101,6 +100,7 @@ void MainWindow::onNewData(std::shared_ptr<const DataPoint> datapoint)
     {
     graph_->appendDataPoint(datapoint);
     }
+
 }
 
 void MainWindow::createQLineDiagramm()

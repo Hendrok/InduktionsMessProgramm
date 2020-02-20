@@ -26,7 +26,7 @@ InduManager::~InduManager()
 {
 }
 
-void InduManager::createMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq)
+void InduManager::checkForMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq)
 {
     if(mVecSeq[measurementNumber_]!=nullptr && measurementState == State::Idle)
     {
@@ -66,7 +66,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 
     if( (measurementState==State::ApproachEnd) && std::abs(mSeqTc_->tempEnd() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
     {
-        measurementState= State::Idle;
+        measurementState = State::Idle;
 
         measurementNumber_++;   //starte neue Messung
     }
