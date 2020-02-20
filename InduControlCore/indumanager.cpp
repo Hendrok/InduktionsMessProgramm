@@ -1,6 +1,7 @@
 #include "indumanager.h"
 #include <QDebug>
 #include <memory>
+#include <vector>
 //Eigene Klassen
 #include "instrumentmanager.h"
 #include "ppmssimulation.h"
@@ -11,6 +12,7 @@
 #include "../Instruments/ppmsdatapoint.h"
 InduManager::InduManager()
     : measurementNumber_(0)
+    //, mVecSeq_ (std::vector <std::make_shared<MeasurementSequence>>())
     , instrumentmanager_ (std::make_unique<InstrumentManager>())
     , fw_(nullptr)
     , mSeqTc_(std::make_shared <MeasSeqTc>())
@@ -26,18 +28,22 @@ InduManager::~InduManager()
 {
 }
 
-void InduManager::checkForMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq)
+void InduManager::appendMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq)
 {
     if(mVecSeq[measurementNumber_]!=nullptr && measurementState == State::Idle)
     {
         emit startNewMeasurement(mVecSeq[measurementNumber_]);
     }
+        mVecSeq_=mVecSeq;
+
 }
+
 
 void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence)
 {
     auto seqTc = std::dynamic_pointer_cast <const MeasSeqTc> (measurementSequence);
     fw_= std::make_unique<FileWriter>();
+
     fw_->openFile(measurementSequence);
     if(seqTc !=nullptr){
         mSeqTc_->setTempStart(seqTc->tempStart());
@@ -47,6 +53,7 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
         measurementState= State::ApproachStart;
     }
 }
+
 
 void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {

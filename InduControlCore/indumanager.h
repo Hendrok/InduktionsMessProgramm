@@ -26,7 +26,7 @@ public:
     explicit InduManager();
     ~InduManager();
     enum class State { Idle, ApproachStart, ApproachEnd};
-    void checkForMeasurement(std::vector <std::shared_ptr<const MeasurementSequence>> mVecSeq);
+    void appendMeasurement(std::vector <std::shared_ptr<const MeasurementSequence>> mVecSeq);
     void startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence);
 
     State getMeasurementState() const;
@@ -36,6 +36,7 @@ private slots:
 
 private:   
     int measurementNumber_;
+    std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq_;
     std::unique_ptr <InstrumentManager> instrumentmanager_;
     std::unique_ptr <FileWriter> fw_;        
     std::shared_ptr <MeasSeqTc> mSeqTc_;  // muss ich noch auf measurementsequence wechseln
