@@ -27,7 +27,8 @@ protected:
 
 private:
     void setupUI();
-    void clearwidgets(QLayout * layout);
+    QWidget* widget;
+    QWidget* widgetJc;
     std::vector <std::shared_ptr<const MeasurementSequence>> createSequence() const;
     QButtonGroup* buttongroupmes_;
     QRadioButton* tcbutton_;
@@ -41,6 +42,8 @@ private:
     QDoubleSpinBox* frequency_;
     QDoubleSpinBox* voltageAmplitude_;
     QDoubleSpinBox* harmonicWave_;
+private slots:
+    void updateUI();
 };
 
 #endif // STARTDIALOG_H
