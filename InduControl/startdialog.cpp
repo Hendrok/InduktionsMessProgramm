@@ -175,7 +175,7 @@ void StartDialog::setupUI()
 std::vector <std::shared_ptr<const MeasurementSequence>> StartDialog::createSequence() const
 { 
     MeasSeqTc seq;
-
+    std::vector <std::shared_ptr<const MeasurementSequence>> vecSeq;
     if(tcbutton_->isChecked())
     {
 
@@ -194,6 +194,7 @@ std::vector <std::shared_ptr<const MeasurementSequence>> StartDialog::createSequ
                     QString::number(magneticField_->value()) + "mT_" +
                     QString::number(coilAngle_->value()) + "d"
                     );
+    vecSeq.push_back(std::make_shared<const MeasSeqTc>(seq));
     }
     else if(jcbutton_->isChecked())
     {
@@ -204,8 +205,8 @@ std::vector <std::shared_ptr<const MeasurementSequence>> StartDialog::createSequ
 
 
 
-    std::vector <std::shared_ptr<const MeasurementSequence>> vecSeq;
-    vecSeq.push_back(std::make_shared<const MeasSeqTc>(seq));
+
+
 
 
     return vecSeq;
