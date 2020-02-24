@@ -48,7 +48,7 @@ void StartDialog::accept()
 
 
 
-    close();
+    //close();
 }
 
 void StartDialog::setupUI()
@@ -159,7 +159,8 @@ void StartDialog::setupUI()
     widget->setLayout(gridLayout);
 
     QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
-                                         | QDialogButtonBox::Cancel);
+                                         | QDialogButtonBox::Close);
+
 
     connect(buttongroupmes_, &QButtonGroup::checkedButton, this, &StartDialog::setupUI);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
