@@ -7,7 +7,7 @@
 #include "graphdiagram.h"
 #include "../InduCore/datapoint.h"
 #include "startdialog.h"
-#include "../InduControlCore/ppmssimulation.h"
+#include "../Instruments/ppmssimulation.h"
 #include "ppmswidget.h"
 
 MainWindow::MainWindow(QWidget *parent)

@@ -1,6 +1,6 @@
 #ifndef PPMSSIMULATION_H
 #define PPMSSIMULATION_H
-#include "InduControlCore_global.h"
+#include "Instruments_global.h"
 #include <QObject>
 #include <memory>
 #include "../InduCore/datapoint.h"
@@ -10,7 +10,7 @@ class QObject;
 class MeasSeqTc;
 
 
-class INDUCONTROLCORE_EXPORT PpmsSimulation: public QObject
+class INSTRUMENTS_EXPORT PpmsSimulation: public QObject
 {
     Q_OBJECT
 public:
@@ -18,7 +18,7 @@ public:
     void setTempSetpoint(double setpoint, double rate);
 
 public slots:
-    std::shared_ptr <DataPoint> generateVariables();
+    std::shared_ptr <DataPoint> generateVariablesTc();
 private:
     DataPoint datapoint_;
     double tempSetpoint_;

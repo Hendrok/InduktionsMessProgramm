@@ -4,7 +4,7 @@
 #include <QDebug>
 
 #include "../InduCore/datapoint.h"
-#include "instrumentmanager.h"
+#include "../InduControlCore/instrumentmanager.h"
 #include "../Instruments/ppmsdatapoint.h"
 #include "../Instruments/lockindatapoint.h"
 
@@ -28,7 +28,7 @@ void PpmsSimulation::setTempSetpoint(double setpoint, double rate)
 }
 
 
-std::shared_ptr <DataPoint> PpmsSimulation::generateVariables()
+std::shared_ptr <DataPoint> PpmsSimulation::generateVariablesTc()
 {
     PpmsDataPoint ppmsDpoint;
     LockInDataPoint lockingDpoint;

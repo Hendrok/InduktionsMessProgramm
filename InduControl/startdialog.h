@@ -2,6 +2,8 @@
 #define STARTDIALOG_H
 
 #include <QDialog>
+#include <QButtonGroup>
+#include <QRadioButton>
 
 class MeasSeqTc;
 class MeasurementSequence;
@@ -26,7 +28,9 @@ protected:
 private:
     void setupUI();
     std::vector <std::shared_ptr<const MeasurementSequence>> createSequence() const;
-
+    QButtonGroup* buttongroupmes_;
+    QRadioButton* tcbutton_;
+    QRadioButton* jcbutton_;
     QLineEdit* sampleName_;
     QDoubleSpinBox* tempStart_;
     QDoubleSpinBox* tempEnd_;

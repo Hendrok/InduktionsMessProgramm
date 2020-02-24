@@ -4,7 +4,7 @@
 
 
 #include "../InduCore/datapoint.h"
-#include "ppmssimulation.h"
+#include "../Instruments/ppmssimulation.h"
 
 InstrumentManager::InstrumentManager()
     : timer_(new QTimer(this))
@@ -31,7 +31,7 @@ void InstrumentManager::setTempSetpoint(double setpoint, double rate)
 void InstrumentManager::onPolling()
 {
 
-    auto dataPoint = ppmssimu_->generateVariables();
+    auto dataPoint = ppmssimu_->generateVariablesTc();
 
 
 

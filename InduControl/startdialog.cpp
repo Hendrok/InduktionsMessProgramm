@@ -9,9 +9,14 @@
 #include <QDialogButtonBox>
 #include <QLineEdit>
 #include <vector>
+#include <QButtonGroup>
+
 
 StartDialog::StartDialog(QWidget *parent)
     : QDialog(parent)
+    , buttongroupmes_(new QButtonGroup(this))
+    , tcbutton_(new QRadioButton("Tc Measurement", this))
+    , jcbutton_(new QRadioButton("Jc Measurement", this))
     , sampleName_(nullptr)
     , tempStart_(nullptr)
     , tempEnd_(nullptr)
@@ -50,6 +55,11 @@ void StartDialog::setupUI()
 {
     //grid layout
     QGridLayout* gridLayout = new QGridLayout();
+
+    //Buttongroup!
+    buttongroupmes_->addButton(tcbutton_);
+    buttongroupmes_->addButton(jcbutton_);
+    tcbutton_->setChecked(true);
 
     sampleName_= new QLineEdit();
     sampleName_->setText("");
@@ -112,30 +122,46 @@ void StartDialog::setupUI()
     QLabel* labelVoltageAmplitude = new QLabel("Voltage Amplitude:");
     QLabel* labelHarmonicWave = new QLabel("Harmonic Wave:");
 
-    gridLayout->addWidget(labelSampleName, 0, 0);
-    gridLayout->addWidget(sampleName_, 0, 1);
-    gridLayout->addWidget(labelTempStart, 1, 0);
-    gridLayout->addWidget(tempStart_, 1, 1);
-    gridLayout->addWidget(labelTempEnd, 2, 0);
-    gridLayout->addWidget(tempEnd_, 2, 1);
-    gridLayout->addWidget(labeltemperatureRate, 3, 0);
-    gridLayout->addWidget(temperatureRate_, 3, 1);
-    gridLayout->addWidget(labelMagneticField, 4, 0);
-    gridLayout->addWidget(magneticField_, 4, 1);
-    gridLayout->addWidget(labelCoilAngle, 5, 0);
-    gridLayout->addWidget(coilAngle_, 5, 1);
-    gridLayout->addWidget(labelFrequency, 6, 0);
-    gridLayout->addWidget(frequency_, 6, 1);
-    gridLayout->addWidget(labelVoltageAmplitude, 7, 0);
-    gridLayout->addWidget(voltageAmplitude_, 7, 1);
-    gridLayout->addWidget(labelHarmonicWave, 8, 0);
-    gridLayout->addWidget(harmonicWave_, 8, 1);
+    gridLayout->addWidget(tcbutton_,0,0);
+    gridLayout->addWidget(jcbutton_,0,1);
+
+
+    if(tcbutton_->isChecked())
+    {
+    gridLayout->addWidget(labelSampleName);
+    gridLayout->addWidget(sampleName_);
+    gridLayout->addWidget(labelTempStart);
+    gridLayout->addWidget(tempStart_);
+    gridLayout->addWidget(labelTempEnd);
+    gridLayout->addWidget(tempEnd_);
+    gridLayout->addWidget(labeltemperatureRate);
+    gridLayout->addWidget(temperatureRate_);
+    gridLayout->addWidget(labelMagneticField);
+    gridLayout->addWidget(magneticField_);
+    gridLayout->addWidget(labelCoilAngle);
+    gridLayout->addWidget(coilAngle_);
+    gridLayout->addWidget(labelFrequency);
+    gridLayout->addWidget(frequency_);
+    gridLayout->addWidget(labelVoltageAmplitude);
+    gridLayout->addWidget(voltageAmplitude_);
+    gridLayout->addWidget(labelHarmonicWave);
+    gridLayout->addWidget(harmonicWave_);
+    }
+
+    else if(jcbutton_->isChecked())
+    {
+    gridLayout->addWidget(labelSampleName);
+    gridLayout->addWidget(sampleName_);
+    }
+
 
     QWidget* widget = new QWidget();
     widget->setLayout(gridLayout);
 
     QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
                                          | QDialogButtonBox::Cancel);
+
+    connect(buttongroupmes_, &QButtonGroup::checkedButton, this, &StartDialog::setupUI);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
@@ -149,6 +175,9 @@ void StartDialog::setupUI()
 std::vector <std::shared_ptr<const MeasurementSequence>> StartDialog::createSequence() const
 { 
     MeasSeqTc seq;
+
+    if(tcbutton_->isChecked())
+    {
 
     seq.setSupraName(sampleName_->text());
     seq.setTempStart(tempStart_->value());
@@ -165,6 +194,15 @@ std::vector <std::shared_ptr<const MeasurementSequence>> StartDialog::createSequ
                     QString::number(magneticField_->value()) + "mT_" +
                     QString::number(coilAngle_->value()) + "d"
                     );
+    }
+    else if(jcbutton_->isChecked())
+    {
+
+    }
+
+
+
+
 
     std::vector <std::shared_ptr<const MeasurementSequence>> vecSeq;
     vecSeq.push_back(std::make_shared<const MeasSeqTc>(seq));

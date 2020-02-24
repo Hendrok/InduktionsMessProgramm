@@ -18,14 +18,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     indumanager.cpp \
-    instrumentmanager.cpp \
-    ppmssimulation.cpp
+    instrumentmanager.cpp
 
 HEADERS += \
     InduControlCore_global.h \
     indumanager.h \
-    instrumentmanager.h \
-    ppmssimulation.h
+    instrumentmanager.h
 
 # Default rules for deployment.
 unix {

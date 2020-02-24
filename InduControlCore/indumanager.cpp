@@ -4,7 +4,7 @@
 #include <vector>
 //Eigene Klassen
 #include "instrumentmanager.h"
-#include "ppmssimulation.h"
+#include "../Instruments/ppmssimulation.h"
 #include "../InduCore/measurementsequence.h"
 #include "../InduCore/measseqtc.h"
 #include "../InduCore/datapoint.h"
@@ -65,24 +65,57 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
 
 void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
+
     emit newData(datapoint);
-    if(measurementState== State::ApproachStart && std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
+
+/*
+    switch (measurementState)
+    {
+    case State::Idle:{
+        qDebug()<<"hi";
+            //to Do: if abfrage-> ob das Programm bei Aktueller Temp bleiben soll, oder Energiesparmodus!
+        }
+    case State::ApproachStart:{
+            if(std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
+            {
+                measurementState = State::ApproachEnd;
+                instrumentmanager_->setTempSetpoint(mSeqTc_->tempEnd(), mSeqTc_->temperatureRate());
+                fw_->append(datapoint);
+            }
+        }
+    case State::ApproachEnd:{
+           if(fw_!= nullptr){
+                fw_->append(datapoint);
+           }
+
+           if(std::abs(mSeqTc_->tempEnd() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
+           {
+                measurementState = State::Idle;
+                measurementNumber_++;
+           }
+        }
+
+    }
+*/
+    if(measurementState== State::ApproachStart &&
+            std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
     {
         measurementState = State::ApproachEnd;
         instrumentmanager_->setTempSetpoint(mSeqTc_->tempEnd(), mSeqTc_->temperatureRate());
         fw_->append(datapoint);
     }
 
-    if ((fw_ != nullptr) && (measurementState==State::ApproachEnd))
+    if (fw_ != nullptr && measurementState==State::ApproachEnd)
     {
         fw_->append(datapoint);
     }
 
-    if( (measurementState==State::ApproachEnd) && std::abs(mSeqTc_->tempEnd() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
+    if( measurementState==State::ApproachEnd &&
+            std::abs(mSeqTc_->tempEnd() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
     {
         measurementState = State::Idle;
 
-        measurementNumber_++;   //starte neue Messung
+        measurementNumber_++;
     }
 
 }

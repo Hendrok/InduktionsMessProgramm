@@ -36,7 +36,7 @@ private slots:
     void onNewData(std::shared_ptr<DataPoint> datapoint);
 
 private:   
-    int measurementNumber_;
+    unsigned long measurementNumber_;
     std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq_;
     std::unique_ptr <InstrumentManager> instrumentmanager_;
     std::unique_ptr <FileWriter> fw_;        
