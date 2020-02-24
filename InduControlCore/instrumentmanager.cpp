@@ -19,7 +19,9 @@ InstrumentManager::InstrumentManager()
 }
 InstrumentManager::~InstrumentManager()
 {
-
+  /* BUG
+   * Wenn du PPMSSimulation als rohen Pointer erstellst, musst du ihn hier deleten
+   */
 }
 
 void InstrumentManager::setTempSetpoint(double setpoint, double rate)

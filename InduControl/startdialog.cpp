@@ -14,6 +14,8 @@
 
 StartDialog::StartDialog(QWidget *parent)
     : QDialog(parent)
+    , widget(new QWidget(this))
+    , widgetJc(new QWidget(this))
     , buttongroupmes_(new QButtonGroup(this))
     , tcbutton_(new QRadioButton("Tc Measurement", this))
     , jcbutton_(new QRadioButton("Jc Measurement", this))
@@ -44,23 +46,27 @@ void StartDialog::accept()
 {
     auto vecSeq = createSequence();
 
-    emit createMeasurement(vecSeq);  //-> weiter gehts bei Mainwindow bei onCreateMeasurement
+    emit createMeasurement(vecSeq);
 
 
 
-    close();
+    //close();
 }
 
 void StartDialog::setupUI()
 {
-    //grid layout
     QGridLayout* gridLayout = new QGridLayout();
+    QGridLayout* gridLayoutJc = new QGridLayout();
+    QHBoxLayout* boxButton = new QHBoxLayout();
 
     //Buttongroup!
     buttongroupmes_->addButton(tcbutton_);
     buttongroupmes_->addButton(jcbutton_);
     tcbutton_->setChecked(true);
+    boxButton->addWidget(tcbutton_);
+    boxButton->addWidget(jcbutton_);
 
+    //Tc Measurement
     sampleName_= new QLineEdit();
     sampleName_->setText("");
 
@@ -122,14 +128,8 @@ void StartDialog::setupUI()
     QLabel* labelVoltageAmplitude = new QLabel("Voltage Amplitude:");
     QLabel* labelHarmonicWave = new QLabel("Harmonic Wave:");
 
-    gridLayout->addWidget(tcbutton_,0,0);
-    gridLayout->addWidget(jcbutton_,0,1);
-
-
-    if(tcbutton_->isChecked())
-    {
-    gridLayout->addWidget(labelSampleName);
-    gridLayout->addWidget(sampleName_);
+    gridLayout->addWidget(labelSampleName,0,0);
+    gridLayout->addWidget(sampleName_,0,1);
     gridLayout->addWidget(labelTempStart);
     gridLayout->addWidget(tempStart_);
     gridLayout->addWidget(labelTempEnd);
@@ -146,30 +146,50 @@ void StartDialog::setupUI()
     gridLayout->addWidget(voltageAmplitude_);
     gridLayout->addWidget(labelHarmonicWave);
     gridLayout->addWidget(harmonicWave_);
-    }
 
-    else if(jcbutton_->isChecked())
-    {
-    gridLayout->addWidget(labelSampleName);
-    gridLayout->addWidget(sampleName_);
-    }
+    //Jc Measurement
 
 
-    QWidget* widget = new QWidget();
+
+
+    //set Layouts
     widget->setLayout(gridLayout);
+    widgetJc->setLayout(gridLayoutJc);
+    QWidget* boxwidget = new QWidget();
+    boxwidget->setLayout(boxButton);
+    widgetJc->setVisible(false);
 
     QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
-                                         | QDialogButtonBox::Cancel);
+                                         | QDialogButtonBox::Close);
 
-    connect(buttongroupmes_, &QButtonGroup::checkedButton, this, &StartDialog::setupUI);
+    connect(buttongroupmes_, QOverload<int, bool>::of(&QButtonGroup::buttonToggled),
+            this, &StartDialog::updateUI);
+
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
+    //set MainLayout
     QVBoxLayout* mainLayout = new QVBoxLayout();
+    mainLayout->addWidget(boxwidget);
     mainLayout->addWidget(widget);
+    mainLayout->addWidget(widgetJc);
     mainLayout->addWidget(buttonBox);
 
     setLayout(mainLayout);
+}
+
+void StartDialog::updateUI()
+{
+    if(tcbutton_->isChecked())
+    {
+        widgetJc->setVisible(false);
+        widget->setVisible(true);
+    }
+    if(jcbutton_->isChecked())
+    {
+        widget->setVisible(false);
+        widgetJc->setVisible(true);
+    }
 }
 
 std::vector <std::shared_ptr<const MeasurementSequence>> StartDialog::createSequence() const

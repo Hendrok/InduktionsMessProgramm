@@ -27,10 +27,29 @@ InduManager::InduManager()
 
 InduManager::~InduManager()
 {
+  /* NOTE
+   * der leere Deconstructor kann hier und in der Header-Datei weg, du machst
+   * hier eh nix
+   */
 }
 
 void InduManager::appendMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq)
 {
+    /* BUG
+     * du vergleichst hier unsigned mit size_t (der Typ, der von der Methode size()
+     * zurückgegegen wird.
+     * Das mag auf 32-Bit-System funktionieren, spätestens auf 64-Bit-Architekturen ist es
+     * ein Bug, da sizeof(unsigned int) != sizeof(size_t)
+     *
+     * Besser: Immer range-basierte for-Schleifen verwenden, damit solche subtilen Bugs erst
+     * gar nicht auftauchen.
+     *
+     * Beispiel:
+     * for (const auto& element : mVecSeg)
+     * {
+     *    mVecSeg_.push_back(element);
+     * }
+     */
     for (unsigned i=0; i< mVecSeq.size();i++)
     {
         mVecSeq_.push_back(mVecSeq[i]);
@@ -67,6 +86,29 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
 
     emit newData(datapoint);
+    /* BUG
+     * der Fehler liegt hier, dass du keine break-Befehle verwendest. Switch-Statements gehen so:
+     *
+     * switch (value)
+     * {
+     *   case A:
+     *   {
+     *     ...
+     *     break;
+     *   }
+     *   case B:
+     *   {
+     *     ...
+     *     break;
+     *   }
+     *   ...
+     *   default: assert(false);
+     * }
+     *
+     * Der default-Branch ist wichtig, damit du später keinen Bug produzierst, solltest du später
+     * mal den State-enum erweitern und vergessen, dieses switch-Statement zu aktualisieren. Dann
+     * wird der fehlende case hier als assert-error ausgegeben.
+     */
 
 /*
     switch (measurementState)

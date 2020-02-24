@@ -25,6 +25,9 @@ public:
 
 private slots:
     void onPolling();
+    /* WARNING
+     * tempSetpoint_ und tempRate_ werden nirgends verwendet. Ist das Kunst, oder kann das weg?
+     */
 private:
     QTimer* timer_;
     PpmsSimulation* ppmssimu_;

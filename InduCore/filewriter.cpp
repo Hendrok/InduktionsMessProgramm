@@ -40,6 +40,10 @@ QString FileWriter::writeHeader(std::shared_ptr<const MeasurementSequence> measu
             header_.append(QString::number(measurementSequence->harmonicWave()));
             header_.append("\nCoilAngle: ");
             header_.append(QString::number(measurementSequence->coilAngle()));
+            /* NOTE
+             * Die Unterscheidung zwischen degree und degrees find ich unnötig
+             * Warum nicht einfach degrees, oder wenn du unbedingt willst: degree(s)
+             */
             if(measurementSequence->coilAngle()==1) {header_.append(" degree \n"); }
             else{
               header_.append(" degrees \n");
@@ -69,6 +73,10 @@ QString FileWriter::writeHeader(std::shared_ptr<const MeasurementSequence> measu
             header_.append(QString::number(measurementSequence->harmonicWave()));
             header_.append("\n CoilAngle: ");
             header_.append(QString::number(measurementSequence->coilAngle()));
+            /* NOTE
+             * Die Unterscheidung zwischen degree und degrees find ich unnötig
+             * Warum nicht einfach degrees, oder wenn du unbedingt willst: degree(s)
+             */
             if(measurementSequence->coilAngle()==1) {header_.append(" degree \n"); }
             else{
               header_.append(" degrees \n");
@@ -117,14 +125,18 @@ QString FileWriter::createFileName(std::shared_ptr<const MeasurementSequence> me
 
 
 bool FileWriter::append(std::shared_ptr<DataPoint> datapoint){
-            //öffnet die file, hängt die aktuell ausgelesen datenpunkte an, schließt die file
+        /* NOTE
+         * Lass die Datei doch einfach offen und schließ sie erst am Ende der Messung
+         */
         if (file_->open(QIODevice::WriteOnly | QIODevice::Append)){
         file_->write(QString::number(datapoint->ppmsdata()->pvTempLive()).toUtf8() +
                      " " + QString::number(datapoint->ppmsdata()->pvVoltLive()).toUtf8() +
                      " " + QString::number(datapoint->lockindata()->pvPhase()).toUtf8() +"\n");
         file_->close();
         }
-
+    /* NOTE
+     * Du returnst hier immer true, unabhängig vom Code, der ausgeführt wird. Sinn ?!
+     */
     return true;
 }
 
@@ -161,6 +173,10 @@ QString FileWriter::openFile(std::shared_ptr<const MeasurementSequence> measurem
             file_->write(writeHeader(measurementSequence).toUtf8());
         }
 
+        /* NOTE
+         * Lass die Datei doch einfach offen, anstatt sie hier zuzumachen und bei jeden
+         * Datenpunkt wieder zu öffnen
+         */
         file_->close();
         return file_->fileName();
 
