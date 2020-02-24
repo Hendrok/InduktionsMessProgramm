@@ -53,6 +53,9 @@ void StartDialog::accept()
 
 void StartDialog::setupUI()
 {
+    // diese klappt nicht clearwidgets(layout());
+
+
     //grid layout
     QGridLayout* gridLayout = new QGridLayout();
 
@@ -122,12 +125,13 @@ void StartDialog::setupUI()
     QLabel* labelVoltageAmplitude = new QLabel("Voltage Amplitude:");
     QLabel* labelHarmonicWave = new QLabel("Harmonic Wave:");
 
-    gridLayout->addWidget(tcbutton_,0,0);
-    gridLayout->addWidget(jcbutton_,0,1);
+
 
 
     if(tcbutton_->isChecked())
     {
+    gridLayout->addWidget(tcbutton_,0,0);
+    gridLayout->addWidget(jcbutton_,0,1);
     gridLayout->addWidget(labelSampleName);
     gridLayout->addWidget(sampleName_);
     gridLayout->addWidget(labelTempStart);
@@ -150,6 +154,8 @@ void StartDialog::setupUI()
 
     else if(jcbutton_->isChecked())
     {
+    gridLayout->addWidget(tcbutton_,0,0);
+    gridLayout->addWidget(jcbutton_,0,1);
     gridLayout->addWidget(labelSampleName);
     gridLayout->addWidget(sampleName_);
     }
@@ -162,7 +168,8 @@ void StartDialog::setupUI()
                                          | QDialogButtonBox::Close);
 
 
-    connect(buttongroupmes_, &QButtonGroup::checkedButton, this, &StartDialog::setupUI);
+    connect(buttongroupmes_, static_cast<void(QButtonGroup::*)(QAbstractButton *)>(&QButtonGroup::buttonClicked), this, &StartDialog::setupUI);
+
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
@@ -170,7 +177,18 @@ void StartDialog::setupUI()
     mainLayout->addWidget(widget);
     mainLayout->addWidget(buttonBox);
 
+
     setLayout(mainLayout);
+}
+
+void StartDialog::clearwidgets(QLayout *layout)
+{
+    if (! layout)
+         return;
+      while (auto item = layout->takeAt(0)) {
+         delete item->widget();
+         clearwidgets(item->layout());
+      }
 }
 
 std::vector <std::shared_ptr<const MeasurementSequence>> StartDialog::createSequence() const

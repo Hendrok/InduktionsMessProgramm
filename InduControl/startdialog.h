@@ -27,6 +27,7 @@ protected:
 
 private:
     void setupUI();
+    void clearwidgets(QLayout * layout);
     std::vector <std::shared_ptr<const MeasurementSequence>> createSequence() const;
     QButtonGroup* buttongroupmes_;
     QRadioButton* tcbutton_;
