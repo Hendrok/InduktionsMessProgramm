@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/Icons">
+        <file>Icons/StartButton.png</file>
+        <file>Icons/Jc.svg</file>
+        <file>Icons/Tc.svg</file>
+    </qresource>
+</RCC>

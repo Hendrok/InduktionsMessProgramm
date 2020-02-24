@@ -1,14 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
 #include <QString>
 #include <memory>
 #include <QFile>
 #include <QFileDialog>
+#include <QDebug>
+#include <memory>
 
 //Eigene Klassen
-#include "../InduCore/measurementsequence.h"
-#include "../InduControlCore/indumanager.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -23,13 +22,14 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
+/*
 //TODO: meine ui klappt nicht, bzw die werte aus der Ui den attributen hinzuzufügen
 void MainWindow::on_pushButton_clicked()
 {
     //die per Ui eingetragenen Attribute werden erstellt
-    std::shared_ptr<MeasurementSequence> measurementSequence;
-    measurementSequence  = std::make_shared<MeasurementSequence>();
+    MeasSeqTc measurementSequence;
+
+
     QString SupraName;
     double StartTemp =ui->StartTemp->value();
     double EndTemp=ui->EndTemp->value();
@@ -42,29 +42,20 @@ void MainWindow::on_pushButton_clicked()
 
     // die eingegeben Attribute werden in measurementSequence "gesettet"
     SupraName.append(ui->SupraName1->text());
-    measurementSequence->setSupraName(SupraName);
-    measurementSequence->setTempStart(StartTemp);
-    measurementSequence->setTempEnd(EndTemp);
-    measurementSequence->setTemperatureRate(temperatureRate);
-    measurementSequence->setMagneticField(magneticField);
-    measurementSequence->setCoilAngle(coilAngle);
-    measurementSequence->setFrequency(frequency);
-    measurementSequence->setVoltageAmplitude(voltageAmplitude);
-    measurementSequence->setHarmonicWave(harmonicWave);
+    measurementSequence.setSupraName(SupraName);
+    measurementSequence.setTempStart(StartTemp);
+    measurementSequence.setTempEnd(EndTemp);
+    measurementSequence.setTemperatureRate(temperatureRate);
+    measurementSequence.setMagneticField(magneticField);
+    measurementSequence.setCoilAngle(coilAngle);
+    measurementSequence.setFrequency(frequency);
+    measurementSequence.setVoltageAmplitude(voltageAmplitude);
+    measurementSequence.setHarmonicWave(harmonicWave);
 
-    /*QFile file(QFileDialog::getOpenFileName(this,
-                                                  tr("OPEN FILE"),
-                                                  "C:",
-                                                  tr("All files(*.*);;Text File(*.txt)")));*/
+    auto ptr = std::make_shared<const MeasSeqTc>(measurementSequence);
 
-
-
-    InduManager idm;
-    idm.startMeasurement(measurementSequence);
-
-
-
-
-
+    InduManager *idm = new InduManager;
+    //idm->startMeasurement(ptr);
 }
 
+*/

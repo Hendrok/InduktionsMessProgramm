@@ -1,105 +1,58 @@
 #ifndef DATAPOINT_H
 #define DATAPOINT_H
-//gibt den in der aktuellen schleife aus     pvtemp_   was fehlt status int; jedes bit hat speziellen status. das auch hinzufügen rest bei marco gucken, wichtig das mit pv zu bezeichnen!
+
 #include "InduCore_global.h"
+#include <chrono>
+#include <memory>
+#include "../Instruments/ppmsdatapoint.h"
+#include "../Instruments/lockindatapoint.h"
+// test
 class INDUCORE_EXPORT DataPoint
 {
 public:
     DataPoint();
-    double pvTemp() const;
-    void setpvTemp(double pvTemp);
-    double pvField() const;
-    void setpvField(double pvField);
-    double pvAngle() const;
-    void setpvAngle(double pvAngle);
-    double pvVolt() const;
-    void setpvVolt(double pvVolt);
-    double pvPhase() const;
-    void setpvPhase(double pvPhase);
-    int pvStatusPPMS() const;
-    void setpvStatusPPMS(int &pvStatusPPMS);
-    double getpvHeliumStatus() const;
-    void setpvHeliumStatus(double &pvHeliumStatus_);
+
+    std::shared_ptr<const PpmsDataPoint> ppmsdata() const;
+    void setPpmsdata(const std::shared_ptr<const PpmsDataPoint> &ppmsdata);
+
+    std::shared_ptr<const LockInDataPoint> lockindata() const;
+    void setLockindata(const std::shared_ptr<const LockInDataPoint> &lockindata);
 
 private:
-    double pvTemp_;
-    double pvField_;
-    double pvAngle_;
-    double pvVolt_;
-    double pvPhase_;
-    int pvStatusPPMS_;
-    double pvHeliumStatus_;
+
+
+    std::shared_ptr<const PpmsDataPoint> ppmsdata_;
+    std::shared_ptr<const LockInDataPoint> lockindata_;
+
+
 };
-
-inline double DataPoint::pvTemp() const
+inline DataPoint::DataPoint()
+    : ppmsdata_(std::make_shared<const PpmsDataPoint>())
+    , lockindata_(std::make_shared<const LockInDataPoint>())
 {
-    return pvTemp_;
 }
 
-inline void DataPoint::setpvTemp(double temp)
+
+
+inline std::shared_ptr<const PpmsDataPoint> DataPoint::ppmsdata() const
 {
-    pvTemp_ = temp;
+return ppmsdata_;
 }
 
-inline double DataPoint::pvField() const
+inline void DataPoint::setPpmsdata(const std::shared_ptr<const PpmsDataPoint> &ppmsdata)
 {
-    return pvField_;
+ppmsdata_ = ppmsdata;
 }
 
-inline void DataPoint::setpvField(double field)
+inline std::shared_ptr<const LockInDataPoint> DataPoint::lockindata() const
 {
-    pvField_ = field;
+return lockindata_;
 }
 
-inline double DataPoint::pvAngle() const
+inline void DataPoint::setLockindata(const std::shared_ptr<const LockInDataPoint> &lockindata)
 {
-    return pvAngle_;
+lockindata_ = lockindata;
 }
-
-inline void DataPoint::setpvAngle(double angle)
-{
-    pvAngle_ = angle;
-}
-
-inline double DataPoint::pvVolt() const
-{
-    return pvVolt_;
-}
-
-inline void DataPoint::setpvVolt(double volt)
-{
-    pvVolt_ = volt;
-}
-
-inline double DataPoint::pvPhase() const
-{
-    return pvPhase_;
-}
-
-inline void DataPoint::setpvPhase(double phase)
-{
-    pvPhase_ = phase;
-}
-
-inline int DataPoint::pvStatusPPMS() const
-{
-    return pvStatusPPMS_;
-}
-
-inline void DataPoint::setpvStatusPPMS(int &pvStatusPPMS)
-{
-    pvStatusPPMS_=pvStatusPPMS;
-}
-inline double DataPoint::getpvHeliumStatus() const
-{
-    return pvHeliumStatus_;
-}
-
-inline void DataPoint::setpvHeliumStatus(double &pvHeliumStatus)
-{
-    pvHeliumStatus_ = pvHeliumStatus;
-}
-
 
 
 

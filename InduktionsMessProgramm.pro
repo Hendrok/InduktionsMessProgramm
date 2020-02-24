@@ -1,16 +1,17 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    ClassTest \
     InduControl \
     InduControlCore \
     InduCore \
-    InduViewer
+    InduViewer \
+    Instruments
 
-
-
+InduCore.depends=Instruments
 InduControlCore.depends=InduCore
-ClassTest.depends =InduControlCore
 InduControl.depends=InduControlCore
 InduViewer.depends=InduCore
+
+
+
 

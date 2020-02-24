@@ -3,8 +3,10 @@
 
 #include <QVector>
 #include <memory>
-#include "InduCore_global.h" //hier ist das export macro, sonst kann ich INDUCORE_EXPORT nicht benutzen beim deklarieren der Klasse
+#include "InduCore_global.h"
 #include "measurementsequence.h"
+#include "measseqtc.h"
+
 class INDUCORE_EXPORT Datafile
 {
 public:
@@ -24,7 +26,7 @@ private:
     QString filename_;
 
     //attribute
-    std::shared_ptr<MeasurementSequence>  MeasurementPointer;
+    std::shared_ptr<MeasSeqTc>  MeasurementPointer;
 
 };
 

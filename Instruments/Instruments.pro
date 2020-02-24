@@ -1,7 +1,7 @@
 QT -= gui
 
 TEMPLATE = lib
-DEFINES += INDUCONTROLCORE_LIBRARY
+DEFINES += INSTRUMENTS_LIBRARY
 
 CONFIG += c++17
 
@@ -17,13 +17,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    indumanager.cpp \
-    instrumentmanager.cpp
+    ppmssimulation.cpp
 
 HEADERS += \
-    InduControlCore_global.h \
-    indumanager.h \
-    instrumentmanager.h
+    Instruments_global.h \
+    instrument.h \
+    lockindatapoint.h \
+    ppmsdatapoint.h \
+    ppmssimulation.h
 
 # Default rules for deployment.
 unix {
@@ -31,17 +32,3 @@ unix {
 }
 !isEmpty(target.path): INSTALLS += target
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../InduCore/ -lInduCore
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../InduCore/ -lInduCore
-else:unix: LIBS += -L$$OUT_PWD/../InduCore/ -lInduCore
-
-INCLUDEPATH += $$PWD/../InduCore
-DEPENDPATH += $$PWD/../InduCore
-
-
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Instruments/ -lInstruments
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Instruments/ -lInstruments
-else:unix: LIBS += -L$$OUT_PWD/../Instruments/ -lInstruments
-
-INCLUDEPATH += $$PWD/../Instruments
-DEPENDPATH += $$PWD/../Instruments
