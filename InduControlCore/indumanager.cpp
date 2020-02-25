@@ -1,18 +1,19 @@
 #include "indumanager.h"
 #include <QDebug>
-#include <memory>
 #include <vector>
-//Eigene Klassen
+
+//Internal Classes
 #include "instrumentmanager.h"
-#include "../Instruments/ppmssimulation.h"
 #include "../InduCore/measurementsequence.h"
 #include "../InduCore/measseqtc.h"
 #include "../InduCore/datapoint.h"
 #include "../InduCore/filewriter.h"
 #include "../Instruments/ppmsdatapoint.h"
+
+
+
 InduManager::InduManager()
     : measurementNumber_(0)
-    //, mVecSeq_ (std::vector <std::make_shared<const MeasurementSequence>>()) // wie geht dieses
     , instrumentmanager_ (std::make_unique<InstrumentManager>())
     , fw_(nullptr)
     , mSeqTc_(std::make_shared <MeasSeqTc>())
@@ -22,7 +23,7 @@ InduManager::InduManager()
 {
     connect(instrumentmanager_.get(), &InstrumentManager::newData,
                 this, &InduManager::onNewData);
-    //mVecSeq_ = std::vector<std::make_shared<MeasurementSequence>>();  // diese nicht gut
+
 }
 
 InduManager::~InduManager()
@@ -33,26 +34,13 @@ InduManager::~InduManager()
    */
 }
 
+
+
 void InduManager::appendMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq)
 {
-    /* BUG
-     * du vergleichst hier unsigned mit size_t (der Typ, der von der Methode size()
-     * zurückgegegen wird.
-     * Das mag auf 32-Bit-System funktionieren, spätestens auf 64-Bit-Architekturen ist es
-     * ein Bug, da sizeof(unsigned int) != sizeof(size_t)
-     *
-     * Besser: Immer range-basierte for-Schleifen verwenden, damit solche subtilen Bugs erst
-     * gar nicht auftauchen.
-     *
-     * Beispiel:
-     * for (const auto& element : mVecSeg)
-     * {
-     *    mVecSeg_.push_back(element);
-     * }
-     */
-    for (unsigned i=0; i< mVecSeq.size();i++)
+    for (const auto mesSeq: mVecSeq)
     {
-        mVecSeq_.push_back(mVecSeq[i]);
+        mVecSeq_.push_back(mesSeq);
     }
 }
 
@@ -81,41 +69,43 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
     }
 }
 
+/* BUG
+ * In den Zuständen ApproachStart und ApproachEnd überprüfst du, ob die Temperaturdifferenz zwischen Soll und Ist
+ * kleiner ist als die Heiz- bzw. Kühlrate des PPMS. Warum?
+ * Richtig wäre es, irgendeinen Differenz-Threshold zu definieren, z.b. 0.1 K oder so
+ *
+ * Nächster Bug im ApproachStart: Hier appendest du auch schon die Datenpunkte im FileWriter,
+ * obwohl die Messung ja noch gar nicht begonnen hat
+ */
 
+/* NOTE
+ * Bei Zustandsänderung könntest du ein Signal emitieren, dass als Argument den neuen Zustand enthält.
+ * z.B.:
+ *
+ * void newState(State newState);
+ *
+ * Dann verbindest du im Mainwindow ein neuen Slot mit diesem Signal und kann in dem Slot dem Graphen
+ * (und anderen Widgets, die später vllt. mal den Zustand brauchen) direkt weitergeben.
+ * Damit könntest du dir auch den Getter getMeasurementState weiter unten sparen.
+ */
+
+/* NOTE
+ * Grundsätzlich findet vieles deiner Prozesslogik hier im Switch-Statement statt,
+ * mit Ausnahme des "Start Measurement"-Algorithmus.
+ * Ich würde es sinnvoller finden, lieber noch einen weiteren State zu definieren, sowas wie
+ * "setStartSetpoints" oder "StartMeasurement" (der Methodenname von oben) und dann den Algorithmus
+ * auch im switch-Statement auszuführen. Dann ist alles, was für "Start/Stop/Warte/Speicher in Datei"
+ * notwendig ist, hier an einer Stelle.
+ */
 void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
-
     emit newData(datapoint);
-    /* BUG
-     * der Fehler liegt hier, dass du keine break-Befehle verwendest. Switch-Statements gehen so:
-     *
-     * switch (value)
-     * {
-     *   case A:
-     *   {
-     *     ...
-     *     break;
-     *   }
-     *   case B:
-     *   {
-     *     ...
-     *     break;
-     *   }
-     *   ...
-     *   default: assert(false);
-     * }
-     *
-     * Der default-Branch ist wichtig, damit du später keinen Bug produzierst, solltest du später
-     * mal den State-enum erweitern und vergessen, dieses switch-Statement zu aktualisieren. Dann
-     * wird der fehlende case hier als assert-error ausgegeben.
-     */
 
-/*
     switch (measurementState)
     {
     case State::Idle:{
-        qDebug()<<"hi";
-            //to Do: if abfrage-> ob das Programm bei Aktueller Temp bleiben soll, oder Energiesparmodus!
+            //NOTE if abfrage-> ob das Programm bei Aktueller Temp bleiben soll, oder Energiesparmodus!
+            break;
         }
     case State::ApproachStart:{
             if(std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
@@ -124,6 +114,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
                 instrumentmanager_->setTempSetpoint(mSeqTc_->tempEnd(), mSeqTc_->temperatureRate());
                 fw_->append(datapoint);
             }
+            break;
         }
     case State::ApproachEnd:{
            if(fw_!= nullptr){
@@ -132,34 +123,15 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 
            if(std::abs(mSeqTc_->tempEnd() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
            {
+               fw_->closeFile();
                 measurementState = State::Idle;
                 measurementNumber_++;
            }
+            break;
         }
 
+    default:assert(false);
     }
-*/
-    if(measurementState== State::ApproachStart &&
-            std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
-    {
-        measurementState = State::ApproachEnd;
-        instrumentmanager_->setTempSetpoint(mSeqTc_->tempEnd(), mSeqTc_->temperatureRate());
-        fw_->append(datapoint);
-    }
-
-    if (fw_ != nullptr && measurementState==State::ApproachEnd)
-    {
-        fw_->append(datapoint);
-    }
-
-    if( measurementState==State::ApproachEnd &&
-            std::abs(mSeqTc_->tempEnd() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
-    {
-        measurementState = State::Idle;
-
-        measurementNumber_++;
-    }
-
 }
 
 InduManager::State InduManager::getMeasurementState() const

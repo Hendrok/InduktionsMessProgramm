@@ -40,14 +40,7 @@ QString FileWriter::writeHeader(std::shared_ptr<const MeasurementSequence> measu
             header_.append(QString::number(measurementSequence->harmonicWave()));
             header_.append("\nCoilAngle: ");
             header_.append(QString::number(measurementSequence->coilAngle()));
-            /* NOTE
-             * Die Unterscheidung zwischen degree und degrees find ich unnötig
-             * Warum nicht einfach degrees, oder wenn du unbedingt willst: degree(s)
-             */
-            if(measurementSequence->coilAngle()==1) {header_.append(" degree \n"); }
-            else{
-              header_.append(" degrees \n");
-              }
+            header_.append(" degrees \n");
             header_.append("Temperature Voltage Phase \n");
             return header_;
         }
@@ -73,18 +66,12 @@ QString FileWriter::writeHeader(std::shared_ptr<const MeasurementSequence> measu
             header_.append(QString::number(measurementSequence->harmonicWave()));
             header_.append("\n CoilAngle: ");
             header_.append(QString::number(measurementSequence->coilAngle()));
-            /* NOTE
-             * Die Unterscheidung zwischen degree und degrees find ich unnötig
-             * Warum nicht einfach degrees, oder wenn du unbedingt willst: degree(s)
-             */
-            if(measurementSequence->coilAngle()==1) {header_.append(" degree \n"); }
-            else{
-              header_.append(" degrees \n");
-              }
+            header_.append(" degrees \n");
+            header_.append("Input_Voltage Output_Voltage Phase \n");
             return header_;
         }
 
-        else{return "FEHLER UPSI";}
+        else{return "unable to write header";}
 
 }
 QString FileWriter::createFileName(std::shared_ptr<const MeasurementSequence> measurementSequence){
@@ -93,51 +80,40 @@ QString FileWriter::createFileName(std::shared_ptr<const MeasurementSequence> me
         if(seqTc !=nullptr)
         {
             QString filename_= "Tc_";
-            filename_.append(measurementSequence->supraName());
-            filename_.append("_");
-            filename_.append(QString::number(seqTc->voltageAmplitude()));
-            filename_.append("V_");
-            filename_.append(QString::number(measurementSequence->frequency()));
-            filename_.append("hz_");
-            filename_.append(QString::number(measurementSequence->magneticField()));
-            filename_.append("mT_");
-            filename_.append(QString::number(measurementSequence->coilAngle()));
-            filename_.append("d");
+            filename_.append(measurementSequence->fileName());
             return filename_;
         }
         else if(seqJc !=nullptr)
         {
             QString filename_= "Jc_";
-            filename_.append(measurementSequence->supraName());
-            filename_.append("_");
-            filename_.append(QString::number(seqJc->temperature()));
-            filename_.append("V_");
-            filename_.append(QString::number(measurementSequence->frequency()));
-            filename_.append("hz_");
-            filename_.append(QString::number(measurementSequence->magneticField()));
-            filename_.append("mT_");
-            filename_.append(QString::number(measurementSequence->coilAngle()));
-            filename_.append("d");
+            filename_.append(measurementSequence->fileName());
             return filename_;
         }
-        else {return "Weder Tc nohc Jc Messung";}
+        else {return "Neither Tc or Jc";}
 }
 
-
-bool FileWriter::append(std::shared_ptr<DataPoint> datapoint){
-        /* NOTE
-         * Lass die Datei doch einfach offen und schließ sie erst am Ende der Messung
-         */
-        if (file_->open(QIODevice::WriteOnly | QIODevice::Append)){
+/* FIXME
+ * Irgendwas stimmt hier immer noch nicht, die erste Zeile macht gar nichts,
+ * ist noch ein Überbleibsel von dem alten Code.
+ *
+ * Wenn die Datei offen bleibt, würde ich aber dennoch vor jedem neuen Schreiben einer Zeile
+ * überprüfen, ob die Datei offen ist:
+ *
+ * if (!file_->isOpen())
+ * {
+ *     return;
+ * }
+ * ...
+ */
+void FileWriter::append(std::shared_ptr<DataPoint> datapoint){
+        (QIODevice::WriteOnly | QIODevice::Append);
+        {
         file_->write(QString::number(datapoint->ppmsdata()->pvTempLive()).toUtf8() +
                      " " + QString::number(datapoint->ppmsdata()->pvVoltLive()).toUtf8() +
                      " " + QString::number(datapoint->lockindata()->pvPhase()).toUtf8() +"\n");
-        file_->close();
+
         }
-    /* NOTE
-     * Du returnst hier immer true, unabhängig vom Code, der ausgeführt wird. Sinn ?!
-     */
-    return true;
+
 }
 
 QString FileWriter::openFile(std::shared_ptr<const MeasurementSequence> measurementSequence /*, QString filedir*/){
@@ -155,7 +131,7 @@ QString FileWriter::openFile(std::shared_ptr<const MeasurementSequence> measurem
         for(int i=1; file.exists();i++)
         {
         if (file.exists()){
-            file.setFileName(path + measurementSequence->fileName() +"_("+QString::number(i)+")" ".txt");
+            file.setFileName(path + filepath + "_("+QString::number(i) + ")" ".txt");
         }
         }
 
@@ -173,11 +149,10 @@ QString FileWriter::openFile(std::shared_ptr<const MeasurementSequence> measurem
             file_->write(writeHeader(measurementSequence).toUtf8());
         }
 
-        /* NOTE
-         * Lass die Datei doch einfach offen, anstatt sie hier zuzumachen und bei jeden
-         * Datenpunkt wieder zu öffnen
-         */
-        file_->close();
         return file_->fileName();
+}
 
+void FileWriter::closeFile()
+{
+    file_->close();
 }

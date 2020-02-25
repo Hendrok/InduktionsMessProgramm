@@ -3,20 +3,16 @@
 #include <memory>
 #include <QDebug>
 
+//Internal Classes
 #include "../InduCore/datapoint.h"
 #include "../InduControlCore/instrumentmanager.h"
 #include "../Instruments/ppmsdatapoint.h"
 #include "../Instruments/lockindatapoint.h"
 
-/* WARNING
-* hier initialisierst du measrunning_ mit false, obwohl das eine variable vom typ double ist.
-* Frage: brauchst du die hier überhaupt, oder ist das alter Kram?
-*/
 PpmsSimulation::PpmsSimulation()
      : datapoint_(DataPoint())
      , tempSetpoint_(300)
      , tempRate_(1)
-     , measrunning_(false)
      , fieldSetpoint_(0)
      , fieldRate_(10)
      , ppmsHelium_(100)

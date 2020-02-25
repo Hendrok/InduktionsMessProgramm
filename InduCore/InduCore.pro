@@ -18,8 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     filereader.cpp \
-    filewriter.cpp \
-    measurementsequence.cpp
+    filewriter.cpp
 
 HEADERS += \
     InduCore_global.h \

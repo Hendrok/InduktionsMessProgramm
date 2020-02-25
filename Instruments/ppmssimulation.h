@@ -3,6 +3,8 @@
 #include "Instruments_global.h"
 #include <QObject>
 #include <memory>
+
+//Internal Classes
 #include "../InduCore/datapoint.h"
 
 
@@ -23,7 +25,6 @@ private:
     DataPoint datapoint_;
     double tempSetpoint_;
     double tempRate_;
-    double measrunning_;
     double fieldSetpoint_;
     double fieldRate_;
     double ppmsHelium_;

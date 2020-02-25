@@ -2,8 +2,12 @@
 #define FILEREADER_H
 
 #include "InduCore_global.h"
-#include "datafile.h"
+
 #include <memory>
+
+//Internal Classes
+#include "datafile.h"
+
 
 
 
