@@ -11,10 +11,11 @@
 #include <QtCharts/QValueAxis>
 #include <QtWidgets/QVBoxLayout>
 
-// eigene Sachen
+//Internal Classes
 #include "../InduCore/datapoint.h"
 #include "../InduCore/measurementsequence.h"
 #include "../InduCore/measseqtc.h"
+#include "../InduCore/measseqjc.h"
 #include "../InduControlCore/indumanager.h"
 QT_CHARTS_USE_NAMESPACE
 
@@ -33,7 +34,8 @@ GraphDiagram::GraphDiagram(QWidget *parent)
     , chartView_(new QChartView(chart_))
     , axisX_(new QValueAxis)
     , axisY_(new QValueAxis)
-
+    , measSeq_ (nullptr)
+    , measurementType(0)
 {
 
 }
@@ -41,7 +43,8 @@ GraphDiagram::GraphDiagram(QWidget *parent)
 
 void GraphDiagram::appendDataPoint(std::shared_ptr<const DataPoint> datapoint)
 {
-
+    if(measurementType==1)
+    {
     //für die Range
     if(voltmin_==0){voltmin_=datapoint->ppmsdata()->pvVoltLive();}
     if(voltmin_>datapoint->ppmsdata()->pvVoltLive()){voltmin_=datapoint->ppmsdata()->pvVoltLive()-0.1;}
@@ -50,6 +53,14 @@ void GraphDiagram::appendDataPoint(std::shared_ptr<const DataPoint> datapoint)
     series_->append(datapoint->ppmsdata()->pvTempLive(), datapoint->ppmsdata()->pvVoltLive());
      // set Range Live
     axisY_->setRange(voltmin_,voltmax_);
+    }
+
+
+    else if(measurementType==2)
+    {
+
+    }
+
 
 }
 
@@ -66,44 +77,61 @@ QSize GraphDiagram::minimumSizeHint() const
 void GraphDiagram::setStaticValues(std::shared_ptr<const MeasurementSequence> mSeq)
 {
     series_->clear();
-    auto seqTc = std::dynamic_pointer_cast <const MeasSeqTc> (mSeq);
-    if(seqTc !=nullptr)
+    measSeq_ = mSeq;
+    auto mSeqTc = std::dynamic_pointer_cast <const MeasSeqTc> (measSeq_);
+    auto mSeqJc = std::dynamic_pointer_cast <const MeasSeqJc> (measSeq_);
+
+
+    if(mSeqTc !=nullptr)
+    {
+        measurementType = 1;
+        axisX_->setTitleText("Temperature in Kelvin");
+        axisY_->setTitleText("Voltage in Volt");
+
+        if(mSeqTc->tempStart() <= mSeqTc->tempEnd())
         {
-        if(seqTc->tempStart() <= seqTc->tempEnd())
-        {
-            axisX_->setRange(seqTc->tempStart(),seqTc->tempEnd());
+            axisX_->setRange(mSeqTc->tempStart(),mSeqTc->tempEnd());
         }
         else
         {
-            axisX_->setRange(seqTc->tempEnd(),seqTc->tempStart());
+            axisX_->setRange(mSeqTc->tempEnd(),mSeqTc->tempStart());
         }
 
         QString title= mSeq->fileName();
         chart_->setTitle("Tc Measurement " + mSeq->fileName());
-
     }
+    else if(mSeqJc !=nullptr)
+    {
+        measurementType = 2;
+        axisX_->setTitleText("Input Voltage in Volt");
+        axisY_->setTitleText("Output Voltage in Volt");
+        if(mSeqJc->voltStart() <= mSeqJc->voltEnd())
+        {
+            axisX_->setRange(mSeqJc->voltStart(), mSeqJc->voltEnd());
+        }
+        else
+        {
+            axisX_->setRange(mSeqJc->voltEnd(), mSeqJc->voltStart());
+        }
+    }
+    else{measurementType = 0;}
+
 }
 
 void GraphDiagram::createQlineDiagramm()
 {
    chart_->legend()->hide();
    chart_->addSeries(series_);
-
-   axisX_->setTitleText("Temperature in Kelvin");
-
-
-   axisY_->setTitleText("Voltage in Volt");
    chart_->addAxis(axisX_, Qt::AlignBottom);
    chart_->addAxis(axisY_, Qt::AlignLeft);
    series_->attachAxis(axisX_);
    series_->attachAxis(axisY_);
 
+
    //font Size
    QFont font;
    font.setPixelSize(18);
    chart_->setTitleFont(font);
-
-
 
    // Dicke der Linie
    QPen pen(QRgb(0x000000));

@@ -3,6 +3,7 @@
 
 #include <QWidget>
 
+//Internal Classes
 class DataPoint;
 class QLabel;
 

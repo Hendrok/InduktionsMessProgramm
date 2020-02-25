@@ -1,14 +1,16 @@
 #ifndef GRAPHDIAGRAM_H
 #define GRAPHDIAGRAM_H
 
-//includes std
 #include <memory>
-//includes qt
 #include <QWidget>
 #include <QtCharts>
 #include <QtCharts/QValueAxis>
+
+//Internal Classes
 class DataPoint;
 class MeasurementSequence;
+class measSeqJc;
+class measSeqTc;
 class InduManager;
 
 class GraphDiagram: public QWidget
@@ -38,6 +40,11 @@ private:
     QChartView *chartView_;
     QValueAxis *axisX_ ;
     QValueAxis *axisY_;
+
+    std::shared_ptr <const MeasurementSequence> measSeq_;
+    int measurementType; /*TODO
+                          * Either Implement measSeq_tc and jc in private, or implement measurementType as a state?
+                          */
 public slots:
     void setStaticValues(std::shared_ptr<const MeasurementSequence> mSeq);
 

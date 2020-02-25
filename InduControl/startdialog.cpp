@@ -1,7 +1,5 @@
 #include "startdialog.h"
-#include "../InduCore/measurementsequence.h"
-#include "../InduCore/measseqtc.h"
-#include "../InduCore/measseqjc.h"
+
 #include <QVBoxLayout>
 #include <QGridLayout>
 #include <QDoubleSpinBox>
@@ -11,6 +9,11 @@
 #include <vector>
 #include <QButtonGroup>
 
+//Internal Classes
+#include "../InduCore/measurementsequence.h"
+#include "../InduCore/measseqtc.h"
+#include "../InduCore/measseqjc.h"
+
 
 StartDialog::StartDialog(QWidget *parent)
     : QDialog(parent)
@@ -19,15 +22,25 @@ StartDialog::StartDialog(QWidget *parent)
     , buttongroupmes_(new QButtonGroup(this))
     , tcbutton_(new QRadioButton("Tc Measurement", this))
     , jcbutton_(new QRadioButton("Jc Measurement", this))
-    , sampleName_(nullptr)
+    , sampleNameTc_(nullptr)
     , tempStart_(nullptr)
     , tempEnd_(nullptr)
     , temperatureRate_(nullptr)
-    , magneticField_(nullptr)
-    , coilAngle_(nullptr)
-    , frequency_(nullptr)
+    , magneticFieldTc_(nullptr)
+    , coilAngleTc_(nullptr)
+    , frequencyTc_(nullptr)
     , voltageAmplitude_(nullptr)
-    , harmonicWave_(nullptr)
+    , harmonicWaveTc_(nullptr)
+    , sampleNameJc_(nullptr)
+    , tempJc_(nullptr)
+    , frequencyJc_(nullptr)
+    , magneticFieldJc_(nullptr)
+    , voltStartJc_(nullptr)
+    , voltEndJc_(nullptr)
+    , VoltRateJc_(nullptr)
+    , coilAngleJc_(nullptr)
+    , harmonicWaveJc_(nullptr)
+
 {
     setupUI();
 }
@@ -67,8 +80,8 @@ void StartDialog::setupUI()
     boxButton->addWidget(jcbutton_);
 
     //Tc Measurement
-    sampleName_= new QLineEdit();
-    sampleName_->setText("");
+    sampleNameTc_= new QLineEdit();
+    sampleNameTc_->setText("");
 
     tempStart_ = new QDoubleSpinBox();
     tempStart_->setDecimals(2);
@@ -88,23 +101,23 @@ void StartDialog::setupUI()
     temperatureRate_->setRange(0,20);
     temperatureRate_->setValue(1);
 
-    magneticField_ = new QDoubleSpinBox();
-    magneticField_->setDecimals(2);
-    magneticField_->setSingleStep(0.1);
-    magneticField_->setRange(0,14000);
-    magneticField_->setValue(0);
+    magneticFieldTc_ = new QDoubleSpinBox();
+    magneticFieldTc_->setDecimals(2);
+    magneticFieldTc_->setSingleStep(0.1);
+    magneticFieldTc_->setRange(0,14000);
+    magneticFieldTc_->setValue(0);
 
-    coilAngle_ = new QDoubleSpinBox();
-    coilAngle_->setDecimals(2);
-    coilAngle_->setSingleStep(0.1);
-    coilAngle_->setRange(0,360);
-    coilAngle_->setValue(0);
+    coilAngleTc_ = new QDoubleSpinBox();
+    coilAngleTc_->setDecimals(2);
+    coilAngleTc_->setSingleStep(0.1);
+    coilAngleTc_->setRange(0,360);
+    coilAngleTc_->setValue(0);
 
-    frequency_ = new QDoubleSpinBox();
-    frequency_->setDecimals(2);
-    frequency_->setSingleStep(0.1);
-    frequency_->setRange(0,100000);
-    frequency_->setValue(3333.33);
+    frequencyTc_ = new QDoubleSpinBox();
+    frequencyTc_->setDecimals(2);
+    frequencyTc_->setSingleStep(0.1);
+    frequencyTc_->setRange(0,100000);
+    frequencyTc_->setValue(3333.33);
 
     voltageAmplitude_ = new QDoubleSpinBox();
     voltageAmplitude_->setDecimals(2);
@@ -112,11 +125,11 @@ void StartDialog::setupUI()
     voltageAmplitude_->setRange(0,10);
     voltageAmplitude_->setValue(0.1);
 
-    harmonicWave_ = new QDoubleSpinBox();
-    harmonicWave_->setDecimals(0);
-    harmonicWave_->setSingleStep(1);
-    harmonicWave_->setRange(1,3);
-    harmonicWave_->setValue(1);
+    harmonicWaveTc_ = new QDoubleSpinBox();
+    harmonicWaveTc_->setDecimals(0);
+    harmonicWaveTc_->setSingleStep(1);
+    harmonicWaveTc_->setRange(1,3);
+    harmonicWaveTc_->setValue(1);
 
     QLabel* labelSampleName = new QLabel("Sample Name:");
     QLabel* labelTempStart = new QLabel("Start Temperature:");
@@ -129,7 +142,7 @@ void StartDialog::setupUI()
     QLabel* labelHarmonicWave = new QLabel("Harmonic Wave:");
 
     gridLayout->addWidget(labelSampleName,0,0);
-    gridLayout->addWidget(sampleName_,0,1);
+    gridLayout->addWidget(sampleNameTc_,0,1);
     gridLayout->addWidget(labelTempStart);
     gridLayout->addWidget(tempStart_);
     gridLayout->addWidget(labelTempEnd);
@@ -137,20 +150,97 @@ void StartDialog::setupUI()
     gridLayout->addWidget(labeltemperatureRate);
     gridLayout->addWidget(temperatureRate_);
     gridLayout->addWidget(labelMagneticField);
-    gridLayout->addWidget(magneticField_);
+    gridLayout->addWidget(magneticFieldTc_);
     gridLayout->addWidget(labelCoilAngle);
-    gridLayout->addWidget(coilAngle_);
+    gridLayout->addWidget(coilAngleTc_);
     gridLayout->addWidget(labelFrequency);
-    gridLayout->addWidget(frequency_);
+    gridLayout->addWidget(frequencyTc_);
     gridLayout->addWidget(labelVoltageAmplitude);
     gridLayout->addWidget(voltageAmplitude_);
     gridLayout->addWidget(labelHarmonicWave);
-    gridLayout->addWidget(harmonicWave_);
+    gridLayout->addWidget(harmonicWaveTc_);
 
     //Jc Measurement
 
+    sampleNameJc_= new QLineEdit();
+    sampleNameJc_->setText("");
 
+    tempJc_ = new QDoubleSpinBox();
+    tempJc_->setDecimals(2);
+    tempJc_->setSingleStep(0.1);
+    tempJc_->setRange(0,400);
+    tempJc_->setValue(80);
 
+    voltStartJc_ = new QDoubleSpinBox();
+    voltStartJc_->setDecimals(3);
+    voltStartJc_->setSingleStep(0.01);
+    voltStartJc_->setRange(0,10);
+    voltStartJc_->setValue(0.0);
+
+    voltEndJc_ = new QDoubleSpinBox();
+    voltEndJc_->setDecimals(3);
+    voltEndJc_->setSingleStep(0.01);
+    voltEndJc_->setRange(0,10);
+    voltEndJc_->setValue(5.0);
+
+    VoltRateJc_ = new QDoubleSpinBox();
+    VoltRateJc_->setDecimals(3);
+    VoltRateJc_->setSingleStep(0.01);
+    VoltRateJc_->setRange(0,1);
+    VoltRateJc_->setValue(0.01);
+
+    magneticFieldJc_ = new QDoubleSpinBox();
+    magneticFieldJc_->setDecimals(2);
+    magneticFieldJc_->setSingleStep(0.1);
+    magneticFieldJc_->setRange(0,14000);
+    magneticFieldJc_->setValue(0);
+
+    frequencyJc_ = new QDoubleSpinBox();
+    frequencyJc_->setDecimals(2);
+    frequencyJc_->setSingleStep(0.1);
+    frequencyJc_->setRange(0,100000);
+    frequencyJc_->setValue(3333.33);
+
+    coilAngleJc_ = new QDoubleSpinBox();
+    coilAngleJc_->setDecimals(2);
+    coilAngleJc_->setSingleStep(0.1);
+    coilAngleJc_->setRange(0,360);
+    coilAngleJc_->setValue(0);
+
+    harmonicWaveJc_ = new QDoubleSpinBox();
+    harmonicWaveJc_->setDecimals(0);
+    harmonicWaveJc_->setSingleStep(1);
+    harmonicWaveJc_->setRange(1,3);
+    harmonicWaveJc_->setValue(1);
+
+    QLabel* labelSampleNameJc = new QLabel("Sample Name:");
+    QLabel* labelTempJc = new QLabel("Temperature:");
+    QLabel* labelVoltStartJc = new QLabel("Start Voltage:");
+    QLabel* labelVoltEndJc = new QLabel("End Voltage:");
+    QLabel* labelVoltageRate = new QLabel("Voltage Rate:");
+    QLabel* labelMagneticFieldJc = new QLabel("Magnetic Field:");
+    QLabel* labelCoilAngleJc = new QLabel("Coil Angle:");
+    QLabel* labelFrequencyJc = new QLabel("Frequency:");
+    QLabel* labelHarmonicWaveJc = new QLabel("Harmonic Wave:");
+
+    gridLayoutJc->addWidget(labelSampleNameJc, 0, 0);
+    gridLayoutJc->addWidget(sampleNameJc_,0,1);
+    gridLayoutJc->addWidget(labelTempJc);
+    gridLayoutJc->addWidget(tempJc_);
+    gridLayoutJc->addWidget(labelVoltStartJc);
+    gridLayoutJc->addWidget(voltStartJc_);
+    gridLayoutJc->addWidget(labelVoltEndJc);
+    gridLayoutJc->addWidget(voltEndJc_);
+    gridLayoutJc->addWidget(labelVoltageRate);
+    gridLayoutJc->addWidget(VoltRateJc_);
+    gridLayoutJc->addWidget(labelMagneticFieldJc);
+    gridLayoutJc->addWidget(magneticFieldJc_);
+    gridLayoutJc->addWidget(labelCoilAngleJc);
+    gridLayoutJc->addWidget(coilAngleJc_);
+    gridLayoutJc->addWidget(labelFrequencyJc);
+    gridLayoutJc->addWidget(frequencyJc_);
+    gridLayoutJc->addWidget(labelHarmonicWaveJc);
+    gridLayoutJc->addWidget(harmonicWaveJc_);
 
     //set Layouts
     widget->setLayout(gridLayout);
@@ -199,20 +289,20 @@ std::vector <std::shared_ptr<const MeasurementSequence>> StartDialog::createSequ
     if(tcbutton_->isChecked())
     {
 
-    seq.setSupraName(sampleName_->text());
+    seq.setSupraName(sampleNameTc_->text());
     seq.setTempStart(tempStart_->value());
     seq.setTempEnd(tempEnd_->value());
     seq.setTemperatureRate(temperatureRate_->value());
-    seq.setMagneticField(magneticField_->value());
-    seq.setCoilAngle(coilAngle_->value());
-    seq.setFrequency(frequency_->value());
+    seq.setMagneticField(magneticFieldTc_->value());
+    seq.setCoilAngle(coilAngleTc_->value());
+    seq.setFrequency(frequencyTc_->value());
     seq.setVoltageAmplitude(voltageAmplitude_->value());
-    seq.setHarmonicWave(harmonicWave_->value());
-    seq.setFileName(sampleName_->text() + "_" +
+    seq.setHarmonicWave(harmonicWaveTc_->value());
+    seq.setFileName(sampleNameTc_->text() + "_" +
                     QString::number(voltageAmplitude_->value()) + "V_" +
-                    QString::number(frequency_->value()) + "hz_" +
-                    QString::number(magneticField_->value()) + "mT_" +
-                    QString::number(coilAngle_->value()) + "d"
+                    QString::number(frequencyTc_->value()) + "hz_" +
+                    QString::number(magneticFieldTc_->value()) + "mT_" +
+                    QString::number(coilAngleTc_->value()) + "d"
                     );
     vecSeq.push_back(std::make_shared<const MeasSeqTc>(seq));
     }

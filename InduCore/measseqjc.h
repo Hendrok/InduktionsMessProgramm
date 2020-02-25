@@ -4,6 +4,8 @@
 #endif // MEASSEQJC_H
 
 #include "InduCore_global.h"
+
+//Internal Classes
 #include "measurementsequence.h"
 
 

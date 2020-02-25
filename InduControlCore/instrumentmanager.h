@@ -4,11 +4,8 @@
 #include <memory>
 #include <QTimer>
 
-
-//Eigene Klassen
+//Internal Classes
 #include "../InduCore/datapoint.h"
-
-
 class QObject;
 class PpmsSimulation;
 class MeasSeqTc;
@@ -20,19 +17,15 @@ signals:
     void newData(std::shared_ptr<DataPoint> dataPoint);
 public:
     InstrumentManager();
-    ~InstrumentManager();
+    ~InstrumentManager()=default;
     void setTempSetpoint(double setpoint, double rate);
 
 private slots:
     void onPolling();
-    /* WARNING
-     * tempSetpoint_ und tempRate_ werden nirgends verwendet. Ist das Kunst, oder kann das weg?
-     */
+
 private:
     QTimer* timer_;
-    PpmsSimulation* ppmssimu_;
-    double tempSetpoint_;
-    double tempRate_;
+    std::shared_ptr <PpmsSimulation> ppmssimu_;
 };
 
 #endif // INSTRUMENTMANAGER_H
