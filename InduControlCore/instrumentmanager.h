@@ -19,16 +19,15 @@ class INDUCONTROLCORE_EXPORT InstrumentManager: public QObject
 signals:
     void newData(std::shared_ptr<DataPoint> dataPoint);
 public:
-    explicit InstrumentManager();
+    InstrumentManager();
+    ~InstrumentManager()=default;
     void setTempSetpoint(double setpoint, double rate);
 
 private slots:
     void onPolling();
 private:
     QTimer* timer_;
-    PpmsSimulation* ppmssimu_;
-    double tempSetpoint_;
-    double tempRate_;
+    std::shared_ptr <PpmsSimulation> ppmssimu_;
 };
 
 #endif // INSTRUMENTMANAGER_H

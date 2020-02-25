@@ -8,7 +8,7 @@
 
 InstrumentManager::InstrumentManager()
     : timer_(new QTimer(this))
-    , ppmssimu_(new PpmsSimulation())
+    , ppmssimu_(std::make_shared <PpmsSimulation>())
 {
 
 
@@ -17,7 +17,6 @@ InstrumentManager::InstrumentManager()
 
 
 }
-
 
 void InstrumentManager::setTempSetpoint(double setpoint, double rate)
 {

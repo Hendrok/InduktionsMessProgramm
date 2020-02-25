@@ -33,15 +33,22 @@ private:
     QButtonGroup* buttongroupmes_;
     QRadioButton* tcbutton_;
     QRadioButton* jcbutton_;
-    QLineEdit* sampleName_;
+
+    //Tc
+    QLineEdit* sampleNameTc_;
     QDoubleSpinBox* tempStart_;
     QDoubleSpinBox* tempEnd_;
     QDoubleSpinBox* temperatureRate_;
-    QDoubleSpinBox* magneticField_;
-    QDoubleSpinBox* coilAngle_;
-    QDoubleSpinBox* frequency_;
+    QDoubleSpinBox* magneticFieldTc_;
+    QDoubleSpinBox* coilAngleTc_;
+    QDoubleSpinBox* frequencyTc_;
     QDoubleSpinBox* voltageAmplitude_;
-    QDoubleSpinBox* harmonicWave_;
+    QDoubleSpinBox* harmonicWaveTc_;
+
+    //Jc
+    QLineEdit* sampleNameJc_;
+    QDoubleSpinBox* tempJc_;
+
 private slots:
     void updateUI();
 };

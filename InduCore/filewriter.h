@@ -21,11 +21,11 @@ class INDUCORE_EXPORT FileWriter :QObject
 
 public slots:
 
-    bool append(std::shared_ptr<DataPoint> datapoint);
+    void append(std::shared_ptr<DataPoint> datapoint);
 public:
     FileWriter(QObject *parent =0);
-    QString openFile(std::shared_ptr<const MeasurementSequence> measurementSequence/*, QString filedir*/);
-    //bool append(std::shared_ptr<DataPoint> datapoint);
+    QString openFile(std::shared_ptr<const MeasurementSequence> measurementSequence);
+    void closeFile();
 
 
 private:

@@ -5,8 +5,7 @@
 #include <QObject>
 #include <vector>
 
-
-//forward
+//Internal Classes
 class PpmsSimulation;
 class MeasSeqTc;
 class MeasurementSequence;
@@ -24,7 +23,7 @@ signals:
     void startNewMeasurement(std::shared_ptr<const MeasurementSequence>);
 public:
     explicit InduManager();
-
+    ~InduManager();
     enum class State { Idle, ApproachStart, ApproachEnd};
     void appendMeasurement(std::vector <std::shared_ptr<const MeasurementSequence>> mVecSeq);
     void checkStartMeasurement();
