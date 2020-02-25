@@ -3,6 +3,8 @@
 #include "Instruments_global.h"
 #include <QObject>
 #include <memory>
+
+//Internal Classes
 #include "../InduCore/datapoint.h"
 
 

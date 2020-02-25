@@ -3,6 +3,7 @@
 #include <memory>
 #include <QDebug>
 
+//Internal Classes
 #include "../InduCore/datapoint.h"
 #include "../InduControlCore/instrumentmanager.h"
 #include "../Instruments/ppmsdatapoint.h"

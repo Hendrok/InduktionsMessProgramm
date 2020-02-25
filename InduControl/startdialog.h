@@ -5,10 +5,12 @@
 #include <QButtonGroup>
 #include <QRadioButton>
 
+//Internal Classes
 class MeasSeqTc;
 class MeasurementSequence;
 class QDoubleSpinBox;
 class QLineEdit;
+
 class StartDialog : public QDialog
 {
     Q_OBJECT
@@ -48,8 +50,13 @@ private:
     //Jc
     QLineEdit* sampleNameJc_;
     QDoubleSpinBox* tempJc_;
-
+    QDoubleSpinBox* frequencyJc_;
+    QDoubleSpinBox* magneticFieldJc_;
+    QDoubleSpinBox* voltStartJc_;
+    QDoubleSpinBox* voltEndJc_;
+    QDoubleSpinBox* VoltRateJc_;
     QDoubleSpinBox* coilAngleJc_;
+    QDoubleSpinBox* harmonicWaveJc_;
 
 private slots:
     void updateUI();

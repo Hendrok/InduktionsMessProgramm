@@ -1,6 +1,7 @@
 #include <QtWidgets>
 #include <memory>
 
+//Internal Classes
 #include "mainwindow.h"
 #include "../InduControlCore/indumanager.h"
 #include "../InduCore/measurementsequence.h"

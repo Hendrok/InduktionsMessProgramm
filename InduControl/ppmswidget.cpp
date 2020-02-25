@@ -1,5 +1,4 @@
 #include "ppmswidget.h"
-#include "../InduCore/datapoint.h"
 
 #include <QDebug>
 #include <QLabel>
@@ -7,6 +6,9 @@
 #include <QBoxLayout>
 #include <QVBoxLayout>
 #include <QGridLayout>
+
+//Internal Classes
+#include "../InduCore/datapoint.h"
 
 PpmsWidget::PpmsWidget(QWidget *parent)
     : QWidget (parent)

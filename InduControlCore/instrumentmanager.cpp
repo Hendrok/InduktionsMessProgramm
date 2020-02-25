@@ -2,7 +2,7 @@
 #include <QDebug>
 #include <QRandomGenerator>
 
-
+//Internal Classes
 #include "../InduCore/datapoint.h"
 #include "../Instruments/ppmssimulation.h"
 

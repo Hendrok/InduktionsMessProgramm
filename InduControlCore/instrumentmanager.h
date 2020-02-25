@@ -4,11 +4,8 @@
 #include <memory>
 #include <QTimer>
 
-
-//Eigene Klassen
+//Internal Classes
 #include "../InduCore/datapoint.h"
-
-
 class QObject;
 class PpmsSimulation;
 class MeasSeqTc;

@@ -3,6 +3,7 @@
 
 #include <QVector>
 #include <memory>
+//Internal Classes
 #include "InduCore_global.h"
 #include "measurementsequence.h"
 #include "measseqtc.h"

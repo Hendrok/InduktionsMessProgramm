@@ -1,14 +1,14 @@
 #ifndef FILEWRITER_H
 #define FILEWRITER_H
 
+#include "InduCore_global.h"
+
 #include <QString>
 #include <memory>
 #include <QFile>
 #include <QObject>
 
-#include "InduCore_global.h"
-
-//forward decleration (hier nur declariert, FileWriter ist z.B. declariert und definiert)
+//Internal Classes
 class MeasSeqTc;
 class MeasurementSequence;
 class FileWriter;
