@@ -76,7 +76,7 @@ QString FileWriter::writeHeader(std::shared_ptr<const MeasurementSequence> measu
             return header_;
         }
 
-        else{return "FEHLER UPSI";}
+        else{return "unable to write header";}
 
 }
 QString FileWriter::createFileName(std::shared_ptr<const MeasurementSequence> measurementSequence){

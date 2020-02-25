@@ -19,8 +19,7 @@ class INDUCONTROLCORE_EXPORT InstrumentManager: public QObject
 signals:
     void newData(std::shared_ptr<DataPoint> dataPoint);
 public:
-    InstrumentManager();
-    ~InstrumentManager();
+    explicit InstrumentManager();
     void setTempSetpoint(double setpoint, double rate);
 
 private slots:

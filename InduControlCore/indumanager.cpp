@@ -1,6 +1,5 @@
 #include "indumanager.h"
 #include <QDebug>
-#include <memory>
 #include <vector>
 //Eigene Klassen
 #include "instrumentmanager.h"
@@ -25,9 +24,7 @@ InduManager::InduManager()
     //mVecSeq_ = std::vector<std::make_shared<MeasurementSequence>>();  // diese nicht gut
 }
 
-InduManager::~InduManager()
-{
-}
+
 
 void InduManager::appendMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq)
 {

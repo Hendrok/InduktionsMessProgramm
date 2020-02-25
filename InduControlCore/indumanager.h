@@ -24,7 +24,7 @@ signals:
     void startNewMeasurement(std::shared_ptr<const MeasurementSequence>);
 public:
     explicit InduManager();
-    ~InduManager();
+
     enum class State { Idle, ApproachStart, ApproachEnd};
     void appendMeasurement(std::vector <std::shared_ptr<const MeasurementSequence>> mVecSeq);
     void checkStartMeasurement();
@@ -40,7 +40,7 @@ private:
     std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq_;
     std::unique_ptr <InstrumentManager> instrumentmanager_;
     std::unique_ptr <FileWriter> fw_;        
-    std::shared_ptr <MeasSeqTc> mSeqTc_;  // muss ich noch auf measurementsequence wechseln
+    std::shared_ptr <MeasSeqTc> mSeqTc_;
     State measurementState;
 };
 

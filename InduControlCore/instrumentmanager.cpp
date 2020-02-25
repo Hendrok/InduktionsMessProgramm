@@ -17,10 +17,7 @@ InstrumentManager::InstrumentManager()
 
 
 }
-InstrumentManager::~InstrumentManager()
-{
 
-}
 
 void InstrumentManager::setTempSetpoint(double setpoint, double rate)
 {
