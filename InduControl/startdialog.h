@@ -49,6 +49,8 @@ private:
     QLineEdit* sampleNameJc_;
     QDoubleSpinBox* tempJc_;
 
+    QDoubleSpinBox* coilAngleJc_;
+
 private slots:
     void updateUI();
 };
