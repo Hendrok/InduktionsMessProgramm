@@ -55,7 +55,6 @@ void GraphDiagram::appendDataPoint(std::shared_ptr<const DataPoint> datapoint)
     axisY_->setRange(voltmin_,voltmax_);
     }
 
-
     else if(measurementType==2)
     {
 
@@ -80,8 +79,6 @@ void GraphDiagram::setStaticValues(std::shared_ptr<const MeasurementSequence> mS
     measSeq_ = mSeq;
     auto mSeqTc = std::dynamic_pointer_cast <const MeasSeqTc> (measSeq_);
     auto mSeqJc = std::dynamic_pointer_cast <const MeasSeqJc> (measSeq_);
-
-
     if(mSeqTc !=nullptr)
     {
         measurementType = 1;

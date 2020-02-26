@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , graph_(new GraphDiagram(this))
     , indumanager_(new InduManager())
+    , indumanagerState_(InduManager::State::Idle)
     , ppmsWidget_(new PpmsWidget())
     , mainLayoutWidget(new QWidget())
 
@@ -29,6 +30,8 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::onStartMeasurement);
     connect(indumanager_,&InduManager::newData,
             this,&MainWindow::onNewData);
+    connect(indumanager_, &InduManager::newState,
+            this, &MainWindow::onNewMeasurementState);
 }
 
 MainWindow::~MainWindow()
@@ -94,13 +97,17 @@ void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> m
 
 void MainWindow::onNewData(std::shared_ptr<const DataPoint> datapoint)
 {
-    indumanager_->checkStartMeasurement();
     ppmsWidget_->newData(datapoint);
-    if(indumanager_->getMeasurementState()==InduManager::State::ApproachEnd)
+    if(indumanagerState_==InduManager::State::ApproachEndTc)
     {
     graph_->appendDataPoint(datapoint);
     }
 
+}
+
+void MainWindow::onNewMeasurementState(InduManager::State newState)
+{
+    indumanagerState_ = newState;
 }
 
 void MainWindow::createQLineDiagramm()

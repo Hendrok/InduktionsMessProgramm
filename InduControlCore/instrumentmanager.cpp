@@ -8,14 +8,10 @@
 
 InstrumentManager::InstrumentManager()
     : timer_(new QTimer(this))
-    , ppmssimu_(std::make_shared <PpmsSimulation>())
+    , ppmssimu_(std::make_shared<PpmsSimulation>())
 {
-
-
     connect(timer_, &QTimer::timeout, this, &InstrumentManager::onPolling);
     timer_->start(200);
-
-
 }
 
 void InstrumentManager::setTempSetpoint(double setpoint, double rate)
@@ -26,12 +22,6 @@ void InstrumentManager::setTempSetpoint(double setpoint, double rate)
 
 void InstrumentManager::onPolling()
 {
-
     auto dataPoint = ppmssimu_->generateVariablesTc();
-
-
-
     emit newData(dataPoint);
-
-
 }

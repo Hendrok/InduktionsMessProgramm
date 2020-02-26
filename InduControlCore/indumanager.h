@@ -8,6 +8,7 @@
 //Internal Classes
 class PpmsSimulation;
 class MeasSeqTc;
+class MeasSeqJc;
 class MeasurementSequence;
 class DataPoint;
 class FileWriter;
@@ -18,18 +19,17 @@ class INDUCONTROLCORE_EXPORT InduManager :public QObject
 {
     Q_OBJECT
 
-signals:
-    void newData(std::shared_ptr<const DataPoint>);
-    void startNewMeasurement(std::shared_ptr<const MeasurementSequence>);
 public:
     explicit InduManager();
     ~InduManager();
-    enum class State { Idle, ApproachStart, ApproachEnd};
+    enum class State { Idle, ApproachStartTc, ApproachEndTc, CheckForMeas};
     void appendMeasurement(std::vector <std::shared_ptr<const MeasurementSequence>> mVecSeq);
-    void checkStartMeasurement();
-    void startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence);
+    void startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence);  
 
-    State getMeasurementState() const;
+signals:
+    void newData(std::shared_ptr<const DataPoint>);
+    void startNewMeasurement(std::shared_ptr<const MeasurementSequence>);
+    void newState(State newState);
 
 private slots:
     void onNewData(std::shared_ptr<DataPoint> datapoint);
@@ -40,6 +40,7 @@ private:
     std::unique_ptr <InstrumentManager> instrumentmanager_;
     std::unique_ptr <FileWriter> fw_;        
     std::shared_ptr <MeasSeqTc> mSeqTc_;
+    std::shared_ptr <MeasSeqJc> mSeqJc_;
     State measurementState;
 };
 

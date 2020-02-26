@@ -33,7 +33,7 @@ std::shared_ptr <DataPoint> PpmsSimulation::generateVariablesTc()
     PpmsDataPoint ppmsDpoint;
     LockInDataPoint lockingDpoint;
 
-    auto dataPoint =std::make_shared <DataPoint>();
+    auto dataPoint =std::make_shared<DataPoint> ();
     double test =QRandomGenerator::global()->bounded(1.0);
 
     ppmsDpoint.setPvTempSetPoint(tempSetpoint_);
@@ -41,16 +41,18 @@ std::shared_ptr <DataPoint> PpmsSimulation::generateVariablesTc()
     ppmsDpoint.setPvVoltLive(test);
     lockingDpoint.setPvPhase(test);
 
-
-
-
-    if (tempNow_< tempSetpoint_)
+    if(std::abs(tempSetpoint_ - tempNow_) < 1)
     {
-        tempNow_= tempNow_ + tempRate_;
+        tempRate_ = 0.1;
     }
-    if (tempNow_> tempSetpoint_)
+
+    if (tempNow_ < tempSetpoint_)
     {
-        tempNow_=tempNow_-tempRate_;
+        tempNow_ = tempNow_ + tempRate_;
+    }
+    if (tempNow_ > tempSetpoint_)
+    {
+        tempNow_ = tempNow_-tempRate_;
     }
 
     ppmsDpoint.setPvTempLive(tempNow_);

@@ -22,6 +22,7 @@ public:
 
 private slots:
     void onPolling();
+
 private:
     QTimer* timer_;
     std::shared_ptr <PpmsSimulation> ppmssimu_;
