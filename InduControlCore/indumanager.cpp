@@ -16,25 +16,17 @@ InduManager::InduManager()
     : measurementNumber_(0)
     , instrumentmanager_ (std::make_unique<InstrumentManager>())
     , fw_(nullptr)
-    , mSeqTc_(std::make_shared <MeasSeqTc>())
+    , mSeqTc_(std::make_shared<MeasSeqTc>())
+    , mSeqJc_(std::make_shared<MeasSeqJc>())
     , measurementState(State::Idle)
-
-
 {
     connect(instrumentmanager_.get(), &InstrumentManager::newData,
                 this, &InduManager::onNewData);
-
 }
 
 InduManager::~InduManager()
 {
-  /* NOTE
-   * der leere Deconstructor kann hier und in der Header-Datei weg, du machst
-   * hier eh nix
-   */
 }
-
-
 
 void InduManager::appendMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq)
 {
@@ -42,41 +34,33 @@ void InduManager::appendMeasurement(std::vector<std::shared_ptr<const Measuremen
     {
         mVecSeq_.push_back(mesSeq);
     }
-}
 
-void InduManager::checkStartMeasurement()
-{
-    if(mVecSeq_.size()> measurementNumber_ && measurementState == State::Idle)
-    {
-        emit startNewMeasurement(mVecSeq_[measurementNumber_]);
+    if(measurementState == State::Idle){
+        measurementState = State::CheckForMeas;
+        emit newState(measurementState);
     }
 }
 
-
 void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence)
 {
-
-    auto seqTc = std::dynamic_pointer_cast <const MeasSeqTc> (measurementSequence);
+    auto seqTc = std::dynamic_pointer_cast<const MeasSeqTc> (measurementSequence);
+    auto seqJc = std::dynamic_pointer_cast<const MeasSeqJc> (measurementSequence);
     fw_= std::make_unique<FileWriter>();
 
     fw_->openFile(measurementSequence);
-    if(seqTc !=nullptr){
+    if(seqTc ! = nullptr){
         mSeqTc_->setTempStart(seqTc->tempStart());
         mSeqTc_->setTempEnd(seqTc->tempEnd());
         mSeqTc_->setTemperatureRate(seqTc->temperatureRate());
         instrumentmanager_->setTempSetpoint(mSeqTc_->tempStart(), mSeqTc_->temperatureRate());
-        measurementState= State::ApproachStart;
+        measurementState= State::ApproachStartTc;
+        emit newState(measurementState);
+    }
+    if(seqJc ! = nullptr){
+
     }
 }
 
-/* BUG
- * In den Zuständen ApproachStart und ApproachEnd überprüfst du, ob die Temperaturdifferenz zwischen Soll und Ist
- * kleiner ist als die Heiz- bzw. Kühlrate des PPMS. Warum?
- * Richtig wäre es, irgendeinen Differenz-Threshold zu definieren, z.b. 0.1 K oder so
- *
- * Nächster Bug im ApproachStart: Hier appendest du auch schon die Datenpunkte im FileWriter,
- * obwohl die Messung ja noch gar nicht begonnen hat
- */
 
 /* NOTE
  * Bei Zustandsänderung könntest du ein Signal emitieren, dass als Argument den neuen Zustand enthält.
@@ -107,36 +91,41 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
             //NOTE if abfrage-> ob das Programm bei Aktueller Temp bleiben soll, oder Energiesparmodus!
             break;
         }
-    case State::ApproachStart:{
-            if(std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
+    case State::ApproachStartTc:{
+            if(std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < 0.1)
             {
-                measurementState = State::ApproachEnd;
+                measurementState = State::ApproachEndTc;
                 instrumentmanager_->setTempSetpoint(mSeqTc_->tempEnd(), mSeqTc_->temperatureRate());
-                fw_->append(datapoint);
             }
             break;
         }
-    case State::ApproachEnd:{
+    case State::ApproachEndTc:{
            if(fw_!= nullptr){
                 fw_->append(datapoint);
            }
 
-           if(std::abs(mSeqTc_->tempEnd() - datapoint->ppmsdata()->pvTempLive()) < mSeqTc_->temperatureRate())
+           if(std::abs(mSeqTc_->tempEnd() - datapoint->ppmsdata()->pvTempLive()) < 0.1)
            {
-               fw_->closeFile();
-                measurementState = State::Idle;
+                fw_->closeFile();
+                measurementState = State::CheckForMeas;
                 measurementNumber_++;
            }
+            break;
+        }
+    case State::CheckForMeas:{
+            if(mVecSeq_.size()> measurementNumber_ )
+            {
+                emit startNewMeasurement(mVecSeq_[measurementNumber_]);
+            }
+            else{
+                measurementState = State::Idle;
+            }
             break;
         }
 
     default:assert(false);
     }
-}
-
-InduManager::State InduManager::getMeasurementState() const
-{
-    return measurementState;
+    emit newState(measurementState);
 }
 
 

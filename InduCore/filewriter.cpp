@@ -13,12 +13,12 @@
 FileWriter::FileWriter(QObject *parent)
     :QObject(parent)
 {
-
 }
 
 QString FileWriter::writeHeader(std::shared_ptr<const MeasurementSequence> measurementSequence){
         auto seqTc = std::dynamic_pointer_cast<const MeasSeqTc> (measurementSequence);
         auto seqJc = std::dynamic_pointer_cast<const MeasSeqJc> (measurementSequence);
+
         if(seqTc !=nullptr)
         {
             QString header_;
@@ -70,9 +70,7 @@ QString FileWriter::writeHeader(std::shared_ptr<const MeasurementSequence> measu
             header_.append("Input_Voltage Output_Voltage Phase \n");
             return header_;
         }
-
         else{return "unable to write header";}
-
 }
 QString FileWriter::createFileName(std::shared_ptr<const MeasurementSequence> measurementSequence){
         auto seqTc = std::dynamic_pointer_cast<const MeasSeqTc> ( measurementSequence);
@@ -91,33 +89,21 @@ QString FileWriter::createFileName(std::shared_ptr<const MeasurementSequence> me
         }
         else {return "Neither Tc or Jc";}
 }
-
-/* FIXME
- * Irgendwas stimmt hier immer noch nicht, die erste Zeile macht gar nichts,
- * ist noch ein Überbleibsel von dem alten Code.
- *
- * Wenn die Datei offen bleibt, würde ich aber dennoch vor jedem neuen Schreiben einer Zeile
- * überprüfen, ob die Datei offen ist:
- *
- * if (!file_->isOpen())
- * {
- *     return;
- * }
- * ...
- */
 void FileWriter::append(std::shared_ptr<DataPoint> datapoint){
-        (QIODevice::WriteOnly | QIODevice::Append);
+        if(!file_->isOpen())
+        {
+            return;
+        }
+
         {
         file_->write(QString::number(datapoint->ppmsdata()->pvTempLive()).toUtf8() +
                      " " + QString::number(datapoint->ppmsdata()->pvVoltLive()).toUtf8() +
                      " " + QString::number(datapoint->lockindata()->pvPhase()).toUtf8() +"\n");
-
         }
-
 }
 
 QString FileWriter::openFile(std::shared_ptr<const MeasurementSequence> measurementSequence /*, QString filedir*/){
-            //Schreibt den Erstellten Header und benennt die File nach Filename, achtet außerdem darauf, das die File nicht überschrieben wird!
+        //Schreibt den Erstellten Header und benennt die File nach Filename, achtet außerdem darauf, das die File nicht überschrieben wird!
         QString path("Messergebnisse/");
         QDir dir;  // ich erstelle QString mit dem Ordner, danach die direction
         if (!dir.exists(path)){ // Wenn nötig wird der Ordner erstellt

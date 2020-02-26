@@ -5,12 +5,13 @@
 #include <vector>
 #include <QMainWindow>
 
+#include "../InduControlCore/indumanager.h"
+
 QT_BEGIN_NAMESPACE
 class QAction;
 class QMenu;
 class QPlainTextEdit;
 class QSessionManager;
-class InduManager;
 class MeasSeqTc;
 class MeasurementSequence;
 class DataPoint;
@@ -35,6 +36,7 @@ private slots:
     void onCreateMeasurement(std::vector<std::shared_ptr<const MeasurementSequence>> mSeq);
     void onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq);
     void onNewData(std::shared_ptr<const DataPoint> datapoint);
+    void onNewMeasurementState(InduManager::State newState);
 
 
 private:
@@ -46,6 +48,7 @@ private:
 
     GraphDiagram *graph_;
     InduManager* indumanager_;
+    InduManager::State indumanagerState_;
     PpmsWidget* ppmsWidget_;
     QWidget* mainLayoutWidget;
 
