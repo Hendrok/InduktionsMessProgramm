@@ -20,6 +20,7 @@ public:
     InstrumentManager();
     ~InstrumentManager()=default;
     void setTempSetpoint(double setpoint, double rate);
+    void SetInputVoltage(double InputVoltage);
 
 private slots:
     void onPolling();

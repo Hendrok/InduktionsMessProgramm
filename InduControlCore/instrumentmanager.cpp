@@ -21,6 +21,11 @@ void InstrumentManager::setTempSetpoint(double setpoint, double rate)
     ppmssimu_->setTempSetpoint(setpoint, rate);
 }
 
+void InstrumentManager::SetInputVoltage(double InputVoltage)
+{
+    lockinsimu_->SetInputVoltage(InputVoltage);
+}
+
 
 void InstrumentManager::onPolling()
 {

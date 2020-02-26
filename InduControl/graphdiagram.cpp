@@ -45,18 +45,26 @@ void GraphDiagram::appendDataPoint(std::shared_ptr<const DataPoint> datapoint)
 {
     if(measurementState_ == InduManager::State::ApproachEndTc)
     {
-    //für die Range
+    // Range of Y-Axis
     if(voltmin_==0){voltmin_=datapoint->ppmsdata()->pvVoltLive();}
     if(voltmin_>datapoint->ppmsdata()->pvVoltLive()){voltmin_=datapoint->ppmsdata()->pvVoltLive()-0.1;}
-    //if(voltmin_<0){voltmin_=0;}
     if(voltmax_<datapoint->ppmsdata()->pvVoltLive()){voltmax_=datapoint->ppmsdata()->pvVoltLive()+0.1;}
-    series_->append(datapoint->ppmsdata()->pvTempLive(), datapoint->ppmsdata()->pvVoltLive());
-     // set Range Live
     axisY_->setRange(voltmin_,voltmax_);
+
+    series_->append(datapoint->ppmsdata()->pvTempLive(), datapoint->ppmsdata()->pvVoltLive());
+
     }
 
     else if(measurementState_ == InduManager::State::ApproachEndJc)
     {
+    // Range of Y-Axis
+    if(voltmin_==0){voltmin_=datapoint->ppmsdata()->pvVoltLive();}
+    if(voltmin_>datapoint->ppmsdata()->pvVoltLive()){voltmin_=datapoint->ppmsdata()->pvVoltLive()-0.1;}
+    if(voltmax_<datapoint->ppmsdata()->pvVoltLive()){voltmax_=datapoint->ppmsdata()->pvVoltLive()+0.1;}
+    axisY_->setRange(voltmin_,voltmax_);
+
+    series_->append(datapoint->lockindata()->pvVoltLive(), datapoint->ppmsdata()->pvVoltLive());
+
     }
 }
 

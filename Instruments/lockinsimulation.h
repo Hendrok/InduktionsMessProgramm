@@ -15,13 +15,12 @@ class INSTRUMENTS_EXPORT LockInSimulation: public QObject
 
 public:
     LockInSimulation();
-    void setVoltSetPoint(double setpoint, double voltrate);
+    void SetInputVoltage(double InputVoltage);
 public slots:
     std::shared_ptr <DataPoint> lockInLogik();
 private:
     DataPoint datapoint_;
-    double voltSetpoint_;
-    double voltRate_;
+    double inputVoltage_;
     double voltnow_;
 };
 

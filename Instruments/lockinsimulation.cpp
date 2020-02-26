@@ -11,17 +11,17 @@
 
 LockInSimulation::LockInSimulation()
     : datapoint_(DataPoint())
-    , voltSetpoint_(0.1)
-    , voltRate_(0.01)
+    , inputVoltage_ (0.1)
     , voltnow_(0.1)
 {  
 }
 
-void LockInSimulation::setVoltSetPoint(double setpoint, double voltrate)
+void LockInSimulation::SetInputVoltage(double InputVoltage)
 {
-    voltSetpoint_ = setpoint;
-    voltRate_ = voltrate;
+    inputVoltage_ = InputVoltage;
 }
+
+
 
 std::shared_ptr<DataPoint> LockInSimulation::lockInLogik()
 {
@@ -30,25 +30,8 @@ std::shared_ptr<DataPoint> LockInSimulation::lockInLogik()
     auto dataPoint =std::make_shared<DataPoint> ();
     double test =QRandomGenerator::global()->bounded(1.0)+90;
 
-    lockingDpoint.setPvVoltSetPoint(voltSetpoint_);
-    lockingDpoint.setPvVoltRate(voltRate_);
     lockingDpoint.setPvPhase(test);
-
-    /*if(std::abs(voltSetpoint_ - voltnow_) < voltRate_)
-    {
-        voltRate_ = 0.1*voltRate_;
-    }
-
-    if (voltnow_ < voltSetpoint_)
-    {
-        voltnow_ = voltnow_ + voltRate_;
-    }
-    if (voltnow_ > voltSetpoint_)
-    {
-        voltnow_ = voltnow_-voltRate_;
-    }
-    */
-    lockingDpoint.setPvVoltLive(voltnow_);
+    lockingDpoint.setPvVoltLive(inputVoltage_);
 
     dataPoint->setLockindata(std::make_shared<const LockInDataPoint> (lockingDpoint));
     return dataPoint;
