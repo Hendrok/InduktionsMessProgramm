@@ -69,14 +69,6 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
 
     }
 }
-/* NOTE
- * Grundsätzlich findet vieles deiner Prozesslogik hier im Switch-Statement statt,
- * mit Ausnahme des "Start Measurement"-Algorithmus.
- * Ich würde es sinnvoller finden, lieber noch einen weiteren State zu definieren, sowas wie
- * "setStartSetpoints" oder "StartMeasurement" (der Methodenname von oben) und dann den Algorithmus
- * auch im switch-Statement auszuführen. Dann ist alles, was für "Start/Stop/Warte/Speicher in Datei"
- * notwendig ist, hier an einer Stelle.
- */
 void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
     emit newData(datapoint);
@@ -84,7 +76,9 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
     switch (measurementState)
     {
     case State::Idle:{
-            //NOTE if abfrage-> ob das Programm bei Aktueller Temp bleiben soll, oder Energiesparmodus!
+            /*NOTE
+             * if abfrage-> ob das Programm bei Aktueller Temp bleiben soll, oder Energiesparmodus!
+            */
             break;
         }
         //Tc

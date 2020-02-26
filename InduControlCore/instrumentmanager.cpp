@@ -30,7 +30,7 @@ void InstrumentManager::SetInputVoltage(double InputVoltage)
 void InstrumentManager::onPolling()
 {
     auto dataPoint = ppmssimu_->generateVariables();
-    /*TODO:
+    /*BUG
     *   dataPoint = lockinsimu_->lockInLogik();
     *   Irgendwie müssen die daten von lockinSimu hinzugefügt werden.
     */

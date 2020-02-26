@@ -118,6 +118,9 @@ void GraphDiagram::setStaticValues(std::shared_ptr<const MeasurementSequence> mS
         {
             axisX_->setRange(mSeqJc->voltEnd(), mSeqJc->voltStart());
         }
+
+        QString title= mSeq->fileName();
+        chart_->setTitle("Jc Measurement " + mSeq->fileName());
     }
 
 }
