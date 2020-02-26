@@ -58,22 +58,10 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
         emit newState(measurementState);
     }
     if(seqJc != nullptr){
+        mSeqJc_->setVoltStart(seqJc->voltStart());
 
     }
 }
-
-
-/* NOTE
- * Bei Zustandsänderung könntest du ein Signal emitieren, dass als Argument den neuen Zustand enthält.
- * z.B.:
- *
- * void newState(State newState);
- *
- * Dann verbindest du im Mainwindow ein neuen Slot mit diesem Signal und kann in dem Slot dem Graphen
- * (und anderen Widgets, die später vllt. mal den Zustand brauchen) direkt weitergeben.
- * Damit könntest du dir auch den Getter getMeasurementState weiter unten sparen.
- */
-
 /* NOTE
  * Grundsätzlich findet vieles deiner Prozesslogik hier im Switch-Statement statt,
  * mit Ausnahme des "Start Measurement"-Algorithmus.

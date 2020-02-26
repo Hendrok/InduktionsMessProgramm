@@ -22,7 +22,7 @@ class INDUCONTROLCORE_EXPORT InduManager :public QObject
 public:
     explicit InduManager();
     ~InduManager();
-    enum class State { Idle, ApproachStartTc, ApproachEndTc, CheckForMeas, ApproachEndJc};
+    enum class State { Idle, ApproachStartTc, ApproachEndTc, CheckForMeas, ApproachStartJc, ApproachEndJc};
     void appendMeasurement(std::vector <std::shared_ptr<const MeasurementSequence>> mVecSeq);
     void startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence);  
 

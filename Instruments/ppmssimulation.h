@@ -8,6 +8,7 @@
 #include "../InduCore/datapoint.h"
 
 
+
 class QObject;
 class MeasSeqTc;
 
@@ -20,7 +21,7 @@ public:
     void setTempSetpoint(double setpoint, double rate);
 
 public slots:
-    std::shared_ptr <DataPoint> generateVariablesTc();
+    std::shared_ptr <DataPoint> generateVariables();
 private:
     DataPoint datapoint_;
     double tempSetpoint_;
