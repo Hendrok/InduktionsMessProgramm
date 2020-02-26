@@ -6,6 +6,7 @@
 #include "instrumentmanager.h"
 #include "../InduCore/measurementsequence.h"
 #include "../InduCore/measseqtc.h"
+#include "../InduCore/measseqjc.h"
 #include "../InduCore/datapoint.h"
 #include "../InduCore/filewriter.h"
 #include "../Instruments/ppmsdatapoint.h"
@@ -48,7 +49,7 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
     fw_= std::make_unique<FileWriter>();
 
     fw_->openFile(measurementSequence);
-    if(seqTc ! = nullptr){
+    if(seqTc != nullptr){
         mSeqTc_->setTempStart(seqTc->tempStart());
         mSeqTc_->setTempEnd(seqTc->tempEnd());
         mSeqTc_->setTemperatureRate(seqTc->temperatureRate());
@@ -56,7 +57,7 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
         measurementState= State::ApproachStartTc;
         emit newState(measurementState);
     }
-    if(seqJc ! = nullptr){
+    if(seqJc != nullptr){
 
     }
 }

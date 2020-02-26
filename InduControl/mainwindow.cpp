@@ -108,6 +108,7 @@ void MainWindow::onNewData(std::shared_ptr<const DataPoint> datapoint)
 void MainWindow::onNewMeasurementState(InduManager::State newState)
 {
     indumanagerState_ = newState;
+    graph_->MeasurementState(newState);
 }
 
 void MainWindow::createQLineDiagramm()
