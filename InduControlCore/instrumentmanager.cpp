@@ -7,6 +7,15 @@
 #include "../Instruments/ppmssimulation.h"
 #include "../Instruments/lockinsimulation.h"
 
+/* FIXME
+ * - #include <QRandomGenerator> ist unnötig
+ * - #include "../InduCore/datapoint.h" ist unnötig
+ *   (wird schon in der Header-Datei includiert)
+ * - Zwischen Methode SetinputVoltage und onPolling
+ *   ist eine Leerzeile zu viel
+ * - in onPolling ist ein Leerzeichen bei make_shared zu viel
+ */
+
 InstrumentManager::InstrumentManager()
     : timer_(new QTimer(this))
     , ppmssimu_(std::make_shared<PpmsSimulation>())

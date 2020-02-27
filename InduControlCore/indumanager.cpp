@@ -12,7 +12,16 @@
 #include "../Instruments/ppmsdatapoint.h"
 
 
-
+/* FIXME
+ * - Methode connect: Wenn Attribute bei Methoden über mehrere Zeilen
+ *   verteilt werden, sollten sie linksbündig zentriert sein.
+ *   Hier also besser:
+ *
+ *   connect(instrumentmanager_.get(), &InstrumentManager::newData,
+             this, &InduManager::onNewData);
+ * - In der Initialisierungsliste des Konstructors ist bei dem Zweiten
+ *   Parameter ein Leerzeichen zu viel
+ */
 InduManager::InduManager()
     : measurementNumber_(0)
     , instrumentmanager_ (std::make_unique<InstrumentManager>())
@@ -30,6 +39,12 @@ InduManager::~InduManager()
 {
 }
 
+/* FIXME
+ * Hier bist du sehr inkonsistent:
+ * - Bei for (..) ist ein Leerzeichen, bei if(..) keins
+ * - For setzt die {-Klammer in der nächsten Zeile,
+ *   if setzt die {-Klammer in der gleichen Zeile
+ */
 void InduManager::appendMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq)
 {
     for (const auto mesSeq: mVecSeq)
@@ -43,6 +58,10 @@ void InduManager::appendMeasurement(std::vector<std::shared_ptr<const Measuremen
     }
 }
 
+/* FIXME
+ * - Jeweils ein Leerzeichen zu viel in den ersten beiden Zeilen
+ * - Nahe dem Ende ist eine Leerzeile zu viel
+ */
 void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence)
 {
     auto seqTc = std::dynamic_pointer_cast<const MeasSeqTc> (measurementSequence);
@@ -70,6 +89,10 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
 
     }
 }
+
+/* BUG
+ * Du emitierst hier bei jedem Methodenaufruf einen newState.
+ */
 void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
     emit newData(datapoint);
