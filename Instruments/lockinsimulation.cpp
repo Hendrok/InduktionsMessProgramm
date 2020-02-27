@@ -23,7 +23,7 @@ void LockInSimulation::SetInputVoltage(double InputVoltage)
 
 
 
-std::shared_ptr<DataPoint> LockInSimulation::lockInLogik()
+LockInDataPoint LockInSimulation::lockInLogik()
 {
     LockInDataPoint lockingDpoint;
 
@@ -33,7 +33,6 @@ std::shared_ptr<DataPoint> LockInSimulation::lockInLogik()
     lockingDpoint.setPvPhase(test);
     lockingDpoint.setPvVoltLive(inputVoltage_);
 
-    dataPoint->setLockindata(std::make_shared<const LockInDataPoint> (lockingDpoint));
-    return dataPoint;
+    return lockingDpoint;
 
 }

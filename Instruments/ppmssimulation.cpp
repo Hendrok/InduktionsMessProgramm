@@ -28,7 +28,7 @@ void PpmsSimulation::setTempSetpoint(double setpoint, double rate)
 }
 
 
-std::shared_ptr <DataPoint> PpmsSimulation::generateVariables()
+PpmsDataPoint PpmsSimulation::generateVariables()
 {
     PpmsDataPoint ppmsDpoint;
 
@@ -57,8 +57,6 @@ std::shared_ptr <DataPoint> PpmsSimulation::generateVariables()
 
     ppmsDpoint.setPvTempLive(tempNow_);
 
-    dataPoint->setPpmsdata(std::make_shared<const PpmsDataPoint> (ppmsDpoint));
-
-    return dataPoint;
+    return ppmsDpoint;
 
 }

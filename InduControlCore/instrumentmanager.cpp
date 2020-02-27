@@ -29,10 +29,11 @@ void InstrumentManager::SetInputVoltage(double InputVoltage)
 
 void InstrumentManager::onPolling()
 {
-    auto dataPoint = ppmssimu_->generateVariables();
-    /*BUG
-    *   dataPoint = lockinsimu_->lockInLogik();
-    *   Irgendwie müssen die daten von lockinSimu hinzugefügt werden.
-    */
-    emit newData(dataPoint);
+    DataPoint dataPoint;
+
+    dataPoint.setPpmsdata(std::make_shared<const PpmsDataPoint> (ppmssimu_->generateVariables()));
+    dataPoint.setLockindata(std::make_shared<const LockInDataPoint> (lockinsimu_->lockInLogik()));
+
+    auto dPoint = std::make_shared <DataPoint> (dataPoint);
+    emit newData(dPoint);
 }

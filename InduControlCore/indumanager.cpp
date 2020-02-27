@@ -93,6 +93,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
         }
     case State::ApproachEndTc:{
            if(fw_!= nullptr){
+                fw_->MeasurementState(measurementState);
                 fw_->append(datapoint);
            }
 
@@ -116,7 +117,8 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
         double liveVoltage = mSeqJc_->voltStart();
         instrumentmanager_->SetInputVoltage(liveVoltage);
         if(fw_!= nullptr){
-             fw_->append(datapoint);
+                fw_->MeasurementState(measurementState);
+                fw_->append(datapoint);
         }
 
         //Slow Approach

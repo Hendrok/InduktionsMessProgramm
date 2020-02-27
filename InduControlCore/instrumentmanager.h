@@ -28,7 +28,7 @@ private slots:
 private:
     QTimer* timer_;
     std::shared_ptr<PpmsSimulation> ppmssimu_;
-    std::shared_ptr<LockInSimulation> lockinsimu_;
+    std::shared_ptr<LockInSimulation> lockinsimu_ ;
 };
 
 #endif // INSTRUMENTMANAGER_H

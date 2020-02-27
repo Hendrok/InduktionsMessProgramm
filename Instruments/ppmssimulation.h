@@ -6,7 +6,7 @@
 
 //Internal Classes
 #include "../InduCore/datapoint.h"
-
+#include "ppmsdatapoint.h"
 
 
 class QObject;
@@ -21,7 +21,7 @@ public:
     void setTempSetpoint(double setpoint, double rate);
 
 public slots:
-    std::shared_ptr <DataPoint> generateVariables();
+    PpmsDataPoint generateVariables();
 private:
     DataPoint datapoint_;
     double tempSetpoint_;

@@ -17,7 +17,7 @@ public:
     LockInSimulation();
     void SetInputVoltage(double InputVoltage);
 public slots:
-    std::shared_ptr <DataPoint> lockInLogik();
+    LockInDataPoint lockInLogik();
 private:
     DataPoint datapoint_;
     double inputVoltage_;
