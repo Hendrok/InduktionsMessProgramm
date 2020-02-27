@@ -55,7 +55,7 @@ void GraphDiagram::appendDataPoint(std::shared_ptr<const DataPoint> datapoint)
 
     }
 
-    else if(measurementState_ == InduManager::State::ApproachEndJc)
+    if(measurementState_ == InduManager::State::ApproachEndJc)
     {
     // Range of Y-Axis
     if(voltmin_==0){voltmin_=datapoint->ppmsdata()->pvVoltLive();}

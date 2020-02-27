@@ -20,6 +20,7 @@ InduManager::InduManager()
     , mSeqTc_(std::make_shared<MeasSeqTc>())
     , mSeqJc_(std::make_shared<MeasSeqJc>())
     , measurementState(State::Idle)
+    , liveVoltage_(0)
 {
     connect(instrumentmanager_.get(), &InstrumentManager::newData,
                 this, &InduManager::onNewData);
@@ -110,41 +111,38 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
             if(std::abs(mSeqJc_->temperature() - datapoint->ppmsdata()->pvTempLive()) < 0.1)
             {
                 measurementState = State::ApproachEndJc;
+                liveVoltage_ = mSeqJc_->voltStart();
             }
             break;
     }
     case State::ApproachEndJc:{
-        double liveVoltage = mSeqJc_->voltStart();
-        instrumentmanager_->SetInputVoltage(liveVoltage);
+        //Approach to End
+        if (liveVoltage_ < mSeqJc_->voltEnd())
+        {
+            liveVoltage_ = liveVoltage_ + mSeqJc_->voltRate();
+        }
+        if (liveVoltage_ > mSeqJc_->voltEnd())
+        {
+            liveVoltage_ = liveVoltage_-mSeqJc_->voltRate();
+        }
+        //slow approach
+        if(std::abs(mSeqJc_->voltEnd() - liveVoltage_) < mSeqJc_->voltRate() /*&& mSeqJc_->voltRate() > 0.01*/)
+        {
+            //mSeqJc_->setVoltRate(0.1*mSeqJc_->voltRate());
+            mSeqJc_->setVoltRate(0.01);
+        }
+
+        instrumentmanager_->SetInputVoltage(liveVoltage_);
         if(fw_!= nullptr){
                 fw_->MeasurementState(measurementState);
                 fw_->append(datapoint);
         }
-
-        //Slow Approach
-        if(std::abs(mSeqJc_->voltEnd() - liveVoltage) < mSeqJc_->voltRate() && mSeqJc_->voltRate() > 0.01)
-        {
-            mSeqJc_->setVoltRate(0.1*mSeqJc_->voltRate());
-        }
-
-        //Approach to End
-        if (liveVoltage < mSeqJc_->voltEnd())
-        {
-            liveVoltage = liveVoltage + mSeqJc_->voltRate();
-        }
-        if (liveVoltage > mSeqJc_->voltEnd())
-        {
-            liveVoltage = liveVoltage-mSeqJc_->voltRate();
-        }
-
-
         // Check ob Messung zu Ende:
-        if(std::abs(mSeqJc_->voltEnd() - datapoint->ppmsdata()->pvTempLive()) < 0.05){
+        if(std::abs(mSeqJc_->voltEnd() - liveVoltage_) < 0.01){
             fw_->closeFile();
             measurementState = State::CheckForMeas;
             measurementNumber_++;
         }
-
         break;
     }
     case State::CheckForMeas:{
