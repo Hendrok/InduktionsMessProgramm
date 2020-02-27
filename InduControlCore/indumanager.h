@@ -42,7 +42,6 @@ private:
     std::shared_ptr <MeasSeqTc> mSeqTc_;
     std::shared_ptr <MeasSeqJc> mSeqJc_;
     State measurementState;
-    double liveVoltage_;
 };
 
 #endif // INDUMANAGER_H

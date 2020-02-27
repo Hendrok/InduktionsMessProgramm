@@ -55,7 +55,7 @@ void GraphDiagram::appendDataPoint(std::shared_ptr<const DataPoint> datapoint)
 
     }
 
-    if(measurementState_ == InduManager::State::ApproachEndJc)
+    else if(measurementState_ == InduManager::State::ApproachEndJc)
     {
     // Range of Y-Axis
     if(voltmin_==0){voltmin_=datapoint->ppmsdata()->pvVoltLive();}
@@ -123,33 +123,33 @@ void GraphDiagram::setStaticValues(std::shared_ptr<const MeasurementSequence> mS
         chart_->setTitle("Jc Measurement " + mSeq->fileName());
     }
 
+
 }
 
 void GraphDiagram::createQlineDiagramm()
 {
-   chart_->legend()->hide();
-   chart_->addSeries(series_);
-   chart_->addAxis(axisX_, Qt::AlignBottom);
-   chart_->addAxis(axisY_, Qt::AlignLeft);
-   series_->attachAxis(axisX_);
-   series_->attachAxis(axisY_);
+    chart_->legend()->hide();
+    chart_->addSeries(series_);
+    chart_->addAxis(axisX_, Qt::AlignBottom);
+    chart_->addAxis(axisY_, Qt::AlignLeft);
+    series_->attachAxis(axisX_);
+    series_->attachAxis(axisY_);
 
+    //font Size
+    QFont font;
+    font.setPixelSize(18);
+    chart_->setTitleFont(font);
 
-   //font Size
-   QFont font;
-   font.setPixelSize(18);
-   chart_->setTitleFont(font);
+    // Dicke der Linie
+    QPen pen(QRgb(0x000000));
+    pen.setWidth(2);
+    series_->setPen(pen);
+    // Animationen alle an, weil Animationen cool
+    chart_->setAnimationOptions(QChart::NoAnimation);
 
-   // Dicke der Linie
-   QPen pen(QRgb(0x000000));
-   pen.setWidth(2);
-   series_->setPen(pen);
-   // Animationen alle an, weil Animationen cool
-   chart_->setAnimationOptions(QChart::NoAnimation);
-
-   //Durch Antialiasing passt sich chart an, wenn man größer kleiner macht (meine ich)
-   //QChartView *chartView = new QChartView(chart_);
-   chartView_->setRenderHint(QPainter::Antialiasing);
+    //Durch Antialiasing passt sich chart an, wenn man größer kleiner macht (meine ich)
+    //QChartView *chartView = new QChartView(chart_);
+    chartView_->setRenderHint(QPainter::Antialiasing);
 
     QVBoxLayout* mainLayout = new QVBoxLayout();
     mainLayout->addWidget(chartView_);

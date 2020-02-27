@@ -1,5 +1,5 @@
 #include "filewriter.h"
-
+#include <QDebug>
 #include <QString>
 #include <QTextStream>
 #include <QDir>
