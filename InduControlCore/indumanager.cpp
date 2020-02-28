@@ -15,14 +15,14 @@
 
 InduManager::InduManager()
     : measurementNumber_(0)
-    , instrumentmanager_ (std::make_unique<InstrumentManager>())
+    , instrumentmanager_(std::make_unique<InstrumentManager>())
     , fw_(nullptr)
     , mSeqTc_(std::make_shared<MeasSeqTc>())
     , mSeqJc_(std::make_shared<MeasSeqJc>())
     , measurementState(State::Idle)
 {
     connect(instrumentmanager_.get(), &InstrumentManager::newData,
-                this, &InduManager::onNewData);
+            this, &InduManager::onNewData);
 }
 
 InduManager::~InduManager()
@@ -31,8 +31,7 @@ InduManager::~InduManager()
 
 void InduManager::appendMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq)
 {
-    for (const auto mesSeq: mVecSeq)
-    {
+    for (const auto mesSeq: mVecSeq){
         mVecSeq_.push_back(mesSeq);
     }
 
@@ -44,8 +43,8 @@ void InduManager::appendMeasurement(std::vector<std::shared_ptr<const Measuremen
 
 void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence)
 {
-    auto seqTc = std::dynamic_pointer_cast<const MeasSeqTc> (measurementSequence);
-    auto seqJc = std::dynamic_pointer_cast<const MeasSeqJc> (measurementSequence);
+    auto seqTc = std::dynamic_pointer_cast<const MeasSeqTc>(measurementSequence);
+    auto seqJc = std::dynamic_pointer_cast<const MeasSeqJc>(measurementSequence);
     fw_= std::make_unique<FileWriter>();
     fw_->openFile(measurementSequence);
     if(seqTc != nullptr){
@@ -53,7 +52,7 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
         mSeqTc_->setTempEnd(seqTc->tempEnd());
         mSeqTc_->setTemperatureRate(seqTc->temperatureRate());
         mSeqTc_->setVoltageAmplitude(seqTc->voltageAmplitude());
-        instrumentmanager_->setTempSetpoint(mSeqTc_->tempStart(), mSeqTc_->temperatureRate());
+        instrumentmanager_->setTempSetpoint(mSeqTc_->tempStart(),mSeqTc_->temperatureRate());
         measurementState = State::ApproachStartTc;
         emit newState(measurementState);
     }
@@ -67,6 +66,7 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
         emit newState(measurementState);
     }
 }
+
 void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
     emit newData(datapoint);
@@ -85,7 +85,8 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
                 {
                     measurementState = State::ApproachEndTc;
                     instrumentmanager_->setTempSetpoint(mSeqTc_->tempEnd(), mSeqTc_->temperatureRate());
-                    instrumentmanager_->SetInputVoltage(mSeqTc_->voltageAmplitude());
+                    instrumentmanager_->setInputVoltage(mSeqTc_->voltageAmplitude());
+                    emit newState(measurementState);
                 }
                 break;
             }
@@ -100,6 +101,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
                     fw_->closeFile();
                     measurementState = State::CheckForMeas;
                     measurementNumber_++;
+                    emit newState(measurementState);
                }
                 break;
             }
@@ -108,7 +110,8 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
                 if(std::abs(mSeqJc_->temperature() - datapoint->ppmsdata()->pvTempLive()) < 0.1)
                 {
                     measurementState = State::ApproachEndJc;
-                    instrumentmanager_->SetInputVoltage(mSeqJc_->voltStart());
+                    instrumentmanager_->setInputVoltage(mSeqJc_->voltStart());
+                    emit newState(measurementState);
                 }
                 break;
         }
@@ -116,11 +119,11 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
         case State::ApproachEndJc:{
             if (datapoint->lockindata()->pvVoltLive() < mSeqJc_->voltEnd())
             {
-                instrumentmanager_->SetInputVoltage(datapoint->lockindata()->pvVoltLive() + mSeqJc_->voltRate());
+                instrumentmanager_->setInputVoltage(datapoint->lockindata()->pvVoltLive() + mSeqJc_->voltRate());
             }
             if (datapoint->lockindata()->pvVoltLive() > mSeqJc_->voltEnd())
             {
-                instrumentmanager_->SetInputVoltage(datapoint->lockindata()->pvVoltLive() - mSeqJc_->voltRate());
+                instrumentmanager_->setInputVoltage(datapoint->lockindata()->pvVoltLive() - mSeqJc_->voltRate());
             }
             //slow approach
             if(std::abs(mSeqJc_->voltEnd() - datapoint->lockindata()->pvVoltLive()) < mSeqJc_->voltRate())
@@ -136,6 +139,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
                 fw_->closeFile();
                 measurementState = State::CheckForMeas;
                 measurementNumber_++;
+                emit newState(measurementState);
             }
 
             break;
@@ -148,14 +152,13 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
                 }
                 else{
                     measurementState = State::Idle;
+                    emit newState(measurementState);
                 }
                 break;
             }
 
         default:assert(false);
     }
-
-    emit newState(measurementState);
 }
 
 

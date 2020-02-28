@@ -6,7 +6,6 @@
 #include <vector>
 
 //Internal Classes
-class PpmsSimulation;
 class MeasSeqTc;
 class MeasSeqJc;
 class MeasurementSequence;
@@ -15,7 +14,7 @@ class FileWriter;
 class InstrumentManager;
 
 
-class INDUCONTROLCORE_EXPORT InduManager :public QObject
+class INDUCONTROLCORE_EXPORT InduManager: public QObject
 {
     Q_OBJECT
 
@@ -23,7 +22,7 @@ public:
     explicit InduManager();
     ~InduManager();
     enum class State { Idle, ApproachStartTc, ApproachEndTc, CheckForMeas, ApproachStartJc, ApproachEndJc};
-    void appendMeasurement(std::vector <std::shared_ptr<const MeasurementSequence>> mVecSeq);
+    void appendMeasurement(std::vector<std::shared_ptr<const MeasurementSequence>> mVecSeq);
     void startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence);  
 
 signals:
@@ -35,7 +34,7 @@ private slots:
     void onNewData(std::shared_ptr<DataPoint> datapoint);
 
 private:   
-    unsigned long measurementNumber_;
+    size_t measurementNumber_;
     std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq_;
     std::unique_ptr <InstrumentManager> instrumentmanager_;
     std::unique_ptr <FileWriter> fw_;        
