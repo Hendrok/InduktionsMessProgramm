@@ -11,7 +11,7 @@ class DataPoint;
 class MeasurementSequence;
 class measSeqJc;
 class measSeqTc;
-class InduManager;
+#include "../InduControlCore/indumanager.h"
 
 class GraphDiagram: public QWidget
 {
@@ -21,7 +21,7 @@ public:
     GraphDiagram(QWidget*parent =nullptr);
     void createQlineDiagramm();
     void appendDataPoint(std::shared_ptr<const DataPoint> datapoint);
-
+    void MeasurementState(InduManager::State newState);
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
 
@@ -42,9 +42,8 @@ private:
     QValueAxis *axisY_;
 
     std::shared_ptr <const MeasurementSequence> measSeq_;
-    int measurementType; /*TODO
-                          * Either Implement measSeq_tc and jc in private, or implement measurementType as a state?
-                          */
+    InduManager::State measurementState_;
+
 public slots:
     void setStaticValues(std::shared_ptr<const MeasurementSequence> mSeq);
 

@@ -35,7 +35,7 @@ GraphDiagram::GraphDiagram(QWidget *parent)
     , axisX_(new QValueAxis)
     , axisY_(new QValueAxis)
     , measSeq_ (nullptr)
-    , measurementType(0)
+    , measurementState_(InduManager::State::Idle)
 {
 
 }
@@ -43,24 +43,34 @@ GraphDiagram::GraphDiagram(QWidget *parent)
 
 void GraphDiagram::appendDataPoint(std::shared_ptr<const DataPoint> datapoint)
 {
-    if(measurementType==1)
+    if(measurementState_ == InduManager::State::ApproachEndTc)
     {
-    //für die Range
+    // Range of Y-Axis
     if(voltmin_==0){voltmin_=datapoint->ppmsdata()->pvVoltLive();}
     if(voltmin_>datapoint->ppmsdata()->pvVoltLive()){voltmin_=datapoint->ppmsdata()->pvVoltLive()-0.1;}
-    //if(voltmin_<0){voltmin_=0;}
     if(voltmax_<datapoint->ppmsdata()->pvVoltLive()){voltmax_=datapoint->ppmsdata()->pvVoltLive()+0.1;}
-    series_->append(datapoint->ppmsdata()->pvTempLive(), datapoint->ppmsdata()->pvVoltLive());
-     // set Range Live
     axisY_->setRange(voltmin_,voltmax_);
+
+    series_->append(datapoint->ppmsdata()->pvTempLive(), datapoint->ppmsdata()->pvVoltLive());
+
     }
 
-    else if(measurementType==2)
+    if(measurementState_ == InduManager::State::ApproachEndJc)
     {
+    // Range of Y-Axis
+    if(voltmin_==0){voltmin_=datapoint->ppmsdata()->pvVoltLive();}
+    if(voltmin_>datapoint->ppmsdata()->pvVoltLive()){voltmin_=datapoint->ppmsdata()->pvVoltLive()-0.1;}
+    if(voltmax_<datapoint->ppmsdata()->pvVoltLive()){voltmax_=datapoint->ppmsdata()->pvVoltLive()+0.1;}
+    axisY_->setRange(voltmin_,voltmax_);
+
+    series_->append(datapoint->lockindata()->pvVoltLive(), datapoint->ppmsdata()->pvVoltLive());
 
     }
+}
 
-
+void GraphDiagram::MeasurementState(InduManager::State newState)
+{
+ measurementState_ = newState;
 }
 
 QSize GraphDiagram::sizeHint() const
@@ -81,7 +91,6 @@ void GraphDiagram::setStaticValues(std::shared_ptr<const MeasurementSequence> mS
     auto mSeqJc = std::dynamic_pointer_cast <const MeasSeqJc> (measSeq_);
     if(mSeqTc !=nullptr)
     {
-        measurementType = 1;
         axisX_->setTitleText("Temperature in Kelvin");
         axisY_->setTitleText("Voltage in Volt");
 
@@ -99,7 +108,6 @@ void GraphDiagram::setStaticValues(std::shared_ptr<const MeasurementSequence> mS
     }
     else if(mSeqJc !=nullptr)
     {
-        measurementType = 2;
         axisX_->setTitleText("Input Voltage in Volt");
         axisY_->setTitleText("Output Voltage in Volt");
         if(mSeqJc->voltStart() <= mSeqJc->voltEnd())
@@ -110,8 +118,10 @@ void GraphDiagram::setStaticValues(std::shared_ptr<const MeasurementSequence> mS
         {
             axisX_->setRange(mSeqJc->voltEnd(), mSeqJc->voltStart());
         }
+
+        QString title= mSeq->fileName();
+        chart_->setTitle("Jc Measurement " + mSeq->fileName());
     }
-    else{measurementType = 0;}
 
 }
 

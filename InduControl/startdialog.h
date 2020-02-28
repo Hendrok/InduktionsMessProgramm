@@ -38,13 +38,13 @@ private:
 
     //Tc
     QLineEdit* sampleNameTc_;
-    QDoubleSpinBox* tempStart_;
-    QDoubleSpinBox* tempEnd_;
-    QDoubleSpinBox* temperatureRate_;
+    QDoubleSpinBox* tempStartTc_;
+    QDoubleSpinBox* tempEndTc_;
+    QDoubleSpinBox* temperatureRateTc_;
     QDoubleSpinBox* magneticFieldTc_;
     QDoubleSpinBox* coilAngleTc_;
     QDoubleSpinBox* frequencyTc_;
-    QDoubleSpinBox* voltageAmplitude_;
+    QDoubleSpinBox* voltageAmplitudeTc_;
     QDoubleSpinBox* harmonicWaveTc_;
 
     //Jc

@@ -94,16 +94,22 @@ void FileWriter::append(std::shared_ptr<DataPoint> datapoint){
         {
             return;
         }
-
+        if(measurementState_ == InduManager::State::ApproachEndTc)
         {
         file_->write(QString::number(datapoint->ppmsdata()->pvTempLive()).toUtf8() +
                      " " + QString::number(datapoint->ppmsdata()->pvVoltLive()).toUtf8() +
                      " " + QString::number(datapoint->lockindata()->pvPhase()).toUtf8() +"\n");
         }
+        else if(measurementState_ == InduManager::State::ApproachEndJc)
+        {
+            file_->write(QString::number(datapoint->lockindata()->pvVoltLive()).toUtf8() +
+                         " " + QString::number(datapoint->ppmsdata()->pvVoltLive()).toUtf8() +
+                         " " + QString::number(datapoint->lockindata()->pvPhase()).toUtf8() +"\n");
+
+        }
 }
 
-QString FileWriter::openFile(std::shared_ptr<const MeasurementSequence> measurementSequence /*, QString filedir*/){
-        //Schreibt den Erstellten Header und benennt die File nach Filename, achtet außerdem darauf, das die File nicht überschrieben wird!
+QString FileWriter::openFile(std::shared_ptr<const MeasurementSequence> measurementSequence){
         QString path("Messergebnisse/");
         QDir dir;  // ich erstelle QString mit dem Ordner, danach die direction
         if (!dir.exists(path)){ // Wenn nötig wird der Ordner erstellt
@@ -111,14 +117,13 @@ QString FileWriter::openFile(std::shared_ptr<const MeasurementSequence> measurem
         }
 
         QString filepath = createFileName(measurementSequence);
-
         // der Filename und path wird gesezt, außerdem wird der name mit (i) verändert, wenn es die Txt datei schon  gibt
         QFile file(path + filepath + ".txt");
         for(int i=1; file.exists();i++)
         {
-        if (file.exists()){
-            file.setFileName(path + filepath + "_("+QString::number(i) + ")" ".txt");
-        }
+            if (file.exists()){
+                file.setFileName(path + filepath + "_("+QString::number(i) + ")" ".txt");
+            }
         }
 
         file.open(QIODevice::WriteOnly);
@@ -130,15 +135,18 @@ QString FileWriter::openFile(std::shared_ptr<const MeasurementSequence> measurem
         {
             return QString();
         }
-
         if(file_->isWritable()){
             file_->write(writeHeader(measurementSequence).toUtf8());
         }
-
         return file_->fileName();
 }
 
 void FileWriter::closeFile()
 {
     file_->close();
+}
+
+void FileWriter::MeasurementState(InduManager::State newState)
+{
+    measurementState_ = newState;
 }

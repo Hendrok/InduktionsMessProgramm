@@ -12,7 +12,7 @@
 PpmsSimulation::PpmsSimulation()
      : datapoint_(DataPoint())
      , tempSetpoint_(300)
-     , tempRate_(1)
+     , tempRate_(10)
      , fieldSetpoint_(0)
      , fieldRate_(10)
      , ppmsHelium_(100)
@@ -28,10 +28,10 @@ void PpmsSimulation::setTempSetpoint(double setpoint, double rate)
 }
 
 
-std::shared_ptr <DataPoint> PpmsSimulation::generateVariablesTc()
+PpmsDataPoint PpmsSimulation::generateVariables()
 {
     PpmsDataPoint ppmsDpoint;
-    LockInDataPoint lockingDpoint;
+
 
     auto dataPoint =std::make_shared<DataPoint> ();
     double test =QRandomGenerator::global()->bounded(1.0);
@@ -39,11 +39,11 @@ std::shared_ptr <DataPoint> PpmsSimulation::generateVariablesTc()
     ppmsDpoint.setPvTempSetPoint(tempSetpoint_);
     ppmsDpoint.setPvTempRate(tempRate_);
     ppmsDpoint.setPvVoltLive(test);
-    lockingDpoint.setPvPhase(test);
 
-    if(std::abs(tempSetpoint_ - tempNow_) < 1)
+
+    if(std::abs(tempSetpoint_ - tempNow_) < tempRate_ && tempRate_ > 0.1)
     {
-        tempRate_ = 0.1;
+        tempRate_ = 0.1*tempRate_;
     }
 
     if (tempNow_ < tempSetpoint_)
@@ -57,8 +57,6 @@ std::shared_ptr <DataPoint> PpmsSimulation::generateVariablesTc()
 
     ppmsDpoint.setPvTempLive(tempNow_);
 
-    dataPoint->setPpmsdata(std::make_shared<const PpmsDataPoint> (ppmsDpoint));
-    dataPoint->setLockindata(std::make_shared<const LockInDataPoint> (lockingDpoint));
-    return dataPoint;
+    return ppmsDpoint;
 
 }

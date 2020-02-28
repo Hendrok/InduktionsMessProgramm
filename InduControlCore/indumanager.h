@@ -14,6 +14,21 @@ class DataPoint;
 class FileWriter;
 class InstrumentManager;
 
+/* FIXME
+ * - Forward Declaration von PpmsSimulation ist unnötig
+ * - In den Attributen sind bei den Smart Pointern 4 Leerzeichen zu viel
+ * - Typ vo measurementNumber_ sollte eher size_t sein, und nicht unsigned long
+ *   Zum einen soll man unsigned Datentypen vermeiden, zum anderen soll man long
+ *   vermeiden. Unsigned long ist doppelt schlimm :-D
+ *   Du greifst mit der Variable measurementNumber_ auf die Elemente eines
+ *   std::vectors zu, der korrekte Typ hierfür ist size_t
+ * - In der Deklaration von appendMeasurement ist ein Leerzeichen zu viel
+ * - Inkonsistenz zwischen diesem Header und instrumentmanager.h:
+ *     Hier hast du nach Q_OBJECT eine Leerzeile, in instrumentmanager.h nicht
+ *     Ich finde diese Version hier besser. Wie auch immer du dich entscheiden solltest,
+ *     halte den Stil über alle Dateien konsistent bei
+ * - Ein Leerzeichen zu wenig bei: class ... InduManager :public Object
+ */
 
 class INDUCONTROLCORE_EXPORT InduManager :public QObject
 {
@@ -22,7 +37,7 @@ class INDUCONTROLCORE_EXPORT InduManager :public QObject
 public:
     explicit InduManager();
     ~InduManager();
-    enum class State { Idle, ApproachStartTc, ApproachEndTc, CheckForMeas};
+    enum class State { Idle, ApproachStartTc, ApproachEndTc, CheckForMeas, ApproachStartJc, ApproachEndJc};
     void appendMeasurement(std::vector <std::shared_ptr<const MeasurementSequence>> mVecSeq);
     void startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence);  
 
@@ -42,6 +57,7 @@ private:
     std::shared_ptr <MeasSeqTc> mSeqTc_;
     std::shared_ptr <MeasSeqJc> mSeqJc_;
     State measurementState;
+    double liveVoltage_;
 };
 
 #endif // INDUMANAGER_H
