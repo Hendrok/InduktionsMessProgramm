@@ -12,6 +12,9 @@
 #include "ppmswidget.h"
 #include "measurementstable.h"
 
+/* FIXME
+ * Ein Leerzeichen zuviel vor dem Methoden-Körper (vor der {-Klammer)
+ */
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , graph_(new GraphDiagram(this))
@@ -47,6 +50,9 @@ QSize MainWindow::sizeHint() const
     return QSize(1600, 800);
 }
 
+/* FIXME
+ * Ein Leerzeichen zu viel
+ */
 QSize MainWindow::minimumSizeHint() const
 {
     return QSize(800, 400);
@@ -67,7 +73,9 @@ void MainWindow::setupUi()
     mainLayoutWidget->setLayout(mainLayout);
 }
 
-
+/* FIXME
+ * Zwei Leerzeichen zu viel
+ */
 void MainWindow::createActions()
 {
     QMenu *fileMenu = menuBar()->addMenu(tr("&Measurement"));

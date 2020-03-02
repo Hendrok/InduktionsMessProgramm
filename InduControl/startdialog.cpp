@@ -14,7 +14,9 @@
 #include "../InduCore/measseqtc.h"
 #include "../InduCore/measseqjc.h"
 
-
+/* FIXME
+ * Eine Leerzeile zu viel
+ */
 StartDialog::StartDialog(QWidget *parent)
     : QDialog(parent)
     , widget(new QWidget(this))
@@ -55,6 +57,9 @@ QSize StartDialog::minimumSizeHint() const
     return QSize(200, 100);
 }
 
+/* FIXME
+ * Zu viele Leerzeilen in der Methode
+ */
 void StartDialog::accept()
 {
     auto vecSeq = createSequence();
@@ -66,6 +71,16 @@ void StartDialog::accept()
     //close();
 }
 
+/* NOTE
+ * - Hier meckern Code-Analyzer auch wieder wegen den redundanten Doppel-Typ-Bezeichnern,
+ *   also z.B.
+ *
+ *    QLabel* ... = new QLabel();       schlecht
+ *    auto ... = new QLabel();          besser
+ *
+ * - Die Methode enthält unglaublich viele Code-Duplizierungen. Sobald du dich mit Lambdas
+ *   auseinandergesetzt hast, werden wir sie drastisch reduzieren :-P
+ */
 void StartDialog::setupUI()
 {
     QGridLayout* gridLayout = new QGridLayout();
@@ -268,6 +283,15 @@ void StartDialog::setupUI()
     setLayout(mainLayout);
 }
 
+/* NOTE
+ * Hier könntest du viel kürzer schreiben:
+ *
+ * void StartDialog::updateUI()
+ * {
+ *   widget->setVisible(tcbutton_->isChecked());
+ *   widgetJc->setVisible(!tcbutton_->isChecked());
+ * }
+ */
 void StartDialog::updateUI()
 {
     if(tcbutton_->isChecked())
