@@ -23,7 +23,10 @@ QSize MeasurementsTable::minimumSizeHint() const
 
 void MeasurementsTable::newMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mSeq)
 {
-    vecSeq_=mSeq;
+  for (const auto& el : mSeq) {
+    vecSeq_.push_back(el);
+  }
+
     for (unsigned long i=0; i<mSeq.size();i++)
     {
         QListWidgetItem* item = new QListWidgetItem;
@@ -38,19 +41,13 @@ void MeasurementsTable::newMeasurement(std::vector<std::shared_ptr<const Measure
 
 void MeasurementsTable::activeMeasurement(std::shared_ptr<const MeasurementSequence> mesSeq)
 {
-        auto element(mesSeq);
-        auto it = std::find(vecSeq_.begin(), vecSeq_.end(), element);
-        if(it != vecSeq_.end())
-        {
-            listWidget->item(it - vecSeq_.begin())->setForeground(Qt::red);
-        }
-        else
-        {
-            listWidget->item(it - vecSeq_.begin())->setForeground(Qt::black);
-        }
-
-
-
+  auto it = vecSeq_.begin();
+  QColor color;
+  std::for_each(vecSeq_.begin(), vecSeq_.end(),
+                [&](auto &el) {
+                  color = (mesSeq == el) ? Qt::red : Qt::black;
+                  listWidget->item(it++ - vecSeq_.begin())->setForeground(color);
+                });
 }
 
 void MeasurementsTable::SetupUI()
