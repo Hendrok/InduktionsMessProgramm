@@ -1,15 +1,17 @@
 #ifndef GRAPHDIAGRAM_H
 #define GRAPHDIAGRAM_H
 
-//includes std
 #include <memory>
-//includes qt
 #include <QWidget>
 #include <QtCharts>
 #include <QtCharts/QValueAxis>
+
+//Internal Classes
 class DataPoint;
 class MeasurementSequence;
-class InduManager;
+class measSeqJc;
+class measSeqTc;
+#include "../InduControlCore/indumanager.h"
 
 class GraphDiagram: public QWidget
 {
@@ -19,7 +21,7 @@ public:
     GraphDiagram(QWidget*parent =nullptr);
     void createQlineDiagramm();
     void appendDataPoint(std::shared_ptr<const DataPoint> datapoint);
-
+    void MeasurementState(InduManager::State newState);
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
 
@@ -38,6 +40,10 @@ private:
     QChartView *chartView_;
     QValueAxis *axisX_ ;
     QValueAxis *axisY_;
+
+    std::shared_ptr <const MeasurementSequence> measSeq_;
+    InduManager::State measurementState_;
+
 public slots:
     void setStaticValues(std::shared_ptr<const MeasurementSequence> mSeq);
 

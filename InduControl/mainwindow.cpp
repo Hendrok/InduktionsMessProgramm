@@ -1,6 +1,7 @@
 #include <QtWidgets>
 #include <memory>
 
+//Internal Classes
 #include "mainwindow.h"
 #include "../InduControlCore/indumanager.h"
 #include "../InduCore/measurementsequence.h"
@@ -9,13 +10,16 @@
 #include "startdialog.h"
 #include "../Instruments/ppmssimulation.h"
 #include "ppmswidget.h"
+#include "measurementstable.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , graph_(new GraphDiagram(this))
     , indumanager_(new InduManager())
+    , indumanagerState_(InduManager::State::Idle)
     , ppmsWidget_(new PpmsWidget())
     , mainLayoutWidget(new QWidget())
+    , mTable(new MeasurementsTable())
 
 {    
     setupUi();
@@ -28,6 +32,8 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::onStartMeasurement);
     connect(indumanager_,&InduManager::newData,
             this,&MainWindow::onNewData);
+    connect(indumanager_, &InduManager::newState,
+            this, &MainWindow::onNewMeasurementState);
 }
 
 MainWindow::~MainWindow()
@@ -50,7 +56,11 @@ QSize MainWindow::minimumSizeHint() const
 void MainWindow::setupUi()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout();
-    mainLayout->addWidget(graph_);
+    QHBoxLayout* GraphandList = new QHBoxLayout();
+    GraphandList->addWidget(graph_);
+    GraphandList->addWidget(mTable);
+    mTable->setMaximumWidth(250);
+    mainLayout->addLayout(GraphandList);
     mainLayout->addSpacing(10);
     ppmsWidget_->setMaximumHeight(120);
     mainLayout->addWidget(ppmsWidget_);
@@ -83,23 +93,26 @@ void MainWindow::onStartMessungButton()
 void MainWindow::onCreateMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mSeq)
 { 
     indumanager_->appendMeasurement(mSeq);
+    mTable->newMeasurement(mSeq);
 }
 
 void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq)
 {    
     indumanager_->startMeasurement(mSeq);
     graph_->setStaticValues(mSeq);
+    mTable->activeMeasurement(mSeq);
 }
 
 void MainWindow::onNewData(std::shared_ptr<const DataPoint> datapoint)
 {
-    indumanager_->checkStartMeasurement();
     ppmsWidget_->newData(datapoint);
-    if(indumanager_->getMeasurementState()==InduManager::State::ApproachEnd)
-    {
     graph_->appendDataPoint(datapoint);
-    }
+}
 
+void MainWindow::onNewMeasurementState(InduManager::State newState)
+{
+    indumanagerState_ = newState;
+    graph_->MeasurementState(indumanagerState_);
 }
 
 void MainWindow::createQLineDiagramm()

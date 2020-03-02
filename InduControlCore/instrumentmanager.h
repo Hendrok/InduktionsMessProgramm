@@ -1,35 +1,36 @@
-#ifndef INSTRUMENTMANAGER_H                          //Aufgabe: Daten von Messequence an PPMS-Core UND GBIB-Core weiter zu geben!
+#ifndef INSTRUMENTMANAGER_H
 #define INSTRUMENTMANAGER_H
+/*Aufgabe: Daten von Messequence an PPMS-Core
+ * & GBIB-Core weiter zu geben!
+ */
 #include "InduControlCore_global.h"
 #include <memory>
 #include <QTimer>
 
-
-//Eigene Klassen
+//Internal Classes
 #include "../InduCore/datapoint.h"
-
-
-class QObject;
 class PpmsSimulation;
-class MeasSeqTc;
+class LockInSimulation;
 
 class INDUCONTROLCORE_EXPORT InstrumentManager: public QObject
 {
     Q_OBJECT
+
 signals:
     void newData(std::shared_ptr<DataPoint> dataPoint);
 public:
     InstrumentManager();
-    ~InstrumentManager();
+    ~InstrumentManager() = default;
     void setTempSetpoint(double setpoint, double rate);
+    void setInputVoltage(double InputVoltage);
 
 private slots:
     void onPolling();
+
 private:
     QTimer* timer_;
-    PpmsSimulation* ppmssimu_;
-    double tempSetpoint_;
-    double tempRate_;
+    std::shared_ptr<PpmsSimulation> ppmssimu_;
+    std::shared_ptr<LockInSimulation> lockinsimu_ ;
 };
 
 #endif // INSTRUMENTMANAGER_H

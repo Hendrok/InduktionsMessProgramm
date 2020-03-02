@@ -1,5 +1,4 @@
 #include "ppmswidget.h"
-#include "../InduCore/datapoint.h"
 
 #include <QDebug>
 #include <QLabel>
@@ -7,6 +6,9 @@
 #include <QBoxLayout>
 #include <QVBoxLayout>
 #include <QGridLayout>
+
+//Internal Classes
+#include "../InduCore/datapoint.h"
 
 PpmsWidget::PpmsWidget(QWidget *parent)
     : QWidget (parent)
@@ -23,8 +25,6 @@ PpmsWidget::PpmsWidget(QWidget *parent)
     , chamberStatus_(nullptr)
     , chamberLevel_(nullptr)
     , voltageLive_(nullptr)
-    , voltageSetPoint_(nullptr)
-    , voltageRate_(nullptr)
     , phaseLive_(nullptr)
 {    
     setupUI();
@@ -56,8 +56,6 @@ void PpmsWidget::newData(std::shared_ptr<const DataPoint> dpoint)
         chamberLevel_->setText(QString::number(dpoint->ppmsdata()->pvChamberLevel()));
 
         voltageLive_->setText(QString::number(dpoint->ppmsdata()->pvVoltLive()));
-        voltageSetPoint_->setText(QString::number(dpoint->lockindata()->pvVoltSetPoint()));
-        voltageRate_->setText(QString::number(dpoint->lockindata()->pvVoltRate()));
         phaseLive_->setText(QString::number(dpoint->lockindata()->pvPhase()));
     }
     
@@ -95,10 +93,6 @@ void PpmsWidget::setupUI()
 
     voltageLive_ = new QLabel();
     voltageLive_->setText("");
-    voltageSetPoint_ = new QLabel();
-    voltageSetPoint_->setText("");
-    voltageRate_ = new QLabel();
-    voltageRate_->setText("");
     phaseLive_ = new QLabel();
     phaseLive_->setText("");
 
@@ -120,8 +114,6 @@ void PpmsWidget::setupUI()
     QLabel* labelChamberStatus = new QLabel ("Status:");
 
     QLabel* labelVoltageLive = new QLabel ("Voltage:");
-    QLabel* labelVoltageSetPoint = new QLabel ("Set Point:");
-    QLabel* labelVoltageRate = new QLabel ("Volt. Rate:");
     QLabel* labelPhaseLive = new QLabel ("Phase:");
 
     QLabel* labelempty = new QLabel ("");
@@ -173,10 +165,10 @@ void PpmsWidget::setupUI()
     VoltageGridLayout->addWidget(voltageLive_, 0, 1);
     VoltageGridLayout->addWidget(phaseLive_, 1, 1);
     VoltageGridLayout->addWidget(labelPhaseLive, 1, 0);
-    VoltageGridLayout->addWidget(labelVoltageSetPoint, 2, 0);
-    VoltageGridLayout->addWidget(voltageSetPoint_ , 2, 1);
-    VoltageGridLayout->addWidget(labelVoltageRate, 3, 0);
-    VoltageGridLayout->addWidget(voltageRate_, 3, 1);
+    VoltageGridLayout->addWidget(labelempty, 2, 0);
+    VoltageGridLayout->addWidget(labelempty, 2, 1);
+    VoltageGridLayout->addWidget(labelempty, 3, 0);
+    VoltageGridLayout->addWidget(labelempty, 3, 1);
 
     QWidget* tempWidget = new QWidget();
     tempWidget->setLayout(TempGridLayout);

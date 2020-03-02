@@ -5,10 +5,12 @@
 #include <QButtonGroup>
 #include <QRadioButton>
 
+//Internal Classes
 class MeasSeqTc;
 class MeasurementSequence;
 class QDoubleSpinBox;
 class QLineEdit;
+
 class StartDialog : public QDialog
 {
     Q_OBJECT
@@ -27,19 +29,37 @@ protected:
 
 private:
     void setupUI();
+    QWidget* widget;
+    QWidget* widgetJc;
     std::vector <std::shared_ptr<const MeasurementSequence>> createSequence() const;
     QButtonGroup* buttongroupmes_;
     QRadioButton* tcbutton_;
     QRadioButton* jcbutton_;
-    QLineEdit* sampleName_;
-    QDoubleSpinBox* tempStart_;
-    QDoubleSpinBox* tempEnd_;
-    QDoubleSpinBox* temperatureRate_;
-    QDoubleSpinBox* magneticField_;
-    QDoubleSpinBox* coilAngle_;
-    QDoubleSpinBox* frequency_;
-    QDoubleSpinBox* voltageAmplitude_;
-    QDoubleSpinBox* harmonicWave_;
+
+    //Tc
+    QLineEdit* sampleNameTc_;
+    QDoubleSpinBox* tempStartTc_;
+    QDoubleSpinBox* tempEndTc_;
+    QDoubleSpinBox* temperatureRateTc_;
+    QDoubleSpinBox* magneticFieldTc_;
+    QDoubleSpinBox* coilAngleTc_;
+    QDoubleSpinBox* frequencyTc_;
+    QDoubleSpinBox* voltageAmplitudeTc_;
+    QDoubleSpinBox* harmonicWaveTc_;
+
+    //Jc
+    QLineEdit* sampleNameJc_;
+    QDoubleSpinBox* tempJc_;
+    QDoubleSpinBox* frequencyJc_;
+    QDoubleSpinBox* magneticFieldJc_;
+    QDoubleSpinBox* voltStartJc_;
+    QDoubleSpinBox* voltEndJc_;
+    QDoubleSpinBox* VoltRateJc_;
+    QDoubleSpinBox* coilAngleJc_;
+    QDoubleSpinBox* harmonicWaveJc_;
+
+private slots:
+    void updateUI();
 };
 
 #endif // STARTDIALOG_H
