@@ -42,21 +42,13 @@ void MeasurementsTable::newMeasurement(std::vector<std::shared_ptr<const Measure
 
 void MeasurementsTable::activeMeasurement(std::shared_ptr<const MeasurementSequence> mesSeq)
 {
-
-        //auto it = std::find(vecSeq_.begin(), vecSeq_.end(), mesSeq);
-        auto it = vecSeq_.begin();
-        auto itEnd = vecSeq_.end();
-    for(;it != itEnd; ++it)
-    {
-        if(mesSeq == *it)
-        {
-            listWidget->item(it - vecSeq_.begin())->setForeground(Qt::red);
-        }
-        else
-        {
-            listWidget->item(it - vecSeq_.begin())->setForeground(Qt::black);
-        }
-     }
+    auto it = vecSeq_.begin();
+    QColor color;
+    std::for_each(vecSeq_.begin(), vecSeq_.end(),
+                  [&](auto &el) {
+                    color = (mesSeq == el) ? Qt::red : Qt::black;
+                    listWidget->item(it++ - vecSeq_.begin())->setForeground(color);
+                  });
 
 
 }
