@@ -48,7 +48,7 @@ void MeasurementsTable::activeMeasurement(std::shared_ptr<const MeasurementSeque
                   color = (mesSeq == el) ? Qt::red : Qt::black;
                   listWidget->item(it++ - vecSeq_.begin())->setForeground(color);
                 });
-
+}
 void MeasurementsTable::SetupUI()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout();
