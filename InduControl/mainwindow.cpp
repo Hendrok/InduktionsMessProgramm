@@ -100,6 +100,7 @@ void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> m
 {    
     indumanager_->startMeasurement(mSeq);
     graph_->setStaticValues(mSeq);
+    mTable->activeMeasurement(mSeq);
 }
 
 void MainWindow::onNewData(std::shared_ptr<const DataPoint> datapoint)

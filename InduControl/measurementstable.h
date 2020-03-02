@@ -16,10 +16,11 @@ public:
     QSize minimumSizeHint() const override;
 
     void newMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mSeq);
+    void activeMeasurement(std::shared_ptr<const MeasurementSequence> mesSeq);
 private:
     void SetupUI();
     QListWidget *listWidget;
-
+    std::vector<std::shared_ptr<const MeasurementSequence> > vecSeq_;
 };
 
 #endif // MEASUREMENTSTABLE_H
