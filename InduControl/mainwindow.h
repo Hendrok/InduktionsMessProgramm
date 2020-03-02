@@ -18,6 +18,7 @@ class DataPoint;
 class GraphDiagram;
 class PpmsSimulation;
 class PpmsWidget;
+class MeasurementsTable;
 
 QT_END_NAMESPACE
 
@@ -51,6 +52,7 @@ private:
     InduManager::State indumanagerState_;
     PpmsWidget* ppmsWidget_;
     QWidget* mainLayoutWidget;
+    MeasurementsTable* mTable;
 
 };
 #endif // MAINWINDOW_H

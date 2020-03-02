@@ -10,6 +10,7 @@
 #include "startdialog.h"
 #include "../Instruments/ppmssimulation.h"
 #include "ppmswidget.h"
+#include "measurementstable.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     , indumanagerState_(InduManager::State::Idle)
     , ppmsWidget_(new PpmsWidget())
     , mainLayoutWidget(new QWidget())
+    , mTable(new MeasurementsTable())
 
 {    
     setupUi();
@@ -54,7 +56,11 @@ QSize MainWindow::minimumSizeHint() const
 void MainWindow::setupUi()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout();
-    mainLayout->addWidget(graph_);
+    QHBoxLayout* GraphandList = new QHBoxLayout();
+    GraphandList->addWidget(graph_);
+    GraphandList->addWidget(mTable);
+    mTable->setMaximumWidth(250);
+    mainLayout->addLayout(GraphandList);
     mainLayout->addSpacing(10);
     ppmsWidget_->setMaximumHeight(120);
     mainLayout->addWidget(ppmsWidget_);
@@ -87,28 +93,26 @@ void MainWindow::onStartMessungButton()
 void MainWindow::onCreateMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mSeq)
 { 
     indumanager_->appendMeasurement(mSeq);
+    mTable->newMeasurement(mSeq);
 }
 
 void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq)
 {    
     indumanager_->startMeasurement(mSeq);
     graph_->setStaticValues(mSeq);
+    mTable->activeMeasurement(mSeq);
 }
 
 void MainWindow::onNewData(std::shared_ptr<const DataPoint> datapoint)
 {
     ppmsWidget_->newData(datapoint);
-    if(indumanagerState_==InduManager::State::ApproachEndTc)
-    {
     graph_->appendDataPoint(datapoint);
-    }
-
 }
 
 void MainWindow::onNewMeasurementState(InduManager::State newState)
 {
     indumanagerState_ = newState;
-    graph_->MeasurementState(newState);
+    graph_->MeasurementState(indumanagerState_);
 }
 
 void MainWindow::createQLineDiagramm()

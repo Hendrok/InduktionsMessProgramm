@@ -19,12 +19,14 @@ SOURCES += \
     graphdiagram.cpp \
     main.cpp \
     mainwindow.cpp \
+    measurementstable.cpp \
     ppmswidget.cpp \
     startdialog.cpp
 
 HEADERS += \
     graphdiagram.h \
     mainwindow.h \
+    measurementstable.h \
     ppmswidget.h \
     startdialog.h
 

@@ -44,8 +44,6 @@ private:
 
     //Lockin
     QLabel* voltageLive_;
-    QLabel* voltageSetPoint_;
-    QLabel* voltageRate_;
     QLabel* phaseLive_;
 
 
