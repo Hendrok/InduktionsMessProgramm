@@ -13,7 +13,6 @@ class DataPoint;
 class FileWriter;
 class InstrumentManager;
 
-
 class INDUCONTROLCORE_EXPORT InduManager: public QObject
 {
     Q_OBJECT
@@ -23,7 +22,7 @@ public:
     ~InduManager();
     enum class State { Idle, ApproachStartTc, ApproachEndTc, CheckForMeas, ApproachStartJc, ApproachEndJc};
     void appendMeasurement(std::vector<std::shared_ptr<const MeasurementSequence>> mVecSeq);
-    void startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence);  
+    void startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence);
 
 signals:
     void newData(std::shared_ptr<const DataPoint>);
@@ -33,11 +32,11 @@ signals:
 private slots:
     void onNewData(std::shared_ptr<DataPoint> datapoint);
 
-private:   
+private:
     size_t measurementNumber_;
     std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq_;
     std::unique_ptr <InstrumentManager> instrumentmanager_;
-    std::unique_ptr <FileWriter> fw_;        
+    std::unique_ptr <FileWriter> fw_;
     std::shared_ptr <MeasSeqTc> mSeqTc_;
     std::shared_ptr <MeasSeqJc> mSeqJc_;
     State measurementState;
