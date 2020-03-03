@@ -12,6 +12,13 @@
 class PpmsSimulation;
 class LockInSimulation;
 
+/* NOTE
+ * - Argument double InputVoltage beginnt mit einem Großbuchstaben
+ * - setPpmsVariables und setLockVariables haben immer mehrere Variablen
+ *   als Argument. Das ist schlecht, weil du dann ja jedes mal, wenn du z.b.
+ *   die Sensitivity oder das Magnetfeld ändern möchtest, du auch immer die
+ *   anderen Werte ändern musst. Das erzeugt unnötig Traffic auf dem GPIB
+ */
 class INDUCONTROLCORE_EXPORT InstrumentManager : public QObject
 {
     Q_OBJECT
@@ -23,6 +30,8 @@ public:
     ~InstrumentManager() = default;
     void setTempSetpoint(double setpoint, double rate);
     void setInputVoltage(double InputVoltage);
+    void setPpmsVariables(double magField, double angle);
+    void setLockVariables(double freq, double sensivity, int harmonicW);
 
 private slots:
     void onPolling();

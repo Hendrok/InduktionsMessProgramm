@@ -25,6 +25,16 @@ void InstrumentManager::setInputVoltage(double InputVoltage)
     lockinsimu_->SetInputVoltage(InputVoltage);
 }
 
+void InstrumentManager::setPpmsVariables(double magField, double angle)
+{
+    ppmssimu_->setPpmsVariables(magField, angle);
+}
+
+void InstrumentManager::setLockVariables(double freq, double sensivity, int harmonicW)
+{
+    lockinsimu_->setLockVariables(freq, sensivity, harmonicW);
+}
+
 void InstrumentManager::onPolling()
 {
     DataPoint dataPoint;

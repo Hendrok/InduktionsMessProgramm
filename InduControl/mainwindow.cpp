@@ -48,7 +48,6 @@ QSize MainWindow::sizeHint() const
 QSize MainWindow::minimumSizeHint() const
 {
     return QSize(800, 400);
-
 }
 
 void MainWindow::setupUi()
