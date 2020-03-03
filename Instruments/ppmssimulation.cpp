@@ -17,6 +17,8 @@ PpmsSimulation::PpmsSimulation()
      , fieldRate_(10)
      , ppmsHelium_(100)
      , tempNow_(300)
+     , magField_(0)
+     , angle_(0)
 
 {
 }
@@ -25,6 +27,12 @@ void PpmsSimulation::setTempSetpoint(double setpoint, double rate)
 {
     tempSetpoint_ = setpoint;
     tempRate_ = rate;
+}
+
+void PpmsSimulation::setPpmsVariables(double magField, double angle)
+{
+    magField_ = magField;
+    angle_ = angle;
 }
 
 
@@ -39,6 +47,10 @@ PpmsDataPoint PpmsSimulation::generateVariables()
     ppmsDpoint.setPvTempSetPoint(tempSetpoint_);
     ppmsDpoint.setPvTempRate(tempRate_);
     ppmsDpoint.setPvVoltLive(test);
+    ppmsDpoint.setPvMagSetPoint(magField_);
+    ppmsDpoint.setPvMagFieldLive(magField_);
+    ppmsDpoint.setPvRotSetPoint(angle_);
+    ppmsDpoint.setPvRotLive(angle_);
 
 
     if(std::abs(tempSetpoint_ - tempNow_) < tempRate_ && tempRate_ > 0.1)

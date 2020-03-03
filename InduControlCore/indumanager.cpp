@@ -66,6 +66,12 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
         measurementState = State::ApproachStartJc;
         emit newState(measurementState);
     }
+
+    instrumentmanager_->setLockVariables(measurementSequence->frequency(),
+                                         0,
+                                         measurementSequence->harmonicWave());
+    instrumentmanager_->setPpmsVariables(measurementSequence->magneticField(),
+                                         measurementSequence->coilAngle());
 }
 
 void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)

@@ -19,6 +19,7 @@ class INSTRUMENTS_EXPORT PpmsSimulation: public QObject
 public:
     PpmsSimulation();
     void setTempSetpoint(double setpoint, double rate);
+    void setPpmsVariables(double magField, double angle);
 
 public slots:
     PpmsDataPoint generateVariables();
@@ -30,6 +31,8 @@ private:
     double fieldRate_;
     double ppmsHelium_;
     double tempNow_;
+    double magField_;
+    double angle_;
 
 };
 

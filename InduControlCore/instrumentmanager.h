@@ -23,6 +23,8 @@ public:
     ~InstrumentManager() = default;
     void setTempSetpoint(double setpoint, double rate);
     void setInputVoltage(double InputVoltage);
+    void setPpmsVariables(double magField, double angle);
+    void setLockVariables(double freq, double sensivity, int harmonicW);
 
 private slots:
     void onPolling();
