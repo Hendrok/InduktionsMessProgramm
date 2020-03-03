@@ -14,10 +14,9 @@
 #include "../InduCore/measseqtc.h"
 #include "../InduCore/measseqjc.h"
 
-
 StartDialog::StartDialog(QWidget *parent)
     : QDialog(parent)
-    , widget(new QWidget(this))
+    , widgetTc(new QWidget(this))
     , widgetJc(new QWidget(this))
     , buttongroupmes_(new QButtonGroup(this))
     , tcbutton_(new QRadioButton("Tc Measurement", this))
@@ -40,7 +39,6 @@ StartDialog::StartDialog(QWidget *parent)
     , VoltRateJc_(nullptr)
     , coilAngleJc_(nullptr)
     , harmonicWaveJc_(nullptr)
-
 {
     setupUI();
 }
@@ -60,17 +58,22 @@ void StartDialog::accept()
     auto vecSeq = createSequence();
 
     emit createMeasurement(vecSeq);
-
-
-
-    //close();
 }
-
+/* NOTE
+ * - Hier meckern Code-Analyzer auch wieder wegen den redundanten Doppel-Typ-Bezeichnern,
+ *   also z.B.
+ *
+ *    QLabel* ... = new QLabel();       schlecht
+ *    auto ... = new QLabel();          besser
+ *
+ * - Die Methode enthält unglaublich viele Code-Duplizierungen. Sobald du dich mit Lambdas
+ *   auseinandergesetzt hast, werden wir sie drastisch reduzieren :-P
+ */
 void StartDialog::setupUI()
 {
-    QGridLayout* gridLayout = new QGridLayout();
-    QGridLayout* gridLayoutJc = new QGridLayout();
-    QHBoxLayout* boxButton = new QHBoxLayout();
+    auto gridLayout = new QGridLayout();
+    auto gridLayoutJc = new QGridLayout();
+    auto boxButton = new QHBoxLayout();
 
     //Buttongroup!
     buttongroupmes_->addButton(tcbutton_);
@@ -161,7 +164,6 @@ void StartDialog::setupUI()
     gridLayout->addWidget(harmonicWaveTc_);
 
     //Jc Measurement
-
     sampleNameJc_= new QLineEdit();
     sampleNameJc_->setText("");
 
@@ -243,7 +245,7 @@ void StartDialog::setupUI()
     gridLayoutJc->addWidget(harmonicWaveJc_);
 
     //set Layouts
-    widget->setLayout(gridLayout);
+    widgetTc->setLayout(gridLayout);
     widgetJc->setLayout(gridLayoutJc);
     QWidget* boxwidget = new QWidget();
     boxwidget->setLayout(boxButton);
@@ -261,10 +263,9 @@ void StartDialog::setupUI()
     //set MainLayout
     QVBoxLayout* mainLayout = new QVBoxLayout();
     mainLayout->addWidget(boxwidget);
-    mainLayout->addWidget(widget);
+    mainLayout->addWidget(widgetTc);
     mainLayout->addWidget(widgetJc);
     mainLayout->addWidget(buttonBox);
-
     setLayout(mainLayout);
 }
 
@@ -273,11 +274,11 @@ void StartDialog::updateUI()
     if(tcbutton_->isChecked())
     {
         widgetJc->setVisible(false);
-        widget->setVisible(true);
+        widgetTc->setVisible(true);
     }
     if(jcbutton_->isChecked())
     {
-        widget->setVisible(false);
+        widgetTc->setVisible(false);
         widgetJc->setVisible(true);
     }
 }

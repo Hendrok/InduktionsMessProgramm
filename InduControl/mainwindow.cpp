@@ -20,7 +20,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ppmsWidget_(new PpmsWidget())
     , mainLayoutWidget(new QWidget())
     , mTable(new MeasurementsTable())
-
 {    
     setupUi();
     createStatusBar();
@@ -40,7 +39,6 @@ MainWindow::~MainWindow()
 {
     delete indumanager_;
 }
-
 
 QSize MainWindow::sizeHint() const
 {
@@ -67,7 +65,6 @@ void MainWindow::setupUi()
     mainLayoutWidget->setLayout(mainLayout);
 }
 
-
 void MainWindow::createActions()
 {
     QMenu *fileMenu = menuBar()->addMenu(tr("&Measurement"));
@@ -79,9 +76,8 @@ void MainWindow::createActions()
             this, &MainWindow::onStartMessungButton);
     fileMenu->addAction(messungStarten);
     fileToolBar->addAction(messungStarten);
-
-
 }
+
 void MainWindow::onStartMessungButton()
 {
     StartDialog* startDialog = new StartDialog(this);

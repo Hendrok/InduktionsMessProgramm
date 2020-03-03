@@ -7,8 +7,9 @@
 MeasurementsTable::MeasurementsTable(QWidget *parent)
     : QWidget (parent)
     , listWidget(new QListWidget(this))
+    , vecSeq_()
 {
-    SetupUI();
+    setupUI();
 }
 
 QSize MeasurementsTable::sizeHint() const
@@ -21,9 +22,21 @@ QSize MeasurementsTable::minimumSizeHint() const
     return QSize(100,300);
 }
 
+/* FIXME
+ * Hier kopierst du jeden shared_ptr insgesamt 3x, um ihn von mSeq in vecSeq_ zu pushen:
+ *  - Das erste mal bei der Parameterübergabe per Wert (siehe Kommentar in der Header-Datei)
+ *  - Das zweite mal bei for(const auto mesSeq:mseq). Die Kopie ersparst du dir mit :
+ *
+ *     for(const auto mesSeq:mSeq)        schlecht, erzeugt von jedem Element eine Kopie
+ *     for (const auto& mesSeq : mSeq)    gut, da jedes Element per Referenz übergeben wird (d.h. keine Kopie)
+ *
+ *    In der zweiten Zeile habe ich auch die fehlenden Leerzeichen eingefügt
+ *
+ *  - Die dritte Kopie des shared_ptr findet bei push_back statt, diese Kopie ist okay)
+ */
 void MeasurementsTable::newMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mSeq)
 {
-    for(const auto mesSeq:mSeq)
+    for(const auto& mesSeq:mSeq)
     {
         vecSeq_.push_back(mesSeq);
     }
@@ -42,10 +55,11 @@ void MeasurementsTable::newMeasurement(std::vector<std::shared_ptr<const Measure
 
 void MeasurementsTable::activeMeasurement(std::shared_ptr<const MeasurementSequence> mesSeq)
 {
+
     auto it = vecSeq_.begin();
     QColor color;
     std::for_each(vecSeq_.begin(), vecSeq_.end(),
-                  [&](auto &el) {
+                  [&](const auto &el) {
                     color = (mesSeq == el) ? Qt::red : Qt::black;
                     listWidget->item(it++ - vecSeq_.begin())->setForeground(color);
                   });
@@ -53,9 +67,9 @@ void MeasurementsTable::activeMeasurement(std::shared_ptr<const MeasurementSeque
 
 }
 
-void MeasurementsTable::SetupUI()
+void MeasurementsTable::setupUI()
 {
-    QVBoxLayout* mainLayout = new QVBoxLayout();
+    auto mainLayout = new QVBoxLayout();
     mainLayout->addWidget(listWidget);
     setLayout(mainLayout);
 }

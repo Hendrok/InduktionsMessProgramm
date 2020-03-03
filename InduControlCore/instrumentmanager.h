@@ -12,7 +12,7 @@
 class PpmsSimulation;
 class LockInSimulation;
 
-class INDUCONTROLCORE_EXPORT InstrumentManager: public QObject
+class INDUCONTROLCORE_EXPORT InstrumentManager : public QObject
 {
     Q_OBJECT
 

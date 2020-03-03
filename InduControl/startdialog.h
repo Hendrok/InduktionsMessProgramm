@@ -11,6 +11,12 @@ class MeasurementSequence;
 class QDoubleSpinBox;
 class QLineEdit;
 
+
+/* FIXME
+ * - createMeasurement-Signal und CreateSequence-Methode erzeugen jeweils eine Kopie von
+ *   dem Vector. Bis die Shared-Ptr also im InduManager ankommen, wurden sie schon insgesamt
+ *   2x unnötig kopiert. Schau dazu mal in die Diskussion von measurementstable.h
+ */
 class StartDialog : public QDialog
 {
     Q_OBJECT
@@ -29,7 +35,7 @@ protected:
 
 private:
     void setupUI();
-    QWidget* widget;
+    QWidget* widgetTc;
     QWidget* widgetJc;
     std::vector <std::shared_ptr<const MeasurementSequence>> createSequence() const;
     QButtonGroup* buttongroupmes_;
