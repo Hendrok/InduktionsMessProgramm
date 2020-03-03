@@ -28,7 +28,13 @@ InduManager::~InduManager()
 {
 }
 
-
+/* FIXME
+ * - in der for-Schleife erzeugst du unnötige Kopien des Shared-Ptrs, da du die Elemente
+ *   per Value übergibst. Besser per Referenz:
+ *
+ *    for (const auto mesSeq: mVecSeq){        Erzeugt Kopien
+ *    for (const auto& mesSeq: mVecSeq){       Erzeugt keine Kopien, da Übergabe per Referenz
+ */
 void InduManager::appendMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq)
 {
     for (const auto mesSeq: mVecSeq){
@@ -74,6 +80,25 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
                                          measurementSequence->coilAngle());
 }
 
+
+/* BUG
+ * - Hier musst du natürlich nicht nur überprüfen, ob Temperatur-Prozesswert und Setpoint übereinstimmen zum
+ *   starten, sondern auch noch Magnetfeld und Winkel
+ */
+
+/* NOTE
+ * - Ich finde die Kontroll-Logik hier sehr schwierig nachzuvollziehen:
+ *   Wenn du Messungen appendest, gehst du in CheckforMeas. Soweit Okay. Aber dort emittierst du ein
+ *   Signal an das Mainwindow, was dann wiederrum hier im InduManager die Methode startMeasurement
+ *   aufruft. Dieses "über Bande spielen" ist problematisch, weil dein InduManager nur richtig funktioniert,
+ *   wenn das MainWindow korrekt implementiert ist. Du lagerst also Programmlogik in das UI aus, dabei
+ *   sollte das UI nur für die Anzeige der Daten zuständig sein, keine Geschäftslogik implementieren
+ * - Besser:
+ *   Aus dem State CheckForMeaus rufst du direkt die startMeasurement-Methode auf. Das Signal
+ *   startNewMeasurement sendest du in startMeasurement-Methode aus. Dann klappt deine Programm-Logik auch
+ *   ohne UI. Stell dir vor, du entwickelst noch weitere UI (z.b. Consolen-App oder Mobile-App), dann musst
+ *   du in jeder neuen UI die korrekte "Über-Bande-Methode" implementieren. Das sorgt nur für Chaos.
+ */
 void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
     emit newData(datapoint);
