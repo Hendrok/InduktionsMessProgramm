@@ -5,6 +5,7 @@
 #include "../Instruments/ppmssimulation.h"
 #include "../Instruments/lockinsimulation.h"
 
+
 InstrumentManager::InstrumentManager()
     : timer_(new QTimer(this))
     , ppmssimu_(std::make_shared<PpmsSimulation>())

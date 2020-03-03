@@ -11,6 +11,7 @@
 #include "../InduCore/filewriter.h"
 #include "../Instruments/ppmsdatapoint.h"
 
+
 InduManager::InduManager()
     : measurementNumber_(0)
     , instrumentmanager_(std::make_unique<InstrumentManager>())
@@ -27,10 +28,7 @@ InduManager::~InduManager()
 {
 }
 
-/* FIXME
- * Hier bist du sehr inkonsistent:
- * - Bei for (..) ist ein Leerzeichen, bei if(..) keins
- */
+
 void InduManager::appendMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq)
 {
     for (const auto mesSeq: mVecSeq){
@@ -42,6 +40,7 @@ void InduManager::appendMeasurement(std::vector<std::shared_ptr<const Measuremen
         emit newState(measurementState);
     }
 }
+
 
 void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence)
 {

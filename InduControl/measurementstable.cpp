@@ -66,6 +66,7 @@ void MeasurementsTable::newMeasurement(std::vector<std::shared_ptr<const Measure
  */
 void MeasurementsTable::activeMeasurement(std::shared_ptr<const MeasurementSequence> mesSeq)
 {
+
     auto it = vecSeq_.begin();
     QColor color;
     std::for_each(vecSeq_.begin(), vecSeq_.end(),
@@ -84,6 +85,16 @@ void MeasurementsTable::activeMeasurement(std::shared_ptr<const MeasurementSeque
  *   QVBoxLayout* mainLayout = new QVBoxLayout();     nicht so gut
  *   auto mainLayout = new QVBoxLayout();             besser
  */
+
+  auto it = vecSeq_.begin();
+  QColor color;
+  std::for_each(vecSeq_.begin(), vecSeq_.end(),
+                [&](auto &el) {
+                  color = (mesSeq == el) ? Qt::red : Qt::black;
+                  listWidget->item(it++ - vecSeq_.begin())->setForeground(color);
+                });
+}
+
 void MeasurementsTable::SetupUI()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout();
