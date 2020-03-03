@@ -7,8 +7,9 @@
 MeasurementsTable::MeasurementsTable(QWidget *parent)
     : QWidget (parent)
     , listWidget(new QListWidget(this))
+    , vecSeq_()
 {
-    SetupUI();
+    setupUI();
 }
 
 QSize MeasurementsTable::sizeHint() const
@@ -35,7 +36,7 @@ QSize MeasurementsTable::minimumSizeHint() const
  */
 void MeasurementsTable::newMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mSeq)
 {
-    for(const auto mesSeq:mSeq)
+    for(const auto& mesSeq:mSeq)
     {
         vecSeq_.push_back(mesSeq);
     }
@@ -52,25 +53,13 @@ void MeasurementsTable::newMeasurement(std::vector<std::shared_ptr<const Measure
     }
 }
 
-/* FIXME
- * Hast du den Lambda-Ausdruck verstanden? :-D Wenn nicht, hättest du es auch bei deiner
- * Schleife (zusammen mit dem ternären Operator ?:) lassen können.
- *
- * Wenn du es aber so lässt, gehört noch eine Verbesserung hinzu (die ich in meinem Code
- * vergessen hatte:
- *    [&](const auto &el) {       anstelle von
- *    [&](auto &el) {
- *
- * , da das Element el ja gar nicht verändert wird, sondern nur im Vergleich verwendete wird
- * (alle Variablen, die nicht verändert werden, sollen als const deklariert werden):
- */
 void MeasurementsTable::activeMeasurement(std::shared_ptr<const MeasurementSequence> mesSeq)
 {
 
     auto it = vecSeq_.begin();
     QColor color;
     std::for_each(vecSeq_.begin(), vecSeq_.end(),
-                  [&](auto &el) {
+                  [&](const auto &el) {
                     color = (mesSeq == el) ? Qt::red : Qt::black;
                     listWidget->item(it++ - vecSeq_.begin())->setForeground(color);
                   });
@@ -78,26 +67,9 @@ void MeasurementsTable::activeMeasurement(std::shared_ptr<const MeasurementSeque
 
 }
 
-/* NOTE
- * Wenn du einen Code-Analyzer über diese Methode laufen lässt,
- * meckert er wegen veralteter Schreibweise:
- *
- *   QVBoxLayout* mainLayout = new QVBoxLayout();     nicht so gut
- *   auto mainLayout = new QVBoxLayout();             besser
- */
-
-  auto it = vecSeq_.begin();
-  QColor color;
-  std::for_each(vecSeq_.begin(), vecSeq_.end(),
-                [&](auto &el) {
-                  color = (mesSeq == el) ? Qt::red : Qt::black;
-                  listWidget->item(it++ - vecSeq_.begin())->setForeground(color);
-                });
-}
-
-void MeasurementsTable::SetupUI()
+void MeasurementsTable::setupUI()
 {
-    QVBoxLayout* mainLayout = new QVBoxLayout();
+    auto mainLayout = new QVBoxLayout();
     mainLayout->addWidget(listWidget);
     setLayout(mainLayout);
 }

@@ -7,12 +7,7 @@
 class MeasurementSequence;
 
 /* FIXME
- * - SetupUI() Method ist großgeschrieben
- * - In indumanager.h und instrumentmanager.h hast du jeweils
- *   eine Leerzeile nach Q_OBJECT.
- *   Bleib konsistent, mach es dann auch hier
- * - Dasselbe trifft auf den private:-Bereich zu:
- *   Hier hast du in den beiden anderen Dateien eine Leerzeile drüber
+
  * - in newMeasurement übergibst du den vector als Value-Type, kopierst ihne also
  *   Besser, als den gesamten Vector bei Methodenufruf zu kopieren, wäre es, ihn
  *   per Referenz zu übergeben:
@@ -27,6 +22,7 @@ class MeasurementSequence;
 class MeasurementsTable: public QWidget
 {
      Q_OBJECT
+
 public:
     explicit MeasurementsTable(QWidget *parent = nullptr);
 
@@ -35,10 +31,11 @@ public:
 
     void newMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mSeq);
     void activeMeasurement(std::shared_ptr<const MeasurementSequence> mesSeq);
+
 private:
-    void SetupUI();
+    void setupUI();
     QListWidget *listWidget;
-    std::vector<std::shared_ptr<const MeasurementSequence> > vecSeq_;
+    std::vector<std::shared_ptr<const MeasurementSequence>> vecSeq_;
 };
 
 #endif // MEASUREMENTSTABLE_H

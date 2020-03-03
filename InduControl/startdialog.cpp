@@ -14,12 +14,9 @@
 #include "../InduCore/measseqtc.h"
 #include "../InduCore/measseqjc.h"
 
-/* FIXME
- * Eine Leerzeile zu viel
- */
 StartDialog::StartDialog(QWidget *parent)
     : QDialog(parent)
-    , widget(new QWidget(this))
+    , widgetTc(new QWidget(this))
     , widgetJc(new QWidget(this))
     , buttongroupmes_(new QButtonGroup(this))
     , tcbutton_(new QRadioButton("Tc Measurement", this))
@@ -42,7 +39,6 @@ StartDialog::StartDialog(QWidget *parent)
     , VoltRateJc_(nullptr)
     , coilAngleJc_(nullptr)
     , harmonicWaveJc_(nullptr)
-
 {
     setupUI();
 }
@@ -57,20 +53,12 @@ QSize StartDialog::minimumSizeHint() const
     return QSize(200, 100);
 }
 
-/* FIXME
- * Zu viele Leerzeilen in der Methode
- */
 void StartDialog::accept()
 {
     auto vecSeq = createSequence();
 
     emit createMeasurement(vecSeq);
-
-
-
-    //close();
 }
-
 /* NOTE
  * - Hier meckern Code-Analyzer auch wieder wegen den redundanten Doppel-Typ-Bezeichnern,
  *   also z.B.
@@ -83,9 +71,9 @@ void StartDialog::accept()
  */
 void StartDialog::setupUI()
 {
-    QGridLayout* gridLayout = new QGridLayout();
-    QGridLayout* gridLayoutJc = new QGridLayout();
-    QHBoxLayout* boxButton = new QHBoxLayout();
+    auto gridLayout = new QGridLayout();
+    auto gridLayoutJc = new QGridLayout();
+    auto boxButton = new QHBoxLayout();
 
     //Buttongroup!
     buttongroupmes_->addButton(tcbutton_);
@@ -176,7 +164,6 @@ void StartDialog::setupUI()
     gridLayout->addWidget(harmonicWaveTc_);
 
     //Jc Measurement
-
     sampleNameJc_= new QLineEdit();
     sampleNameJc_->setText("");
 
@@ -258,7 +245,7 @@ void StartDialog::setupUI()
     gridLayoutJc->addWidget(harmonicWaveJc_);
 
     //set Layouts
-    widget->setLayout(gridLayout);
+    widgetTc->setLayout(gridLayout);
     widgetJc->setLayout(gridLayoutJc);
     QWidget* boxwidget = new QWidget();
     boxwidget->setLayout(boxButton);
@@ -276,32 +263,22 @@ void StartDialog::setupUI()
     //set MainLayout
     QVBoxLayout* mainLayout = new QVBoxLayout();
     mainLayout->addWidget(boxwidget);
-    mainLayout->addWidget(widget);
+    mainLayout->addWidget(widgetTc);
     mainLayout->addWidget(widgetJc);
     mainLayout->addWidget(buttonBox);
-
     setLayout(mainLayout);
 }
 
-/* NOTE
- * Hier könntest du viel kürzer schreiben:
- *
- * void StartDialog::updateUI()
- * {
- *   widget->setVisible(tcbutton_->isChecked());
- *   widgetJc->setVisible(!tcbutton_->isChecked());
- * }
- */
 void StartDialog::updateUI()
 {
     if(tcbutton_->isChecked())
     {
         widgetJc->setVisible(false);
-        widget->setVisible(true);
+        widgetTc->setVisible(true);
     }
     if(jcbutton_->isChecked())
     {
-        widget->setVisible(false);
+        widgetTc->setVisible(false);
         widgetJc->setVisible(true);
     }
 }

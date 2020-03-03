@@ -11,10 +11,6 @@ class MeasurementSequence;
 class QDoubleSpinBox;
 class QLineEdit;
 
-/* NOTE
- * - nicht sehr konsistent, dass das eine Widget widget, und das andere widgetJc heißt.
- * Logisch wäre widgetTc und widgetJc
- */
 
 /* FIXME
  * - createMeasurement-Signal und CreateSequence-Methode erzeugen jeweils eine Kopie von
@@ -39,7 +35,7 @@ protected:
 
 private:
     void setupUI();
-    QWidget* widget;
+    QWidget* widgetTc;
     QWidget* widgetJc;
     std::vector <std::shared_ptr<const MeasurementSequence>> createSequence() const;
     QButtonGroup* buttongroupmes_;

@@ -12,13 +12,7 @@
 class PpmsSimulation;
 class LockInSimulation;
 
-
-/* FIXME
- * ein Leerzeichen fehlt vor dem "Ableitungs-Doppelpunkt":
- *  InstrumentManager: public ...
- */
-
-class INDUCONTROLCORE_EXPORT InstrumentManager: public QObject
+class INDUCONTROLCORE_EXPORT InstrumentManager : public QObject
 {
     Q_OBJECT
 
