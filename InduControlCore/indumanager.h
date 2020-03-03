@@ -14,6 +14,11 @@ class FileWriter;
 class InstrumentManager;
 
 
+/* FIXME
+ * ein Leerzeichen fehlt vor dem "Ableitungs-Doppelpunkt":
+ *  InduManager: public ...
+ */
+
 class INDUCONTROLCORE_EXPORT InduManager: public QObject
 {
     Q_OBJECT

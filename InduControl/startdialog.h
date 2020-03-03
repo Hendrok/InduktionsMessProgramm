@@ -11,6 +11,16 @@ class MeasurementSequence;
 class QDoubleSpinBox;
 class QLineEdit;
 
+/* NOTE
+ * - nicht sehr konsistent, dass das eine Widget widget, und das andere widgetJc heißt.
+ * Logisch wäre widgetTc und widgetJc
+ */
+
+/* FIXME
+ * - createMeasurement-Signal und CreateSequence-Methode erzeugen jeweils eine Kopie von
+ *   dem Vector. Bis die Shared-Ptr also im InduManager ankommen, wurden sie schon insgesamt
+ *   2x unnötig kopiert. Schau dazu mal in die Diskussion von measurementstable.h
+ */
 class StartDialog : public QDialog
 {
     Q_OBJECT

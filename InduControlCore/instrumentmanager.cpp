@@ -1,11 +1,9 @@
 #include "instrumentmanager.h"
 #include <QDebug>
 
-
 //Internal Classes
 #include "../Instruments/ppmssimulation.h"
 #include "../Instruments/lockinsimulation.h"
-
 
 
 InstrumentManager::InstrumentManager()

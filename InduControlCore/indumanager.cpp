@@ -12,7 +12,6 @@
 #include "../Instruments/ppmsdatapoint.h"
 
 
-
 InduManager::InduManager()
     : measurementNumber_(0)
     , instrumentmanager_(std::make_unique<InstrumentManager>())
@@ -68,7 +67,6 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
         emit newState(measurementState);
     }
 }
-
 
 void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
