@@ -20,14 +20,8 @@ public:
     double pvTempRate() const;
     void setPvTempRate(double pvTempRate);
 
-    double pvMagSetPoint() const;
-    void setPvMagSetPoint(double pvMagSetPoint);
-
     double pvMagFieldLive() const;
     void setPvMagFieldLive(double pvMagFieldLive);
-
-    double pvRotSetPoint() const;
-    void setPvRotSetPoint(double pvRotSetPoint);
 
     double pvRotLive() const;
     void setPvRotLive(double pvRotLive);
@@ -50,11 +44,9 @@ private:
     double pvVoltLive_;
 
     //PpmsMag
-    double pvMagSetPoint_;
     double pvMagFieldLive_;
 
     //PpmsRot
-    double pvRotSetPoint_;
     double pvRotLive_;
 
     //PPmsHeliumChamber
@@ -66,9 +58,7 @@ inline PpmsDataPoint::PpmsDataPoint()
     : pvTempSetPoint_(300)
     , pvTempLive_(300)
     , pvTempRate_(1)
-    , pvMagSetPoint_(0)
     , pvMagFieldLive_(0)
-    , pvRotSetPoint_(0)
     , pvRotLive_(0)
     , pvChamberLevel_(60)
     , pvStatusPpms_(0)
@@ -105,16 +95,6 @@ inline void PpmsDataPoint::setPvTempRate(double pvTempRate)
     pvTempRate_ = pvTempRate;
 }
 
-inline double PpmsDataPoint::pvMagSetPoint() const
-{
-    return pvMagSetPoint_;
-}
-
-inline void PpmsDataPoint::setPvMagSetPoint(double pvMagSetPoint)
-{
-    pvMagSetPoint_ = pvMagSetPoint;
-}
-
 inline double PpmsDataPoint::pvMagFieldLive() const
 {
     return pvMagFieldLive_;
@@ -123,16 +103,6 @@ inline double PpmsDataPoint::pvMagFieldLive() const
 inline void PpmsDataPoint::setPvMagFieldLive(double pvMagFieldLive)
 {
     pvMagFieldLive_ = pvMagFieldLive;
-}
-
-inline double PpmsDataPoint::pvRotSetPoint() const
-{
-    return pvRotSetPoint_;
-}
-
-inline void PpmsDataPoint::setPvRotSetPoint(double pvRotSetPoint)
-{
-    pvRotSetPoint_ = pvRotSetPoint;
 }
 
 inline double PpmsDataPoint::pvRotLive() const
