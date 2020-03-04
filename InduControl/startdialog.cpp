@@ -59,16 +59,7 @@ void StartDialog::accept()
 
     emit createMeasurement(vecSeq);
 }
-/* NOTE
- * - Hier meckern Code-Analyzer auch wieder wegen den redundanten Doppel-Typ-Bezeichnern,
- *   also z.B.
- *
- *    QLabel* ... = new QLabel();       schlecht
- *    auto ... = new QLabel();          besser
- *
- * - Die Methode enthält unglaublich viele Code-Duplizierungen. Sobald du dich mit Lambdas
- *   auseinandergesetzt hast, werden wir sie drastisch reduzieren :-P
- */
+
 void StartDialog::setupUI()
 {
     auto gridLayout = new QGridLayout();
@@ -134,15 +125,15 @@ void StartDialog::setupUI()
     harmonicWaveTc_->setRange(1,3);
     harmonicWaveTc_->setValue(1);
 
-    QLabel* labelSampleName = new QLabel("Sample Name:");
-    QLabel* labelTempStart = new QLabel("Start Temperature:");
-    QLabel* labelTempEnd = new QLabel("End Temperature:");
-    QLabel* labeltemperatureRate = new QLabel("Temperature Rate:");
-    QLabel* labelMagneticField = new QLabel("Magnetic Field:");
-    QLabel* labelCoilAngle = new QLabel("Coil Angle:");
-    QLabel* labelFrequency = new QLabel("Frequency:");
-    QLabel* labelVoltageAmplitude = new QLabel("Voltage Amplitude:");
-    QLabel* labelHarmonicWave = new QLabel("Harmonic Wave:");
+    auto labelSampleName = new QLabel("Sample Name:");
+    auto labelTempStart = new QLabel("Start Temperature:");
+    auto labelTempEnd = new QLabel("End Temperature:");
+    auto labeltemperatureRate = new QLabel("Temperature Rate:");
+    auto labelMagneticField = new QLabel("Magnetic Field:");
+    auto labelCoilAngle = new QLabel("Coil Angle:");
+    auto labelFrequency = new QLabel("Frequency:");
+    auto labelVoltageAmplitude = new QLabel("Voltage Amplitude:");
+    auto labelHarmonicWave = new QLabel("Harmonic Wave:");
 
     gridLayout->addWidget(labelSampleName,0,0);
     gridLayout->addWidget(sampleNameTc_,0,1);
@@ -215,15 +206,15 @@ void StartDialog::setupUI()
     harmonicWaveJc_->setRange(1,3);
     harmonicWaveJc_->setValue(1);
 
-    QLabel* labelSampleNameJc = new QLabel("Sample Name:");
-    QLabel* labelTempJc = new QLabel("Temperature:");
-    QLabel* labelVoltStartJc = new QLabel("Start Voltage:");
-    QLabel* labelVoltEndJc = new QLabel("End Voltage:");
-    QLabel* labelVoltageRate = new QLabel("Voltage Rate:");
-    QLabel* labelMagneticFieldJc = new QLabel("Magnetic Field:");
-    QLabel* labelCoilAngleJc = new QLabel("Coil Angle:");
-    QLabel* labelFrequencyJc = new QLabel("Frequency:");
-    QLabel* labelHarmonicWaveJc = new QLabel("Harmonic Wave:");
+    auto labelSampleNameJc = new QLabel("Sample Name:");
+    auto labelTempJc = new QLabel("Temperature:");
+    auto labelVoltStartJc = new QLabel("Start Voltage:");
+    auto labelVoltEndJc = new QLabel("End Voltage:");
+    auto labelVoltageRate = new QLabel("Voltage Rate:");
+    auto labelMagneticFieldJc = new QLabel("Magnetic Field:");
+    auto labelCoilAngleJc = new QLabel("Coil Angle:");
+    auto labelFrequencyJc = new QLabel("Frequency:");
+    auto labelHarmonicWaveJc = new QLabel("Harmonic Wave:");
 
     gridLayoutJc->addWidget(labelSampleNameJc, 0, 0);
     gridLayoutJc->addWidget(sampleNameJc_,0,1);
@@ -247,7 +238,7 @@ void StartDialog::setupUI()
     //set Layouts
     widgetTc->setLayout(gridLayout);
     widgetJc->setLayout(gridLayoutJc);
-    QWidget* boxwidget = new QWidget();
+    auto boxwidget = new QWidget();
     boxwidget->setLayout(boxButton);
     widgetJc->setVisible(false);
 
@@ -261,7 +252,7 @@ void StartDialog::setupUI()
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
     //set MainLayout
-    QVBoxLayout* mainLayout = new QVBoxLayout();
+    auto mainLayout = new QVBoxLayout();
     mainLayout->addWidget(boxwidget);
     mainLayout->addWidget(widgetTc);
     mainLayout->addWidget(widgetJc);

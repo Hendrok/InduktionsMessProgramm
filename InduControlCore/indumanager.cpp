@@ -19,9 +19,21 @@ InduManager::InduManager()
     , mSeqTc_(std::make_shared<MeasSeqTc>())
     , mSeqJc_(std::make_shared<MeasSeqJc>())
     , measurementState(State::Idle)
+    , magFieldSP_(0)
+    , angleSP_(0)
 {
     connect(instrumentmanager_.get(), &InstrumentManager::newData,
             this, &InduManager::onNewData);
+    connect(instrumentmanager_.get(), &InstrumentManager::newMagSP,
+            this, &InduManager::onNewMagSP);
+    connect(instrumentmanager_.get(), &InstrumentManager::newAngleSP,
+            this, &InduManager::onNewAngleSP);
+    connect(instrumentmanager_.get(), &InstrumentManager::newFreqSP,
+            this, &InduManager::onNewFreqSP);
+    connect(instrumentmanager_.get(), &InstrumentManager::newSensivitySP,
+            this, &InduManager::onNewSensivitySP);
+    connect(instrumentmanager_.get(), &InstrumentManager::newHarmonicSP,
+            this, &InduManager::onNewHarmonicSP);
 }
 
 InduManager::~InduManager()
@@ -73,32 +85,13 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
         emit newState(measurementState);
     }
 
-    instrumentmanager_->setLockVariables(measurementSequence->frequency(),
-                                         0,
-                                         measurementSequence->harmonicWave());
-    instrumentmanager_->setPpmsVariables(measurementSequence->magneticField(),
-                                         measurementSequence->coilAngle());
+    instrumentmanager_->setAngle(measurementSequence->coilAngle());
+    instrumentmanager_->setMagField(measurementSequence->magneticField());
+    instrumentmanager_->setHarmonic(measurementSequence->harmonicWave());
+    instrumentmanager_->setFrequency(measurementSequence->frequency());
+    instrumentmanager_->setSensivity(0); // Das wird noch in extra Klasse verlagert:)
 }
 
-
-/* BUG
- * - Hier musst du natürlich nicht nur überprüfen, ob Temperatur-Prozesswert und Setpoint übereinstimmen zum
- *   starten, sondern auch noch Magnetfeld und Winkel
- */
-
-/* NOTE
- * - Ich finde die Kontroll-Logik hier sehr schwierig nachzuvollziehen:
- *   Wenn du Messungen appendest, gehst du in CheckforMeas. Soweit Okay. Aber dort emittierst du ein
- *   Signal an das Mainwindow, was dann wiederrum hier im InduManager die Methode startMeasurement
- *   aufruft. Dieses "über Bande spielen" ist problematisch, weil dein InduManager nur richtig funktioniert,
- *   wenn das MainWindow korrekt implementiert ist. Du lagerst also Programmlogik in das UI aus, dabei
- *   sollte das UI nur für die Anzeige der Daten zuständig sein, keine Geschäftslogik implementieren
- * - Besser:
- *   Aus dem State CheckForMeaus rufst du direkt die startMeasurement-Methode auf. Das Signal
- *   startNewMeasurement sendest du in startMeasurement-Methode aus. Dann klappt deine Programm-Logik auch
- *   ohne UI. Stell dir vor, du entwickelst noch weitere UI (z.b. Consolen-App oder Mobile-App), dann musst
- *   du in jeder neuen UI die korrekte "Über-Bande-Methode" implementieren. Das sorgt nur für Chaos.
- */
 void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
     emit newData(datapoint);
@@ -113,7 +106,9 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
             }
     //Tc
         case State::ApproachStartTc:{
-                if(std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < 0.1)
+                if(std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < 0.1 &&
+                   std::abs(magFieldSP_ - datapoint->ppmsdata()->pvMagFieldLive()) < 10 &&
+                   std::abs(angleSP_ - datapoint->ppmsdata()->pvRotLive()) < 1 )
                 {
                     measurementState = State::ApproachEndTc;
                     instrumentmanager_->setTempSetpoint(mSeqTc_->tempEnd(), mSeqTc_->temperatureRate());
@@ -139,7 +134,9 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
             }
     //Jc
         case State::ApproachStartJc:{
-                if(std::abs(mSeqJc_->temperature() - datapoint->ppmsdata()->pvTempLive()) < 0.1)
+                if(std::abs(mSeqJc_->temperature() - datapoint->ppmsdata()->pvTempLive()) < 0.1 &&
+                   std::abs(magFieldSP_ - datapoint->ppmsdata()->pvMagFieldLive()) < 10 &&
+                   std::abs(angleSP_ - datapoint->ppmsdata()->pvRotLive()) < 1 )
                 {
                     measurementState = State::ApproachEndJc;
                     instrumentmanager_->setInputVoltage(mSeqJc_->voltStart());
@@ -181,6 +178,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
                 if(mVecSeq_.size()> measurementNumber_ )
                 {
                     emit startNewMeasurement(mVecSeq_[measurementNumber_]);
+                    startMeasurement(mVecSeq_[measurementNumber_]);
                 }
                 else{
                     measurementState = State::Idle;
@@ -191,6 +189,33 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 
         default:assert(false);
     }
+}
+
+void InduManager::onNewMagSP(double magField)
+{
+    emit newMagSP(magField);
+    magFieldSP_ = magField;
+}
+
+void InduManager::onNewAngleSP(double angle)
+{
+    emit newAngleSP(angle);
+    angleSP_ = angle;
+}
+
+void InduManager::onNewFreqSP(double freq)
+{
+    emit newFreqSP(freq);
+}
+
+void InduManager::onNewSensivitySP(double sensivity)
+{
+    emit newSensivitySP(sensivity);
+}
+
+void InduManager::onNewHarmonicSP(int harmonicW)
+{
+    emit newHarmonicSP(harmonicW);
 }
 
 

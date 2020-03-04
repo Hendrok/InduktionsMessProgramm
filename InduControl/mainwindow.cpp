@@ -33,6 +33,10 @@ MainWindow::MainWindow(QWidget *parent)
             this,&MainWindow::onNewData);
     connect(indumanager_, &InduManager::newState,
             this, &MainWindow::onNewMeasurementState);
+    connect(indumanager_, &InduManager::newMagSP,
+            this, &MainWindow::onNewMagSP);
+    connect(indumanager_, &InduManager::newAngleSP,
+            this, &MainWindow::onNewAngleSP);
 }
 
 MainWindow::~MainWindow()
@@ -93,7 +97,6 @@ void MainWindow::onCreateMeasurement(std::vector<std::shared_ptr<const Measureme
 
 void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq)
 {    
-    indumanager_->startMeasurement(mSeq);
     graph_->setStaticValues(mSeq);
     mTable->activeMeasurement(mSeq);
 }
@@ -108,6 +111,16 @@ void MainWindow::onNewMeasurementState(InduManager::State newState)
 {
     indumanagerState_ = newState;
     graph_->MeasurementState(indumanagerState_);
+}
+
+void MainWindow::onNewMagSP(double magField)
+{
+    ppmsWidget_->newMagSP(magField);
+}
+
+void MainWindow::onNewAngleSP(double angle)
+{
+    ppmsWidget_->newAngleSP(angle);
 }
 
 void MainWindow::createQLineDiagramm()

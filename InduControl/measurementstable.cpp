@@ -34,7 +34,7 @@ QSize MeasurementsTable::minimumSizeHint() const
  *
  *  - Die dritte Kopie des shared_ptr findet bei push_back statt, diese Kopie ist okay)
  */
-void MeasurementsTable::newMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mSeq)
+void MeasurementsTable::newMeasurement(const std::vector<std::shared_ptr<const MeasurementSequence> > mSeq)
 {
     for(const auto& mesSeq:mSeq)
     {
@@ -53,7 +53,7 @@ void MeasurementsTable::newMeasurement(std::vector<std::shared_ptr<const Measure
     }
 }
 
-void MeasurementsTable::activeMeasurement(std::shared_ptr<const MeasurementSequence> mesSeq)
+void MeasurementsTable::activeMeasurement(const std::shared_ptr<const MeasurementSequence> mesSeq)
 {
 
     auto it = vecSeq_.begin();

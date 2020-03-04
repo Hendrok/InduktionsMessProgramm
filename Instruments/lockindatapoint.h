@@ -22,33 +22,18 @@ public:
     double pvPhase() const;
     void setPvPhase(double pvPhase);
 
-    double pvFreq() const;
-    void setPvFreq(double pvFreq);
-
-    double pvSens() const;
-    void setPvSens(double pvSens);
-
-    int pvHarmonicW() const;
-    void setPvHarmonicW(int pvHarmonicW);
-
 private:
     double pvVoltSetPoint_;     //höchstwahrscheinlich mit logik verbunden
     double pvVoltInputLive_;
     double pvVoltRate_;         //auch mit Logik verbunden
-
     double pvPhase_;
-    double pvFreq_;
-    double pvSens_;
-    int pvHarmonicW_;
+
 };
 inline LockInDataPoint::LockInDataPoint()
     : pvVoltSetPoint_(0)
     , pvVoltInputLive_(0)
     , pvVoltRate_(0)
     , pvPhase_(0)
-    , pvFreq_(0)
-    , pvSens_(0)
-    , pvHarmonicW_(0)
 {
 }
 
@@ -92,35 +77,6 @@ inline void LockInDataPoint::setPvPhase(double pvPhase)
 pvPhase_ = pvPhase;
 }
 
-inline double LockInDataPoint::pvFreq() const
-{
-return pvFreq_;
-}
-
-inline void LockInDataPoint::setPvFreq(double pvFreq)
-{
-pvFreq_ = pvFreq;
-}
-
-inline double LockInDataPoint::pvSens() const
-{
-return pvSens_;
-}
-
-inline void LockInDataPoint::setPvSens(double pvSens)
-{
-pvSens_ = pvSens;
-}
-
-inline int LockInDataPoint::pvHarmonicW() const
-{
-return pvHarmonicW_;
-}
-
-inline void LockInDataPoint::setPvHarmonicW(int pvHarmonicW)
-{
-pvHarmonicW_ = pvHarmonicW;
-}
 
 
 #endif // LOCKINDATAPOINT_H

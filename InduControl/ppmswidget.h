@@ -6,6 +6,7 @@
 //Internal Classes
 class DataPoint;
 class QLabel;
+class InstrumentManager;
 
 class PpmsWidget : public QWidget
 {
@@ -18,10 +19,10 @@ public:
     QSize minimumSizeHint() const override;
 
     void newData(std::shared_ptr<const DataPoint> dpoint);
-
+    void newMagSP(double magField);
+    void newAngleSP(double angle);
 private:
     void setupUI();
-
     //tempBlock
     QLabel* tempSetPoint_;
     QLabel* tempLive_;

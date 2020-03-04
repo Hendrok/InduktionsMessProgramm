@@ -11,7 +11,19 @@ InstrumentManager::InstrumentManager()
     , ppmssimu_(std::make_shared<PpmsSimulation>())
     , lockinsimu_(std::make_shared<LockInSimulation>())
 {
-    connect(timer_, &QTimer::timeout, this, &InstrumentManager::onPolling);
+    connect(timer_, &QTimer::timeout,
+            this, &InstrumentManager::onPolling);
+    connect(ppmssimu_.get(), &PpmsSimulation::newMagSP,
+            this, &InstrumentManager::newMagSP);
+    connect(ppmssimu_.get(), &PpmsSimulation::newAngleSP,
+            this, &InstrumentManager::newAngleSP);
+    connect(lockinsimu_.get(), &LockInSimulation::newFreqSP,
+            this, &InstrumentManager::newFreqSP);
+    connect(lockinsimu_.get(), &LockInSimulation::newSensivitySP,
+            this, &InstrumentManager::newSensivitySP);
+    connect(lockinsimu_.get(), &LockInSimulation::newHarmonicSP,
+            this, &InstrumentManager::newHarmonicSP);
+
     timer_->start(200);
 }
 
@@ -22,18 +34,35 @@ void InstrumentManager::setTempSetpoint(double setpoint, double rate)
 
 void InstrumentManager::setInputVoltage(double InputVoltage)
 {
-    lockinsimu_->SetInputVoltage(InputVoltage);
+    lockinsimu_->setInputVoltage(InputVoltage);
 }
 
-void InstrumentManager::setPpmsVariables(double magField, double angle)
+void InstrumentManager::setMagField(double magField)
 {
-    ppmssimu_->setPpmsVariables(magField, angle);
+    ppmssimu_->setMagField(magField);
 }
 
-void InstrumentManager::setLockVariables(double freq, double sensivity, int harmonicW)
+void InstrumentManager::setAngle(double angle)
 {
-    lockinsimu_->setLockVariables(freq, sensivity, harmonicW);
+    ppmssimu_->setAngle(angle);
 }
+
+void InstrumentManager::setFrequency(double freq)
+{
+    lockinsimu_->setFreq(freq);
+}
+
+void InstrumentManager::setSensivity(double sensivity)
+{
+    lockinsimu_->setSensivity(sensivity);
+}
+
+void InstrumentManager::setHarmonic(double harmonic)
+{
+    lockinsimu_->setHarmonic(harmonic);
+}
+
+
 
 void InstrumentManager::onPolling()
 {
