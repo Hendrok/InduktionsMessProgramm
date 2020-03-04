@@ -8,7 +8,7 @@
 #include "../InduCore/datapoint.h"
 #include "ppmsdatapoint.h"
 
-class INSTRUMENTS_EXPORT PpmsSimulation: public QObject
+class INSTRUMENTS_EXPORT PpmsSimulation : public QObject
 {
     Q_OBJECT
 public:

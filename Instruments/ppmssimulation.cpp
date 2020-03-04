@@ -19,7 +19,6 @@ PpmsSimulation::PpmsSimulation()
      , tempNow_(300)
      , magField_(0)
      , angle_(0)
-
 {
 }
 
