@@ -22,19 +22,7 @@ QSize MeasurementsTable::minimumSizeHint() const
     return QSize(100,300);
 }
 
-/* FIXME
- * Hier kopierst du jeden shared_ptr insgesamt 3x, um ihn von mSeq in vecSeq_ zu pushen:
- *  - Das erste mal bei der Parameterübergabe per Wert (siehe Kommentar in der Header-Datei)
- *  - Das zweite mal bei for(const auto mesSeq:mseq). Die Kopie ersparst du dir mit :
- *
- *     for(const auto mesSeq:mSeq)        schlecht, erzeugt von jedem Element eine Kopie
- *     for (const auto& mesSeq : mSeq)    gut, da jedes Element per Referenz übergeben wird (d.h. keine Kopie)
- *
- *    In der zweiten Zeile habe ich auch die fehlenden Leerzeichen eingefügt
- *
- *  - Die dritte Kopie des shared_ptr findet bei push_back statt, diese Kopie ist okay)
- */
-void MeasurementsTable::newMeasurement(const std::vector<std::shared_ptr<const MeasurementSequence> > mSeq)
+void MeasurementsTable::newMeasurement(const std::vector<std::shared_ptr<const MeasurementSequence>>& mSeq)
 {
     for(const auto& mesSeq:mSeq)
     {
