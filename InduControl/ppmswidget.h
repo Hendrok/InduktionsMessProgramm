@@ -19,8 +19,9 @@ public:
     QSize minimumSizeHint() const override;
 
     void newData(std::shared_ptr<const DataPoint> dpoint);
-    void newMagSP(double magField);
+    void newMagSP(double magField, double magRate);
     void newAngleSP(double angle);
+    void newTempSP(double temp, double rate);
 private:
     void setupUI();
     //tempBlock
@@ -32,6 +33,7 @@ private:
     //MagBlock
     QLabel* magSetPoint_;
     QLabel* magFieldLive_;
+    QLabel* magRate_;
     QLabel* magStatus_;
 
     //RotationBlock

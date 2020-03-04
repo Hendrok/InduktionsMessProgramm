@@ -33,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent)
             this,&MainWindow::onNewData);
     connect(indumanager_, &InduManager::newState,
             this, &MainWindow::onNewMeasurementState);
+    connect(indumanager_, &InduManager::newTempSP,
+            this, &MainWindow::onNewTempSP);
     connect(indumanager_, &InduManager::newMagSP,
             this, &MainWindow::onNewMagSP);
     connect(indumanager_, &InduManager::newAngleSP,
@@ -113,9 +115,14 @@ void MainWindow::onNewMeasurementState(InduManager::State newState)
     graph_->MeasurementState(indumanagerState_);
 }
 
-void MainWindow::onNewMagSP(double magField)
+void MainWindow::onNewTempSP(double temp, double rate)
 {
-    ppmsWidget_->newMagSP(magField);
+    ppmsWidget_->newTempSP(temp,rate);
+}
+
+void MainWindow::onNewMagSP(double magField, double magRate)
+{
+    ppmsWidget_->newMagSP(magField, magRate);
 }
 
 void MainWindow::onNewAngleSP(double angle)

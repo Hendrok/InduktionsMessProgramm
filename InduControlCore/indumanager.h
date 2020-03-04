@@ -28,7 +28,8 @@ signals:
     void newData(std::shared_ptr<const DataPoint>);
     void startNewMeasurement(std::shared_ptr<const MeasurementSequence>);
     void newState(State newState);
-    void newMagSP(double magField);
+    void newTempSP(double setpoint, double rate);
+    void newMagSP(double magField, double magRate);
     void newAngleSP(double angle);
     void newFreqSP(double freq);
     void newSensivitySP(double sensivity);
@@ -36,7 +37,8 @@ signals:
 
 private slots:
     void onNewData(std::shared_ptr<DataPoint> datapoint);
-    void onNewMagSP(double magField);
+    void onNewTempSP(double setpoint, double rate);
+    void onNewMagSP(double magField, double magRate);
     void onNewAngleSP(double angle);
     void onNewFreqSP(double freq);
     void onNewSensivitySP(double sensivity);

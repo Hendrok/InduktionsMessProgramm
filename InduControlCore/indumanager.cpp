@@ -24,6 +24,8 @@ InduManager::InduManager()
 {
     connect(instrumentmanager_.get(), &InstrumentManager::newData,
             this, &InduManager::onNewData);
+    connect(instrumentmanager_.get(), &InstrumentManager::newTempSP,
+            this, &InduManager::onNewTempSP);
     connect(instrumentmanager_.get(), &InstrumentManager::newMagSP,
             this, &InduManager::onNewMagSP);
     connect(instrumentmanager_.get(), &InstrumentManager::newAngleSP,
@@ -86,7 +88,7 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
     }
 
     instrumentmanager_->setAngle(measurementSequence->coilAngle());
-    instrumentmanager_->setMagField(measurementSequence->magneticField());
+    instrumentmanager_->setMagFieldSP(measurementSequence->magneticField(), 1000);
     instrumentmanager_->setHarmonic(measurementSequence->harmonicWave());
     instrumentmanager_->setFrequency(measurementSequence->frequency());
     instrumentmanager_->setSensivity(0); // Das wird noch in extra Klasse verlagert:)
@@ -191,9 +193,15 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
     }
 }
 
-void InduManager::onNewMagSP(double magField)
+void InduManager::onNewTempSP(double setpoint, double rate)
 {
-    emit newMagSP(magField);
+    emit newTempSP(setpoint, rate);
+
+}
+
+void InduManager::onNewMagSP(double magField, double magRate)
+{
+    emit newMagSP(magField,magRate);
     magFieldSP_ = magField;
 }
 
