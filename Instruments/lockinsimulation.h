@@ -15,8 +15,14 @@ class INSTRUMENTS_EXPORT LockInSimulation: public QObject
 
 public:
     LockInSimulation();
-    void SetInputVoltage(double InputVoltage);
-    void setLockVariables(double freq, double sensivity, int harmonicW);
+    void setInputVoltage(double InputVoltage);
+    void setFreq(double freq);
+    void setSensivity(double sensivity);
+    void setHarmonic(int harmonicW);
+signals:
+    void newFreqSP(double freq);
+    void newSensivitySP(double sensivity);
+    void newHarmonicSP(int harmonicW);
 public slots:
     LockInDataPoint lockInLogik();
 private:

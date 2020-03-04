@@ -24,7 +24,6 @@ SOURCES += \
 
 HEADERS += \
     Instruments_global.h \
-    instrument.h \
     lockincore.h \
     lockindatapoint.h \
     lockinsimulation.h \

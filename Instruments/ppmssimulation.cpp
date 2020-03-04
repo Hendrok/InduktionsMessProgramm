@@ -29,9 +29,13 @@ void PpmsSimulation::setTempSetpoint(double setpoint, double rate)
     tempRate_ = rate;
 }
 
-void PpmsSimulation::setPpmsVariables(double magField, double angle)
+void PpmsSimulation::setMagField(double magField)
 {
     magField_ = magField;
+}
+
+void PpmsSimulation::setAngle(double angle)
+{
     angle_ = angle;
 }
 
@@ -47,9 +51,10 @@ PpmsDataPoint PpmsSimulation::generateVariables()
     ppmsDpoint.setPvTempSetPoint(tempSetpoint_);
     ppmsDpoint.setPvTempRate(tempRate_);
     ppmsDpoint.setPvVoltLive(test);
-    ppmsDpoint.setPvMagSetPoint(magField_);
+    emit newTempSP(tempSetpoint_, tempRate_);
+    emit newMagSP(magField_);
     ppmsDpoint.setPvMagFieldLive(magField_);
-    ppmsDpoint.setPvRotSetPoint(angle_);
+    emit newAngleSP(angle_);
     ppmsDpoint.setPvRotLive(angle_);
 
 

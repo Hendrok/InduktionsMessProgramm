@@ -12,19 +12,36 @@
 class PpmsSimulation;
 class LockInSimulation;
 
+/* NOTE
+ * - Argument double InputVoltage beginnt mit einem Großbuchstaben
+ * - setPpmsVariables und setLockVariables haben immer mehrere Variablen
+ *   als Argument. Das ist schlecht, weil du dann ja jedes mal, wenn du z.b.
+ *   die Sensitivity oder das Magnetfeld ändern möchtest, du auch immer die
+ *   anderen Werte ändern musst. Das erzeugt unnötig Traffic auf dem GPIB
+ */
 class INDUCONTROLCORE_EXPORT InstrumentManager : public QObject
 {
     Q_OBJECT
 
 signals:
     void newData(std::shared_ptr<DataPoint> dataPoint);
+    void newTempSP(double setpoint, double rate);
+    void newMagSP(double magField);
+    void newAngleSP(double angle);
+    void newFreqSP(double freq);
+    void newSensivitySP(double sensivity);
+    void newHarmonicSP(int harmonicW);
 public:
     InstrumentManager();
     ~InstrumentManager() = default;
     void setTempSetpoint(double setpoint, double rate);
-    void setInputVoltage(double InputVoltage);
-    void setPpmsVariables(double magField, double angle);
-    void setLockVariables(double freq, double sensivity, int harmonicW);
+    void setInputVoltage(double inputVoltage);
+    void setMagField(double magField);
+    void setAngle(double angle);
+    void setFrequency(double freq);
+    void setSensivity(double sensivity);
+    void setHarmonic(double harmonic);
+
 
 private slots:
     void onPolling();

@@ -28,9 +28,20 @@ signals:
     void newData(std::shared_ptr<const DataPoint>);
     void startNewMeasurement(std::shared_ptr<const MeasurementSequence>);
     void newState(State newState);
+    void newMagSP(double magField);
+    void newAngleSP(double angle);
+    void newFreqSP(double freq);
+    void newSensivitySP(double sensivity);
+    void newHarmonicSP(int harmonicW);
 
 private slots:
     void onNewData(std::shared_ptr<DataPoint> datapoint);
+    void onNewMagSP(double magField);
+    void onNewAngleSP(double angle);
+    void onNewFreqSP(double freq);
+    void onNewSensivitySP(double sensivity);
+    void onNewHarmonicSP(int harmonicW);
+
 
 private:
     size_t measurementNumber_;
@@ -40,6 +51,8 @@ private:
     std::shared_ptr <MeasSeqTc> mSeqTc_;
     std::shared_ptr <MeasSeqJc> mSeqJc_;
     State measurementState;
+    double magFieldSP_;
+    double angleSP_;
 };
 
 #endif // INDUMANAGER_H

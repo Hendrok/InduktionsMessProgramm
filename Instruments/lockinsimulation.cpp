@@ -19,19 +19,26 @@ LockInSimulation::LockInSimulation()
 {  
 }
 
-void LockInSimulation::SetInputVoltage(double InputVoltage)
+void LockInSimulation::setInputVoltage(double InputVoltage)
 {
     inputVoltage_ = InputVoltage;
 }
 
-void LockInSimulation::setLockVariables(double freq, double sensivity, int harmonicW)
+void LockInSimulation::setFreq(double freq)
 {
     freq_ = freq;
-    sensivity_ = sensivity;
-    harmonicW_ = harmonicW;
+
 }
 
+void LockInSimulation::setSensivity(double sensivity)
+{
+    sensivity_ = sensivity;
+}
 
+void LockInSimulation::setHarmonic(int harmonicW)
+{
+    harmonicW_ = harmonicW;
+}
 
 LockInDataPoint LockInSimulation::lockInLogik()
 {
@@ -42,9 +49,9 @@ LockInDataPoint LockInSimulation::lockInLogik()
 
     lockingDpoint.setPvPhase(test);
     lockingDpoint.setPvVoltLive(inputVoltage_);
-    lockingDpoint.setPvFreq(freq_);
-    lockingDpoint.setPvSens(sensivity_);
-    lockingDpoint.setPvHarmonicW(harmonicW_);
+    emit newFreqSP(freq_);
+    emit newSensivitySP(sensivity_);
+    emit newHarmonicSP(harmonicW_);
 
 
     return lockingDpoint;

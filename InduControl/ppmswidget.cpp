@@ -9,6 +9,7 @@
 
 //Internal Classes
 #include "../InduCore/datapoint.h"
+#include "../InduControlCore/indumanager.h"
 
 PpmsWidget::PpmsWidget(QWidget *parent)
     : QWidget (parent)
@@ -28,6 +29,7 @@ PpmsWidget::PpmsWidget(QWidget *parent)
     , phaseLive_(nullptr)
 {    
     setupUI();
+
 }
 
 QSize PpmsWidget::sizeHint() const
@@ -48,10 +50,8 @@ void PpmsWidget::newData(std::shared_ptr<const DataPoint> dpoint)
         tempRate_->setText(QString::number(dpoint->ppmsdata()->pvTempRate()));
 
         magFieldLive_->setText(QString::number(dpoint->ppmsdata()->pvMagFieldLive()));
-        magSetPoint_->setText(QString::number(dpoint->ppmsdata()->pvMagSetPoint()));
 
         rotLive_->setText(QString::number(dpoint->ppmsdata()->pvRotLive()));
-        rotSetPoint_->setText(QString::number(dpoint->ppmsdata()->pvRotSetPoint()));
 
         chamberLevel_->setText(QString::number(dpoint->ppmsdata()->pvChamberLevel()));
 
@@ -59,6 +59,17 @@ void PpmsWidget::newData(std::shared_ptr<const DataPoint> dpoint)
         phaseLive_->setText(QString::number(dpoint->lockindata()->pvPhase()));
     }
     
+}
+
+void PpmsWidget::newMagSP(double magField)
+{
+    magSetPoint_->setText(QString::number(magField));
+
+}
+
+void PpmsWidget::newAngleSP(double angle)
+{
+    rotSetPoint_->setText(QString::number(angle));
 }
 
 void PpmsWidget::setupUI()
