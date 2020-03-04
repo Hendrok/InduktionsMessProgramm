@@ -16,7 +16,7 @@ public:
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
 
-    void newMeasurement(const std::vector<std::shared_ptr<const MeasurementSequence> > mSeq);
+    void newMeasurement(const std::vector<std::shared_ptr<const MeasurementSequence>>& mSeq);
     void activeMeasurement(const std::shared_ptr<const MeasurementSequence> mesSeq);
 
 private:

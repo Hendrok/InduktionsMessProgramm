@@ -42,16 +42,10 @@ InduManager::~InduManager()
 {
 }
 
-/* FIXME
- * - in der for-Schleife erzeugst du unnötige Kopien des Shared-Ptrs, da du die Elemente
- *   per Value übergibst. Besser per Referenz:
- *
- *    for (const auto mesSeq: mVecSeq){        Erzeugt Kopien
- *    for (const auto& mesSeq: mVecSeq){       Erzeugt keine Kopien, da Übergabe per Referenz
- */
-void InduManager::appendMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq)
+
+void InduManager::appendMeasurement(std::vector<std::shared_ptr<const MeasurementSequence>> mVecSeq)
 {
-    for (const auto mesSeq: mVecSeq){
+    for (const auto &mesSeq: mVecSeq){
         mVecSeq_.push_back(mesSeq);
     }
 
