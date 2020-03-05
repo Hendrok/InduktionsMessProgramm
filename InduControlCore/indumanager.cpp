@@ -210,7 +210,7 @@ void InduManager::onNewFreqSP(double freq)
     emit newFreqSP(freq);
 }
 
-void InduManager::onNewSensivitySP(double sensivity)
+void InduManager::onNewSensivitySP(int sensivity)
 {
     emit newSensivitySP(sensivity);
 }

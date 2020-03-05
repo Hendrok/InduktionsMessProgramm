@@ -16,11 +16,11 @@ public:
     LockInCore();
     void setInputVoltage(double InputVoltage);
     void setFreq(double freq);
-    void setSensivity(double sensivity);
+    void setSensivity(int sensivity);
     void setHarmonic(int harmonicW);
 signals:
     void newFreqSP(double freq);
-    void newSensivitySP(double sensivity);
+    void newSensivitySP(int sensivity);
     void newHarmonicSP(int harmonicW);
 public slots:
     LockInDataPoint lockInLogik();

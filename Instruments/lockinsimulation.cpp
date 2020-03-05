@@ -46,10 +46,6 @@
  * datapoint natürlich)
  */
 
-
-/* BUG
- * Denk dran, dass Sensitivity als Typ int ist, und nicht double
- */
 LockInSimulation::LockInSimulation()
     : datapoint_(DataPoint())
     , inputVoltage_ (0.1)
@@ -68,17 +64,19 @@ void LockInSimulation::setInputVoltage(double InputVoltage)
 void LockInSimulation::setFreq(double freq)
 {
     freq_ = freq;
-
+    emit newFreqSP(freq_);
 }
 
-void LockInSimulation::setSensivity(double sensivity)
+void LockInSimulation::setSensivity(int sensivity)
 {
     sensivity_ = sensivity;
+    emit newSensivitySP(sensivity_);
 }
 
 void LockInSimulation::setHarmonic(int harmonicW)
 {
     harmonicW_ = harmonicW;
+    emit newHarmonicSP(harmonicW_);
 }
 
 LockInDataPoint LockInSimulation::lockInLogik()
@@ -90,10 +88,6 @@ LockInDataPoint LockInSimulation::lockInLogik()
 
     lockingDpoint.setPvPhase(test);
     lockingDpoint.setPvVoltLive(inputVoltage_);
-    emit newFreqSP(freq_);
-    emit newSensivitySP(sensivity_);
-    emit newHarmonicSP(harmonicW_);
-
 
     return lockingDpoint;
 

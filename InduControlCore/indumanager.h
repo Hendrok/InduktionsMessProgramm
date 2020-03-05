@@ -32,7 +32,7 @@ signals:
     void newMagSP(double magField, double magRate);
     void newAngleSP(double angle);
     void newFreqSP(double freq);
-    void newSensivitySP(double sensivity);
+    void newSensivitySP(int sensivity);
     void newHarmonicSP(int harmonicW);
 
 private slots:
@@ -41,7 +41,7 @@ private slots:
     void onNewMagSP(double magField, double magRate);
     void onNewAngleSP(double angle);
     void onNewFreqSP(double freq);
-    void onNewSensivitySP(double sensivity);
+    void onNewSensivitySP(int sensivity);
     void onNewHarmonicSP(int harmonicW);
 
 

@@ -45,9 +45,6 @@ PpmsDataPoint PpmsCore::receiveVariables()
     ppmsDpoint.setPvTempRate(tempRate_);
     ppmsDpoint.setPvVoltLive(angle_);
     ppmsDpoint.setPvMagFieldLive(magField_);
-    emit newTempSP(tempSetpoint_, tempRate_);
-    emit newMagSP(magField_);
-    emit newAngleSP(angle_);
     ppmsDpoint.setPvRotLive(angle_);
 
     return ppmsDpoint;
