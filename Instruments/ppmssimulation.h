@@ -8,17 +8,17 @@
 #include "../InduCore/datapoint.h"
 #include "ppmsdatapoint.h"
 
-class INSTRUMENTS_EXPORT PpmsSimulation: public QObject
+class INSTRUMENTS_EXPORT PpmsSimulation : public QObject
 {
     Q_OBJECT
 public:
     PpmsSimulation();
     void setTempSetpoint(double setpoint, double rate);
-    void setMagField(double magField);
+    void setMagField(double magField, double magRate);
     void setAngle(double angle);
 signals:
     void newTempSP(double setpoint, double rate);
-    void newMagSP(double magField);
+    void newMagSP(double magField, double magRate);
     void newAngleSP(double angle);
 public slots:
     PpmsDataPoint generateVariables();
@@ -30,7 +30,9 @@ private:
     double fieldRate_;
     double ppmsHelium_;
     double tempNow_;
-    double magField_;
+    double magFieldSP_;
+    double magRate_;
+    double magFieldNow_;
     double angle_;
 
 };

@@ -38,7 +38,8 @@ private slots:
     void onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq);
     void onNewData(std::shared_ptr<const DataPoint> datapoint);
     void onNewMeasurementState(InduManager::State newState);
-    void onNewMagSP(double magField);
+    void onNewTempSP(double temp, double rate);
+    void onNewMagSP(double magField, double magRate);
     void onNewAngleSP(double angle);
 private:
     void setupUi();

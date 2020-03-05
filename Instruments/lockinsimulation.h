@@ -9,10 +9,9 @@
 #include "../InduCore/datapoint.h"
 #include "lockindatapoint.h"
 
-class INSTRUMENTS_EXPORT LockInSimulation: public QObject
+class INSTRUMENTS_EXPORT LockInSimulation : public QObject
 {
     Q_OBJECT
-
 public:
     LockInSimulation();
     void setInputVoltage(double InputVoltage);

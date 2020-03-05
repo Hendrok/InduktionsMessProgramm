@@ -17,9 +17,10 @@ PpmsSimulation::PpmsSimulation()
      , fieldRate_(10)
      , ppmsHelium_(100)
      , tempNow_(300)
-     , magField_(0)
+     , magFieldSP_(0)
+     , magRate_(0)
+     , magFieldNow_(0)
      , angle_(0)
-
 {
 }
 
@@ -29,9 +30,10 @@ void PpmsSimulation::setTempSetpoint(double setpoint, double rate)
     tempRate_ = rate;
 }
 
-void PpmsSimulation::setMagField(double magField)
+void PpmsSimulation::setMagField(double magField, double magRate)
 {
-    magField_ = magField;
+    magFieldSP_ = magField;
+    magRate_ = magRate;
 }
 
 void PpmsSimulation::setAngle(double angle)
@@ -48,12 +50,9 @@ PpmsDataPoint PpmsSimulation::generateVariables()
     auto dataPoint =std::make_shared<DataPoint> ();
     double test =QRandomGenerator::global()->bounded(1.0);
 
-    ppmsDpoint.setPvTempSetPoint(tempSetpoint_);
-    ppmsDpoint.setPvTempRate(tempRate_);
     ppmsDpoint.setPvVoltLive(test);
     emit newTempSP(tempSetpoint_, tempRate_);
-    emit newMagSP(magField_);
-    ppmsDpoint.setPvMagFieldLive(magField_);
+    emit newMagSP(magFieldSP_, magRate_);
     emit newAngleSP(angle_);
     ppmsDpoint.setPvRotLive(angle_);
 
@@ -69,11 +68,28 @@ PpmsDataPoint PpmsSimulation::generateVariables()
     }
     if (tempNow_ > tempSetpoint_)
     {
-        tempNow_ = tempNow_-tempRate_;
+        tempNow_ = tempNow_ - tempRate_;
     }
 
-    ppmsDpoint.setPvTempLive(tempNow_);
+    if(std::abs(magFieldSP_ - magFieldNow_) < magRate_ && magRate_ > 0.1)
+    {
+        magRate_ = 0.1*magRate_;
+    }
 
+    if (magFieldNow_ < magFieldSP_)
+    {
+        magFieldNow_ = magFieldNow_ + magRate_;
+    }
+    if (magFieldNow_ > magFieldSP_)
+    {
+        magFieldNow_ = magFieldNow_ - magRate_;
+    }
+
+
+
+
+    ppmsDpoint.setPvTempLive(tempNow_);
+    ppmsDpoint.setPvMagFieldLive(magFieldNow_);
     return ppmsDpoint;
 
 }

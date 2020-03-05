@@ -13,6 +13,8 @@ InstrumentManager::InstrumentManager()
 {
     connect(timer_, &QTimer::timeout,
             this, &InstrumentManager::onPolling);
+    connect(ppmssimu_.get(), &PpmsSimulation::newTempSP,
+            this, &InstrumentManager::newTempSP);
     connect(ppmssimu_.get(), &PpmsSimulation::newMagSP,
             this, &InstrumentManager::newMagSP);
     connect(ppmssimu_.get(), &PpmsSimulation::newAngleSP,
@@ -37,9 +39,9 @@ void InstrumentManager::setInputVoltage(double InputVoltage)
     lockinsimu_->setInputVoltage(InputVoltage);
 }
 
-void InstrumentManager::setMagField(double magField)
+void InstrumentManager::setMagFieldSP(double magField, double magRate)
 {
-    ppmssimu_->setMagField(magField);
+    ppmssimu_->setMagField(magField, magRate);
 }
 
 void InstrumentManager::setAngle(double angle)

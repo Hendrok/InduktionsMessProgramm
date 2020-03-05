@@ -24,6 +24,8 @@ InduManager::InduManager()
 {
     connect(instrumentmanager_.get(), &InstrumentManager::newData,
             this, &InduManager::onNewData);
+    connect(instrumentmanager_.get(), &InstrumentManager::newTempSP,
+            this, &InduManager::onNewTempSP);
     connect(instrumentmanager_.get(), &InstrumentManager::newMagSP,
             this, &InduManager::onNewMagSP);
     connect(instrumentmanager_.get(), &InstrumentManager::newAngleSP,
@@ -40,16 +42,10 @@ InduManager::~InduManager()
 {
 }
 
-/* FIXME
- * - in der for-Schleife erzeugst du unnötige Kopien des Shared-Ptrs, da du die Elemente
- *   per Value übergibst. Besser per Referenz:
- *
- *    for (const auto mesSeq: mVecSeq){        Erzeugt Kopien
- *    for (const auto& mesSeq: mVecSeq){       Erzeugt keine Kopien, da Übergabe per Referenz
- */
-void InduManager::appendMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mVecSeq)
+
+void InduManager::appendMeasurement(std::vector<std::shared_ptr<const MeasurementSequence>> mVecSeq)
 {
-    for (const auto mesSeq: mVecSeq){
+    for (const auto &mesSeq: mVecSeq){
         mVecSeq_.push_back(mesSeq);
     }
 
@@ -86,7 +82,7 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
     }
 
     instrumentmanager_->setAngle(measurementSequence->coilAngle());
-    instrumentmanager_->setMagField(measurementSequence->magneticField());
+    instrumentmanager_->setMagFieldSP(measurementSequence->magneticField(), 1000);
     instrumentmanager_->setHarmonic(measurementSequence->harmonicWave());
     instrumentmanager_->setFrequency(measurementSequence->frequency());
     instrumentmanager_->setSensivity(0); // Das wird noch in extra Klasse verlagert:)
@@ -191,9 +187,15 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
     }
 }
 
-void InduManager::onNewMagSP(double magField)
+void InduManager::onNewTempSP(double setpoint, double rate)
 {
-    emit newMagSP(magField);
+    emit newTempSP(setpoint, rate);
+
+}
+
+void InduManager::onNewMagSP(double magField, double magRate)
+{
+    emit newMagSP(magField,magRate);
     magFieldSP_ = magField;
 }
 
