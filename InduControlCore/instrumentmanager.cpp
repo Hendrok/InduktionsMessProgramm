@@ -54,7 +54,7 @@ void InstrumentManager::setFrequency(double freq)
     lockinsimu_->setFreq(freq);
 }
 
-void InstrumentManager::setSensivity(double sensivity)
+void InstrumentManager::setSensivity(int sensivity)
 {
     lockinsimu_->setSensivity(sensivity);
 }

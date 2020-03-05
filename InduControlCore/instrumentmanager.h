@@ -22,7 +22,7 @@ signals:
     void newMagSP(double magField, double magRate);
     void newAngleSP(double angle);
     void newFreqSP(double freq);
-    void newSensivitySP(double sensivity);
+    void newSensivitySP(int sensivity);
     void newHarmonicSP(int harmonicW);
 public:
     InstrumentManager();
@@ -32,9 +32,8 @@ public:
     void setMagFieldSP(double magField, double magRate);
     void setAngle(double angle);
     void setFrequency(double freq);
-    void setSensivity(double sensivity);
+    void setSensivity(int sensivity);
     void setHarmonic(double harmonic);
-
 
 private slots:
     void onPolling();

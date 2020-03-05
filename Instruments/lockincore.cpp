@@ -29,7 +29,7 @@ void LockInCore::setFreq(double freq)
     freq_ = freq;
 }
 
-void LockInCore::setSensivity(double sensivity)
+void LockInCore::setSensivity(int sensivity)
 {
     sensivity_ = sensivity;
 }
@@ -47,10 +47,6 @@ LockInDataPoint LockInCore::lockInLogik()
     auto dataPoint =std::make_shared<DataPoint> ();
     lockingDpoint.setPvPhase(phase_);
     lockingDpoint.setPvVoltLive(inputVoltage_);
-    emit newFreqSP(freq_);
-    emit newSensivitySP(sensivity_);
-    emit newHarmonicSP(harmonicW_);
-
 
     return lockingDpoint;
 }
