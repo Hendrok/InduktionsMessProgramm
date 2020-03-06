@@ -12,7 +12,7 @@
 class PpmsSimulation;
 class LockInSimulation;
 class PpmsAbstract;
-class LockinAbstract;
+class LockInAbstract;
 
 class INDUCONTROLCORE_EXPORT InstrumentManager : public QObject
 {
@@ -46,6 +46,7 @@ private:
     std::shared_ptr<LockInSimulation> lockinsimu_ ;
     bool simulation_ = true;
     PpmsAbstract *ppms_;
+    LockInAbstract *lockin_;
 };
 
 #endif // INSTRUMENTMANAGER_H

@@ -5,6 +5,7 @@
 #include "../Instruments/ppmssimulation.h"
 #include "../Instruments/lockinsimulation.h"
 #include "../Instruments/ppmsabstract.h"
+#include "../Instruments/lockinabstract.h"
 
 
 InstrumentManager::InstrumentManager()
@@ -32,6 +33,7 @@ InstrumentManager::InstrumentManager()
     if(simulation_ == true)
     {
         ppms_ = new PpmsSimulation;
+        lockin_ = new LockInSimulation;
     }
 }
 
@@ -42,7 +44,7 @@ void InstrumentManager::setTempSetpoint(double setpoint, double rate)
 
 void InstrumentManager::setInputVoltage(double InputVoltage)
 {
-    lockinsimu_->setInputVoltage(InputVoltage);
+    lockin_->setInputVoltage(InputVoltage);
 }
 
 void InstrumentManager::setMagFieldSP(double magField, double magRate)
@@ -58,17 +60,17 @@ void InstrumentManager::setAngle(double angle)
 
 void InstrumentManager::setFrequency(double freq)
 {
-    lockinsimu_->setFreq(freq);
+    lockin_->setFreq(freq);
 }
 
 void InstrumentManager::setSensivity(int sensivity)
 {
-    lockinsimu_->setSensivity(sensivity);
+    lockin_->setSensivity(sensivity);
 }
 
 void InstrumentManager::setHarmonic(double harmonic)
 {
-    lockinsimu_->setHarmonic(harmonic);
+    lockin_->setHarmonic(harmonic);
 }
 
 
@@ -78,7 +80,7 @@ void InstrumentManager::onPolling()
     DataPoint dataPoint;
 
     dataPoint.setPpmsdata(std::make_shared<const PpmsDataPoint>(ppms_->generateVariables()));
-    dataPoint.setLockindata(std::make_shared<const LockInDataPoint>(lockinsimu_->lockInLogik()));
+    dataPoint.setLockindata(std::make_shared<const LockInDataPoint>(lockin_->lockInLogik()));
 
     auto dPoint = std::make_shared<DataPoint>(dataPoint);
     emit newData(dPoint);

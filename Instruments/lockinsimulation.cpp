@@ -56,24 +56,24 @@ LockInSimulation::LockInSimulation()
 {  
 }
 
-void LockInSimulation::setInputVoltage(double InputVoltage)
+void LockInSimulation::setInputVoltageCore(double InputVoltage)
 {
     inputVoltage_ = InputVoltage;
 }
 
-void LockInSimulation::setFreq(double freq)
+void LockInSimulation::setFreqCore(double freq)
 {
     freq_ = freq;
     emit newFreqSP(freq_);
 }
 
-void LockInSimulation::setSensivity(int sensivity)
+void LockInSimulation::setSensivityCore(int sensivity)
 {
     sensivity_ = sensivity;
     emit newSensivitySP(sensivity_);
 }
 
-void LockInSimulation::setHarmonic(int harmonicW)
+void LockInSimulation::setHarmonicCore(int harmonicW)
 {
     harmonicW_ = harmonicW;
     emit newHarmonicSP(harmonicW_);

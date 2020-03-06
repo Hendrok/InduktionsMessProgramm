@@ -1,6 +1,5 @@
 #include "ppmsabstract.h"
 
-
 void PpmsAbstract::setTempSetpoint(double setpoint, double rate)
 {
     setTempSetpointCore(setpoint, rate);

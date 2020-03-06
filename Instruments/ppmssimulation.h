@@ -14,15 +14,16 @@ class INSTRUMENTS_EXPORT PpmsSimulation : public PpmsAbstract
     Q_OBJECT
 public:
     PpmsSimulation();
-    PpmsDataPoint generateVariables() override;
+
 protected:
     void setTempSetpointCore(double setpoint, double rate) override;
     void setMagFieldCore(double magField, double magRate) override;
     void setAngleCore(double angle) override;
+    PpmsDataPoint generateVariables() override;
 signals:
-    void newTempSP(double setpoint, double rate);
-    void newMagSP(double magField, double magRate);
-    void newAngleSP(double angle);
+    void newTempSP(double setpoint, double rate) override;
+    void newMagSP(double magField, double magRate) override;
+    void newAngleSP(double angle) override;
 
 private:
     DataPoint datapoint_;

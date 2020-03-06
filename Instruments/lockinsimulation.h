@@ -8,22 +8,24 @@
 //Internal Classes
 #include "../InduCore/datapoint.h"
 #include "lockindatapoint.h"
+#include "lockinabstract.h"
 
-class INSTRUMENTS_EXPORT LockInSimulation : public QObject
+class INSTRUMENTS_EXPORT LockInSimulation : public LockInAbstract
 {
     Q_OBJECT
 public:
     LockInSimulation();
-    void setInputVoltage(double InputVoltage);
-    void setFreq(double freq);
-    void setSensivity(int sensivity);
-    void setHarmonic(int harmonicW);
+
+protected:
+    void setInputVoltageCore(double InputVoltage) override;
+    void setFreqCore(double freq) override;
+    void setSensivityCore(int sensivity) override;
+    void setHarmonicCore(int harmonicW) override;
+    LockInDataPoint lockInLogik() override;
 signals:
     void newFreqSP(double freq);
     void newSensivitySP(int sensivity);
     void newHarmonicSP(int harmonicW);
-public slots:
-    LockInDataPoint lockInLogik();
 private:
     DataPoint datapoint_;
     double inputVoltage_;
