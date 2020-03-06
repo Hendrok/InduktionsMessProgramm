@@ -28,6 +28,7 @@ InstrumentManager::InstrumentManager()
             this, &InstrumentManager::newHarmonicSP);
 
     timer_->start(200);
+
     if(simulation_ == true)
     {
         ppms_ = new PpmsSimulation;
@@ -76,7 +77,7 @@ void InstrumentManager::onPolling()
 {
     DataPoint dataPoint;
 
-    dataPoint.setPpmsdata(std::make_shared<const PpmsDataPoint>(ppmssimu_->generateVariables()));
+    dataPoint.setPpmsdata(std::make_shared<const PpmsDataPoint>(ppms_->generateVariables()));
     dataPoint.setLockindata(std::make_shared<const LockInDataPoint>(lockinsimu_->lockInLogik()));
 
     auto dPoint = std::make_shared<DataPoint>(dataPoint);

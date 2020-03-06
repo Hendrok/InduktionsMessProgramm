@@ -23,23 +23,6 @@ PpmsSimulation::PpmsSimulation()
      , angle_(0)
 {
 }
-/*
-void PpmsSimulation::setTempSetpoint(double setpoint, double rate)
-{
-    tempSetpoint_ = setpoint;
-    tempRate_ = rate;
-}
-
-void PpmsSimulation::setMagField(double magField, double magRate)
-{
-    magFieldSP_ = magField;
-    magRate_ = magRate;
-}
-
-void PpmsSimulation::setAngle(double angle)
-{
-    angle_ = angle;
-}*/
 
 void PpmsSimulation::setTempSetpointCore(double setpoint, double rate)
 {
