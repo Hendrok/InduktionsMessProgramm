@@ -42,8 +42,6 @@ private slots:
 
 private:
     QTimer* timer_;
-    std::shared_ptr<PpmsSimulation> ppmssimu_;
-    std::shared_ptr<LockInSimulation> lockinsimu_ ;
     bool simulation_ = true;
     PpmsAbstract *ppms_;
     LockInAbstract *lockin_;

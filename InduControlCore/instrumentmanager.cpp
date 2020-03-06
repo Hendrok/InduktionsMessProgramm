@@ -10,31 +10,29 @@
 
 InstrumentManager::InstrumentManager()
     : timer_(new QTimer(this))
-    , ppmssimu_(std::make_shared<PpmsSimulation>())
-    , lockinsimu_(std::make_shared<LockInSimulation>())
 {
     connect(timer_, &QTimer::timeout,
             this, &InstrumentManager::onPolling);
-    connect(ppmssimu_.get(), &PpmsSimulation::newTempSP,
-            this, &InstrumentManager::newTempSP);
-    connect(ppmssimu_.get(), &PpmsSimulation::newMagSP,
-            this, &InstrumentManager::newMagSP);
-    connect(ppmssimu_.get(), &PpmsSimulation::newAngleSP,
-            this, &InstrumentManager::newAngleSP);
-    connect(lockinsimu_.get(), &LockInSimulation::newFreqSP,
-            this, &InstrumentManager::newFreqSP);
-    connect(lockinsimu_.get(), &LockInSimulation::newSensivitySP,
-            this, &InstrumentManager::newSensivitySP);
-    connect(lockinsimu_.get(), &LockInSimulation::newHarmonicSP,
-            this, &InstrumentManager::newHarmonicSP);
-
     timer_->start(200);
 
     if(simulation_ == true)
     {
         ppms_ = new PpmsSimulation;
         lockin_ = new LockInSimulation;
+        connect(ppms_, &PpmsAbstract::newTempSP,
+                this, &InstrumentManager::newTempSP);
+        connect(ppms_, &PpmsAbstract::newMagSP,
+                this, &InstrumentManager::newMagSP);
+        connect(ppms_, &PpmsAbstract::newAngleSP,
+                this, &InstrumentManager::newAngleSP);
+        connect(lockin_, &LockInAbstract::newFreqSP,
+                this, &InstrumentManager::newFreqSP);
+        connect(lockin_, &LockInAbstract::newSensivitySP,
+                this, &InstrumentManager::newSensivitySP);
+        connect(lockin_, &LockInAbstract::newHarmonicSP,
+                this, &InstrumentManager::newHarmonicSP);
     }
+
 }
 
 void InstrumentManager::setTempSetpoint(double setpoint, double rate)

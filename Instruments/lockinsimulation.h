@@ -23,9 +23,9 @@ protected:
     void setHarmonicCore(int harmonicW) override;
     LockInDataPoint lockInLogik() override;
 signals:
-    void newFreqSP(double freq);
-    void newSensivitySP(int sensivity);
-    void newHarmonicSP(int harmonicW);
+    void newFreqSP(double freq) override;
+    void newSensivitySP(int sensivity) override;
+    void newHarmonicSP(int harmonicW) override;
 private:
     DataPoint datapoint_;
     double inputVoltage_;
