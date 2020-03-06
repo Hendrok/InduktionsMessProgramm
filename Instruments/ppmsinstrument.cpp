@@ -21,34 +21,38 @@ PpmsInstrument::PpmsInstrument()
 {   
 }
 
-void PpmsInstrument::setTempSetpoint(double setpoint, double rate)
+void PpmsInstrument::setTempSetpointCore(double setpoint, double rate)
 {
-    tempSetpoint_ = setpoint;
-    tempRate_ = rate;
+    Q_UNUSED(setpoint);
+    Q_UNUSED(rate);
 }
 
-void PpmsInstrument::setMagField(double magField)
+void PpmsInstrument::setMagFieldCore(double magField, double magRate)
 {
-    magField_ = magField;
+    Q_UNUSED(magField);
+    Q_UNUSED(magRate);
 }
 
-void PpmsInstrument::setAngle(double angle)
+void PpmsInstrument::setAngleCore(double angle)
 {
-    angle_ = angle;
+    Q_UNUSED(angle)
 }
 
-PpmsDataPoint PpmsInstrument::receiveVariables()
+QPair<double, double> PpmsInstrument::tempSetpointCore()
 {
-    PpmsDataPoint ppmsDpoint;
-    auto dataPoint =std::make_shared<DataPoint> ();
-    ppmsDpoint.setPvTempSetPoint(tempSetpoint_);
-    ppmsDpoint.setPvTempRate(tempRate_);
-    ppmsDpoint.setPvVoltLive(angle_);
-    ppmsDpoint.setPvMagFieldLive(magField_);
-    ppmsDpoint.setPvRotLive(angle_);
-
-    return ppmsDpoint;
+    return QPair(0,0);
 }
+
+QPair<double, double> PpmsInstrument::magFieldCore()
+{
+    return QPair(0,0);
+}
+
+double PpmsInstrument::angleCore()
+{
+    return 0;
+}
+
 
 
 

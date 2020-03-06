@@ -13,7 +13,7 @@ public:
     void setHarmonic(int harmonicW);
     virtual LockInDataPoint lockInLogik() = 0;
 protected:
-    virtual void setInputVoltageCore(double InputVoltage) = 0;
+    virtual void setInputVoltageCore(double inputVoltage) = 0;
     virtual void setFreqCore(double freq) = 0;
     virtual void setSensivityCore(int sensivity) = 0;
     virtual void setHarmonicCore(int harmonicW) = 0;

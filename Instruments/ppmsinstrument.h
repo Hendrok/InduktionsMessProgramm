@@ -23,7 +23,6 @@ protected:
     QPair<double, double> tempSetpointCore() override;
     QPair<double, double> magFieldCore() override;
     double angleCore() override;
-    PpmsDataPoint receiveVariables();
 private:
     DataPoint datapoint_;
     double tempSetpoint_;

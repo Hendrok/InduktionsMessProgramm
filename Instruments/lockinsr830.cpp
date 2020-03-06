@@ -19,24 +19,44 @@ LockInSr830::LockInSr830()
 {  
 }
 
-void LockInSr830::setInputVoltage(double InputVoltage)
+void LockInSr830::setInputVoltageCore(double inputVoltage)
 {
-    inputVoltage_ = InputVoltage;
+    Q_UNUSED(inputVoltage);
 }
 
-void LockInSr830::setFreq(double freq)
+void LockInSr830::setFreqCore(double freq)
 {
-    freq_ = freq;
+    Q_UNUSED(freq);
 }
 
-void LockInSr830::setSensivity(int sensivity)
+void LockInSr830::setHarmonicCore(int harmonicW)
 {
-    sensivity_ = sensivity;
+    Q_UNUSED(harmonicW);
 }
 
-void LockInSr830::setHarmonic(int harmonicW)
+void LockInSr830::setSensivityCore(int sensivity)
 {
-    harmonicW_ = harmonicW;
+    Q_UNUSED(sensivity);
+}
+
+double LockInSr830::inputVoltageCore()
+{
+    return 0;
+}
+
+double LockInSr830::freqCore()
+{
+    return 0;
+}
+
+int LockInSr830::harmonicCore()
+{
+    return 0;
+}
+
+int LockInSr830::sensitivityCore()
+{
+    return 0;
 }
 
 LockInDataPoint LockInSr830::lockInLogik()

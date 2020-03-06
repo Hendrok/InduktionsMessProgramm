@@ -1,8 +1,8 @@
 #include "lockinabstract.h"
 
-void LockInAbstract::setInputVoltage(double InputVoltage)
+void LockInAbstract::setInputVoltage(double inputVoltage)
 {
-    setInputVoltageCore(InputVoltage);
+    setInputVoltageCore(inputVoltage);
 }
 
 void LockInAbstract::setFreq(double freq)

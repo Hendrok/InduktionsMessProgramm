@@ -18,7 +18,7 @@ public:
     LockInSimulation();
 
 protected:
-    void setInputVoltageCore(double InputVoltage) override;
+    void setInputVoltageCore(double inputVoltage) override;
     void setFreqCore(double freq) override;
     void setSensivityCore(int sensivity) override;
     void setHarmonicCore(int harmonicW) override;

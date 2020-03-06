@@ -56,9 +56,9 @@ LockInSimulation::LockInSimulation()
 {  
 }
 
-void LockInSimulation::setInputVoltageCore(double InputVoltage)
+void LockInSimulation::setInputVoltageCore(double inputVoltage)
 {
-    inputVoltage_ = InputVoltage;
+    inputVoltage_ = inputVoltage;
 }
 
 void LockInSimulation::setFreqCore(double freq)

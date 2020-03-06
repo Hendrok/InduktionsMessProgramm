@@ -16,7 +16,7 @@ class INSTRUMENTS_EXPORT LockInSr830 : public LockInAbstract
 public:
     LockInSr830();    
 protected:
-    void setInputVoltageCore(double InputVoltage) override;
+    void setInputVoltageCore(double inputVoltage) override;
     void setFreqCore(double freq) override;
     void setHarmonicCore(int harmonicW) override;
     void setSensivityCore(int sensivity) override;

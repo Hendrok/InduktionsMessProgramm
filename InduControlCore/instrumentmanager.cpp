@@ -6,6 +6,8 @@
 #include "../Instruments/lockinsimulation.h"
 #include "../Instruments/ppmsabstract.h"
 #include "../Instruments/lockinabstract.h"
+#include "../Instruments/ppmsinstrument.h"
+#include "../Instruments/lockinsr830.h"
 
 
 InstrumentManager::InstrumentManager()
@@ -19,19 +21,23 @@ InstrumentManager::InstrumentManager()
     {
         ppms_ = new PpmsSimulation;
         lockin_ = new LockInSimulation;
-        connect(ppms_, &PpmsAbstract::newTempSP,
-                this, &InstrumentManager::newTempSP);
-        connect(ppms_, &PpmsAbstract::newMagSP,
-                this, &InstrumentManager::newMagSP);
-        connect(ppms_, &PpmsAbstract::newAngleSP,
-                this, &InstrumentManager::newAngleSP);
-        connect(lockin_, &LockInAbstract::newFreqSP,
-                this, &InstrumentManager::newFreqSP);
-        connect(lockin_, &LockInAbstract::newSensivitySP,
-                this, &InstrumentManager::newSensivitySP);
-        connect(lockin_, &LockInAbstract::newHarmonicSP,
-                this, &InstrumentManager::newHarmonicSP);
     }
+    else
+    {
+
+    }
+    connect(ppms_, &PpmsAbstract::newTempSP,
+            this, &InstrumentManager::newTempSP);
+    connect(ppms_, &PpmsAbstract::newMagSP,
+            this, &InstrumentManager::newMagSP);
+    connect(ppms_, &PpmsAbstract::newAngleSP,
+            this, &InstrumentManager::newAngleSP);
+    connect(lockin_, &LockInAbstract::newFreqSP,
+            this, &InstrumentManager::newFreqSP);
+    connect(lockin_, &LockInAbstract::newSensivitySP,
+            this, &InstrumentManager::newSensivitySP);
+    connect(lockin_, &LockInAbstract::newHarmonicSP,
+            this, &InstrumentManager::newHarmonicSP);
 
 }
 

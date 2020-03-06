@@ -13,7 +13,7 @@ public:
     void setTempSetpoint(double setpoint, double rate);
     void setMagField(double magField, double magRate);
     void setAngle(double angle);
-    virtual PpmsDataPoint generateVariables() =0;
+    virtual PpmsDataPoint generateVariables() = 0;
 protected:
     virtual void setTempSetpointCore(double setpoint,double rate) = 0;
     virtual void setMagFieldCore(double magField, double magRate) = 0;

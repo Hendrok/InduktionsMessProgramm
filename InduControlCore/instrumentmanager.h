@@ -9,10 +9,9 @@
 
 //Internal Classes
 #include "../InduCore/datapoint.h"
-class PpmsSimulation;
-class LockInSimulation;
 class PpmsAbstract;
 class LockInAbstract;
+
 
 class INDUCONTROLCORE_EXPORT InstrumentManager : public QObject
 {
