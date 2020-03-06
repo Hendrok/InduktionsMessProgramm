@@ -1,4 +1,4 @@
-#include "lockincore.h"
+#include "lockinsr830.h"
 #include <memory>
 #include <QDebug>
 
@@ -8,7 +8,7 @@
 #include "../Instruments/ppmsdatapoint.h"
 #include "../Instruments/lockindatapoint.h"
 
-LockInCore::LockInCore()
+LockInSr830::LockInSr830()
     : datapoint_(DataPoint())
     , inputVoltage_ (0.1)
     , voltnow_(0.1)
@@ -19,27 +19,27 @@ LockInCore::LockInCore()
 {  
 }
 
-void LockInCore::setInputVoltage(double InputVoltage)
+void LockInSr830::setInputVoltage(double InputVoltage)
 {
     inputVoltage_ = InputVoltage;
 }
 
-void LockInCore::setFreq(double freq)
+void LockInSr830::setFreq(double freq)
 {
     freq_ = freq;
 }
 
-void LockInCore::setSensivity(int sensivity)
+void LockInSr830::setSensivity(int sensivity)
 {
     sensivity_ = sensivity;
 }
 
-void LockInCore::setHarmonic(int harmonicW)
+void LockInSr830::setHarmonic(int harmonicW)
 {
     harmonicW_ = harmonicW;
 }
 
-LockInDataPoint LockInCore::lockInLogik()
+LockInDataPoint LockInSr830::lockInLogik()
 {
 
     LockInDataPoint lockingDpoint;

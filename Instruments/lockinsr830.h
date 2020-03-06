@@ -1,5 +1,5 @@
-#ifndef LOCKINCORE_H
-#define LOCKINCORE_H
+#ifndef LOCKINSR830_H
+#define LOCKINSR830_H
 
 #include "Instruments_global.h"
 #include <QObject>
@@ -9,11 +9,11 @@
 #include "../InduCore/datapoint.h"
 #include "lockindatapoint.h"
 
-class INSTRUMENTS_EXPORT LockInCore : public QObject
+class INSTRUMENTS_EXPORT LockInSr830 : public QObject
 {
     Q_OBJECT
 public:
-    LockInCore();
+    LockInSr830();
     void setInputVoltage(double InputVoltage);
     void setFreq(double freq);
     void setSensivity(int sensivity);
@@ -34,4 +34,4 @@ private:
     double phase_;
 };
 
-#endif // LOCKINCORE_H
+#endif

@@ -1,4 +1,4 @@
-#include "ppmscore.h"
+#include "ppmsinstrument.h"
 #include <memory>
 #include <QDebug>
 
@@ -8,7 +8,7 @@
 #include "../Instruments/ppmsdatapoint.h"
 #include "../Instruments/lockindatapoint.h"
 
-PpmsCore::PpmsCore()
+PpmsInstrument::PpmsInstrument()
     : datapoint_(DataPoint())
     , tempSetpoint_(300)
     , tempRate_(10)
@@ -21,23 +21,23 @@ PpmsCore::PpmsCore()
 {   
 }
 
-void PpmsCore::setTempSetpoint(double setpoint, double rate)
+void PpmsInstrument::setTempSetpoint(double setpoint, double rate)
 {
     tempSetpoint_ = setpoint;
     tempRate_ = rate;
 }
 
-void PpmsCore::setMagField(double magField)
+void PpmsInstrument::setMagField(double magField)
 {
     magField_ = magField;
 }
 
-void PpmsCore::setAngle(double angle)
+void PpmsInstrument::setAngle(double angle)
 {
     angle_ = angle;
 }
 
-PpmsDataPoint PpmsCore::receiveVariables()
+PpmsDataPoint PpmsInstrument::receiveVariables()
 {
     PpmsDataPoint ppmsDpoint;
     auto dataPoint =std::make_shared<DataPoint> ();

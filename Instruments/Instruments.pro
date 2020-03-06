@@ -17,18 +17,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    lockincore.cpp \
+    lockinabstract.cpp \
     lockinsimulation.cpp \
-    ppmscore.cpp \
+    lockinsr830.cpp \
+    ppmsabstract.cpp \
+    ppmsinstrument.cpp \
     ppmssimulation.cpp
 
 HEADERS += \
     Instruments_global.h \
-    lockincore.h \
+    lockinabstract.h \
     lockindatapoint.h \
     lockinsimulation.h \
-    ppmscore.h \
+    lockinsr830.h \
+    ppmsabstract.h \
     ppmsdatapoint.h \
+    ppmsinstrument.h \
     ppmssimulation.h
 
 # Default rules for deployment.

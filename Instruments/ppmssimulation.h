@@ -5,17 +5,22 @@
 #include <memory>
 
 //Internal Classes
+#include "ppmsabstract.h"
 #include "../InduCore/datapoint.h"
 #include "ppmsdatapoint.h"
 
-class INSTRUMENTS_EXPORT PpmsSimulation : public QObject
+class INSTRUMENTS_EXPORT PpmsSimulation : public PpmsAbstract
 {
     Q_OBJECT
 public:
     PpmsSimulation();
-    void setTempSetpoint(double setpoint, double rate);
+    /*void setTempSetpoint(double setpoint, double rate);
     void setMagField(double magField, double magRate);
-    void setAngle(double angle);
+    void setAngle(double angle);*/
+protected:
+    void setTempSetpointCore(double setpoint, double rate) override;
+    void setMagFieldCore(double magField, double magRate) override;
+    void setAngleCore(double angle) override;
 signals:
     void newTempSP(double setpoint, double rate);
     void newMagSP(double magField, double magRate);

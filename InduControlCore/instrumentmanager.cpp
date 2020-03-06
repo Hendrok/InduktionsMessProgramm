@@ -4,6 +4,7 @@
 //Internal Classes
 #include "../Instruments/ppmssimulation.h"
 #include "../Instruments/lockinsimulation.h"
+#include "../Instruments/ppmsabstract.h"
 
 
 InstrumentManager::InstrumentManager()
@@ -27,11 +28,15 @@ InstrumentManager::InstrumentManager()
             this, &InstrumentManager::newHarmonicSP);
 
     timer_->start(200);
+    if(simulation_ == true)
+    {
+        ppms_ = new PpmsSimulation;
+    }
 }
 
 void InstrumentManager::setTempSetpoint(double setpoint, double rate)
 {
-    ppmssimu_->setTempSetpoint(setpoint, rate);
+    ppms_->setTempSetpoint(setpoint, rate);
 }
 
 void InstrumentManager::setInputVoltage(double InputVoltage)
@@ -41,12 +46,13 @@ void InstrumentManager::setInputVoltage(double InputVoltage)
 
 void InstrumentManager::setMagFieldSP(double magField, double magRate)
 {
-    ppmssimu_->setMagField(magField, magRate);
+    ppms_->setMagField(magField,magRate);
+
 }
 
 void InstrumentManager::setAngle(double angle)
 {
-    ppmssimu_->setAngle(angle);
+    ppms_->setAngle(angle);
 }
 
 void InstrumentManager::setFrequency(double freq)

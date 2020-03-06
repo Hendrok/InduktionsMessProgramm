@@ -1,5 +1,5 @@
-#ifndef PPMSCORE_H
-#define PPMSCORE_H
+#ifndef PPMSINSTRUMENT_H
+#define PPMSINSTRUMENT_H
 #include "Instruments_global.h"
 #include <QObject>
 #include <memory>
@@ -9,11 +9,11 @@
 #include "ppmsdatapoint.h"
 
 
-class INSTRUMENTS_EXPORT PpmsCore : public QObject
+class INSTRUMENTS_EXPORT PpmsInstrument : public QObject
 {
     Q_OBJECT
 public:
-    PpmsCore();
+    PpmsInstrument();
     void setTempSetpoint(double setpoint, double rate);
     void setMagField(double magField);
     void setAngle(double angle);

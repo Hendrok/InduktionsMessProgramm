@@ -11,6 +11,8 @@
 #include "../InduCore/datapoint.h"
 class PpmsSimulation;
 class LockInSimulation;
+class PpmsAbstract;
+class LockinAbstract;
 
 class INDUCONTROLCORE_EXPORT InstrumentManager : public QObject
 {
@@ -42,6 +44,8 @@ private:
     QTimer* timer_;
     std::shared_ptr<PpmsSimulation> ppmssimu_;
     std::shared_ptr<LockInSimulation> lockinsimu_ ;
+    bool simulation_ = true;
+    PpmsAbstract *ppms_;
 };
 
 #endif // INSTRUMENTMANAGER_H
