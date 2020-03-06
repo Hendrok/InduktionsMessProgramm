@@ -3,6 +3,7 @@
 #include "Instruments_global.h"
 #include <QObject>
 #include <memory>
+#include <QPair>
 
 //Internal Classes
 #include "ppmsabstract.h"
@@ -19,11 +20,10 @@ protected:
     void setTempSetpointCore(double setpoint, double rate) override;
     void setMagFieldCore(double magField, double magRate) override;
     void setAngleCore(double angle) override;
+    QPair<double,double> tempSetpointCore() override;
+    QPair<double, double> magFieldCore() override;
+    double angleCore() override;
     PpmsDataPoint generateVariables() override;
-signals:
-    void newTempSP(double setpoint, double rate) override;
-    void newMagSP(double magField, double magRate) override;
-    void newAngleSP(double angle) override;
 
 private:
     DataPoint datapoint_;

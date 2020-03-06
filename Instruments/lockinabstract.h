@@ -12,15 +12,19 @@ public:
     void setSensivity(int sensivity);
     void setHarmonic(int harmonicW);
     virtual LockInDataPoint lockInLogik() = 0;
-signals:
-    virtual void newFreqSP(double freq) = 0;
-    virtual void newSensivitySP(int sensivity) = 0;
-    virtual void newHarmonicSP(int harmonicW) = 0;
 protected:
     virtual void setInputVoltageCore(double InputVoltage) = 0;
     virtual void setFreqCore(double freq) = 0;
     virtual void setSensivityCore(int sensivity) = 0;
     virtual void setHarmonicCore(int harmonicW) = 0;
+    virtual double inputVoltageCore() = 0;
+    virtual double freqCore() = 0;
+    virtual int sensitivityCore() = 0;
+    virtual int harmonicCore() = 0;
+signals:
+    void newFreqSP(double freq);
+    void newSensivitySP(int sensivity);
+    void newHarmonicSP(int harmonicW);
 };
 
 #endif // LOCKINABSTRACT_H

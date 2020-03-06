@@ -28,20 +28,34 @@ void PpmsSimulation::setTempSetpointCore(double setpoint, double rate)
 {
     tempSetpoint_ = setpoint;
     tempRate_ = rate;
-    emit newTempSP(tempSetpoint_, tempRate_);
+
 }
 
 void PpmsSimulation::setMagFieldCore(double magField, double magRate)
 {
     magFieldSP_ = magField;
     magRate_ = magRate;
-    emit newMagSP(magFieldSP_, magRate_);
+
 }
 
 void PpmsSimulation::setAngleCore(double angle)
 {
     angle_ = angle;
-    emit newAngleSP(angle_);
+}
+
+QPair<double, double> PpmsSimulation::tempSetpointCore()
+{
+    return QPair(tempSetpoint_, tempRate_);
+}
+
+QPair<double, double> PpmsSimulation::magFieldCore()
+{
+    return QPair(magFieldSP_, magRate_);
+}
+
+double PpmsSimulation::angleCore()
+{
+    return angle_;
 }
 
 

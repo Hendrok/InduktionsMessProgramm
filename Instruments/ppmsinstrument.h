@@ -3,25 +3,26 @@
 #include "Instruments_global.h"
 #include <QObject>
 #include <memory>
-
+#include <QPair>
 //Internal Classes
 #include "../InduCore/datapoint.h"
 #include "ppmsdatapoint.h"
+#include "ppmsabstract.h"
 
 
-class INSTRUMENTS_EXPORT PpmsInstrument : public QObject
+class INSTRUMENTS_EXPORT PpmsInstrument : public PpmsAbstract
 {
     Q_OBJECT
 public:
     PpmsInstrument();
-    void setTempSetpoint(double setpoint, double rate);
-    void setMagField(double magField);
-    void setAngle(double angle);
-signals:
-    void newTempSP(double setpoint, double rate);
-    void newMagSP(double magField);
-    void newAngleSP(double angle);
-public slots:
+
+protected:
+    void setTempSetpointCore(double setpoint, double rate) override;
+    void setMagFieldCore(double magField, double magRate) override;
+    void setAngleCore(double angle) override;
+    QPair<double, double> tempSetpointCore() override;
+    QPair<double, double> magFieldCore() override;
+    double angleCore() override;
     PpmsDataPoint receiveVariables();
 private:
     DataPoint datapoint_;

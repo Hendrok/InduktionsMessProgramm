@@ -64,19 +64,36 @@ void LockInSimulation::setInputVoltageCore(double InputVoltage)
 void LockInSimulation::setFreqCore(double freq)
 {
     freq_ = freq;
-    emit newFreqSP(freq_);
 }
 
 void LockInSimulation::setSensivityCore(int sensivity)
 {
     sensivity_ = sensivity;
-    emit newSensivitySP(sensivity_);
 }
 
 void LockInSimulation::setHarmonicCore(int harmonicW)
 {
     harmonicW_ = harmonicW;
-    emit newHarmonicSP(harmonicW_);
+}
+
+double LockInSimulation::inputVoltageCore()
+{
+    return inputVoltage_;
+}
+
+double LockInSimulation::freqCore()
+{
+    return freq_;
+}
+
+int LockInSimulation::sensitivityCore()
+{
+    return sensivity_;
+}
+
+int LockInSimulation::harmonicCore()
+{
+    return harmonicW_;
 }
 
 LockInDataPoint LockInSimulation::lockInLogik()

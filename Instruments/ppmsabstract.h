@@ -1,9 +1,10 @@
 #ifndef PPMSABSTRACT_H
 #define PPMSABSTRACT_H
 #include "Instruments_global.h"
-
+#include "QPair"
 #include <QObject>
 #include "ppmsdatapoint.h"
+
 
 class INSTRUMENTS_EXPORT PpmsAbstract : public QObject
 {
@@ -17,11 +18,14 @@ protected:
     virtual void setTempSetpointCore(double setpoint,double rate) = 0;
     virtual void setMagFieldCore(double magField, double magRate) = 0;
     virtual void setAngleCore(double angle) = 0;
+    virtual QPair<double,double> tempSetpointCore() = 0;
+    virtual QPair<double, double> magFieldCore() = 0;
+    virtual double angleCore() = 0;
 
 signals:
-    virtual void newTempSP(double setpoint, double rate) = 0;
-    virtual void newMagSP(double magField, double magRate) = 0;
-    virtual void newAngleSP(double angle) = 0;
+    void newTempSP(double setpoint, double rate) ;
+    void newMagSP(double magField, double magRate) ;
+    void newAngleSP(double angle) ;
 
 };
 

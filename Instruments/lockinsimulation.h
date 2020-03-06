@@ -4,6 +4,7 @@
 #include "Instruments_global.h"
 #include <QObject>
 #include <memory>
+#include <QPair>
 
 //Internal Classes
 #include "../InduCore/datapoint.h"
@@ -21,11 +22,11 @@ protected:
     void setFreqCore(double freq) override;
     void setSensivityCore(int sensivity) override;
     void setHarmonicCore(int harmonicW) override;
+    double inputVoltageCore() override;
+    double freqCore() override;
+    int harmonicCore() override;
+    int sensitivityCore() override;
     LockInDataPoint lockInLogik() override;
-signals:
-    void newFreqSP(double freq) override;
-    void newSensivitySP(int sensivity) override;
-    void newHarmonicSP(int harmonicW) override;
 private:
     DataPoint datapoint_;
     double inputVoltage_;
