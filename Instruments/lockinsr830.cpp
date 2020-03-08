@@ -7,6 +7,8 @@
 #include "../InduControlCore/instrumentmanager.h"
 #include "../Instruments/ppmsdatapoint.h"
 #include "../Instruments/lockindatapoint.h"
+#include <iostream>
+#include <string>
 
 LockInSr830::LockInSr830()
     : datapoint_(DataPoint())
@@ -21,42 +23,42 @@ LockInSr830::LockInSr830()
 
 void LockInSr830::setInputVoltageCore(double inputVoltage)
 {
-    Q_UNUSED(inputVoltage);
+    auto inputVoltageStr = dtoStr(inputVoltage);
 }
 
 void LockInSr830::setFreqCore(double freq)
 {
-    Q_UNUSED(freq);
+    auto freqStr = dtoStr(freq);
 }
 
 void LockInSr830::setHarmonicCore(int harmonicW)
 {
-    Q_UNUSED(harmonicW);
+    auto harmonicStr = itoStr(harmonicW);
 }
 
 void LockInSr830::setSensivityCore(int sensivity)
 {
-    Q_UNUSED(sensivity);
+    auto sensivityStr = itoStr(sensivity);
 }
 
 double LockInSr830::inputVoltageCore()
 {
-    return 0;
+    return strtoD(0);
 }
 
 double LockInSr830::freqCore()
 {
-    return 0;
+    return strtoD(0);
 }
 
 int LockInSr830::harmonicCore()
 {
-    return 0;
+    return strtoI(0);
 }
 
 int LockInSr830::sensitivityCore()
 {
-    return 0;
+    return strtoI(0);
 }
 
 LockInDataPoint LockInSr830::lockInLogik()
@@ -69,4 +71,24 @@ LockInDataPoint LockInSr830::lockInLogik()
     lockingDpoint.setPvVoltLive(inputVoltage_);
 
     return lockingDpoint;
+}
+
+std::string LockInSr830::dtoStr(double number)
+{
+    return std::to_string(number);
+}
+
+std::string LockInSr830::itoStr(int number)
+{
+    return std::to_string(number);
+}
+
+double LockInSr830::strtoD(std::string number)
+{
+    return std::stod(number);
+}
+
+int LockInSr830::strtoI(std::string number)
+{
+    return std::stod(number);
 }

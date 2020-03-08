@@ -26,6 +26,10 @@ protected:
     int sensitivityCore() override;
     LockInDataPoint lockInLogik() override;
 private:
+    std::string dtoStr (double number);
+    std::string itoStr (int number);
+    double strtoD (std::string number);
+    int strtoI (std::string number);
     DataPoint datapoint_;
     double inputVoltage_;
     double voltnow_;
@@ -33,6 +37,7 @@ private:
     double sensivity_;
     double harmonicW_;
     double phase_;
+
 };
 
 #endif
