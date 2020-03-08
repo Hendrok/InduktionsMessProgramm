@@ -67,7 +67,7 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
         mSeqTc_->setTempEnd(seqTc->tempEnd());
         mSeqTc_->setTemperatureRate(seqTc->temperatureRate());
         mSeqTc_->setVoltageAmplitude(seqTc->voltageAmplitude());
-        instrumentmanager_->setTempSetpoint(mSeqTc_->tempStart(),mSeqTc_->temperatureRate());
+        instrumentmanager_->setTempSetpoint(mSeqTc_->tempStart(),10);
         measurementState = State::ApproachStartTc;
         emit newState(measurementState);
     }
