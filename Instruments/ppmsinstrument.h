@@ -24,6 +24,10 @@ protected:
     QPair<double, double> magFieldCore() override;
     double angleCore() override;
 private:
+    std::string dtoStr (double number);
+    std::string itoStr (int number);
+    double strtoD (std::string number);
+    int strtoI (std::string number);
     DataPoint datapoint_;
     double tempSetpoint_;
     double tempRate_;

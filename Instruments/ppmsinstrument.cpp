@@ -1,7 +1,8 @@
 #include "ppmsinstrument.h"
 #include <memory>
 #include <QDebug>
-
+#include <string>
+#include <QPair>
 //Internal Classes
 #include "../InduCore/datapoint.h"
 #include "../InduControlCore/instrumentmanager.h"
@@ -23,19 +24,19 @@ PpmsInstrument::PpmsInstrument()
 
 void PpmsInstrument::setTempSetpointCore(double setpoint, double rate)
 {
-    Q_UNUSED(setpoint);
-    Q_UNUSED(rate);
+    QPair<std::string, std::string> setTempSetpointStr =
+            QPair(dtoStr(setpoint), dtoStr(rate));
 }
 
 void PpmsInstrument::setMagFieldCore(double magField, double magRate)
 {
-    Q_UNUSED(magField);
-    Q_UNUSED(magRate);
+    QPair<std::string, std::string> setMagFieldStr =
+            QPair(dtoStr(magField), dtoStr(magRate));
 }
 
 void PpmsInstrument::setAngleCore(double angle)
 {
-    Q_UNUSED(angle)
+    std::string angleStr = itoStr(angle);
 }
 
 QPair<double, double> PpmsInstrument::tempSetpointCore()
@@ -51,6 +52,29 @@ QPair<double, double> PpmsInstrument::magFieldCore()
 double PpmsInstrument::angleCore()
 {
     return 0;
+}
+
+std::string PpmsInstrument::dtoStr(double number)
+{
+    return std::to_string(number);
+}
+
+std::string PpmsInstrument::itoStr(int number)
+{
+    return std::to_string(number);
+
+}
+
+double PpmsInstrument::strtoD(std::string number)
+{
+    return std::stod(number);
+
+}
+
+int PpmsInstrument::strtoI(std::string number)
+{
+    return std::stod(number);
+
 }
 
 
