@@ -3,6 +3,8 @@
 #include <QDebug>
 #include <string>
 #include <QPair>
+#include <sstream>
+#include <iomanip>
 //Internal Classes
 #include "../InduCore/datapoint.h"
 #include "../InduControlCore/instrumentmanager.h"
@@ -24,14 +26,32 @@ PpmsInstrument::PpmsInstrument()
 
 void PpmsInstrument::setTempSetpointCore(double setpoint, double rate)
 {
-    QPair<std::string, std::string> setTempSetpointStr =
-            QPair(dtoStr(setpoint), dtoStr(rate));
+    if(setpoint > 350)
+    {
+        setpoint = 350;
+    }
+    if(setpoint < 1.9)
+    {
+        setpoint = 1.9;
+    }
+    if(rate > 20)
+    {
+        rate = 20;
+    }
+    if(rate < 0)
+    {
+        rate = 0.1;
+    }
+    std::string setTempSetpointStr= dtoStr(setpoint, 3) + " " + dtoStr(rate, 3) + " 0";
 }
 
 void PpmsInstrument::setMagFieldCore(double magField, double magRate)
 {
-    QPair<std::string, std::string> setMagFieldStr =
-            QPair(dtoStr(magField), dtoStr(magRate));
+    //TODO: Abfrage MagField, spezifisch für 9/14 T!
+    //transform to oe
+    magField = magField *10;
+    magRate = magRate *10;
+    std::string setMagFieldStr= dtoStr(magField, 0) + " " + dtoStr(magRate, 0);
 }
 
 void PpmsInstrument::setAngleCore(double angle)
@@ -54,9 +74,11 @@ double PpmsInstrument::angleCore()
     return 0;
 }
 
-std::string PpmsInstrument::dtoStr(double number)
+std::string PpmsInstrument::dtoStr(double number,int dec)
 {
-    return std::to_string(number);
+    std::stringstream sstring;
+    sstring << std::fixed << std::setprecision(dec) << number;
+    return sstring.str();
 }
 
 std::string PpmsInstrument::itoStr(int number)
