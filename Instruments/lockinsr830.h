@@ -26,7 +26,7 @@ protected:
     int sensitivityCore() override;
     LockInDataPoint lockInLogik() override;
 private:
-    std::string dtoStr (double number);
+    std::string dtoStr (double number, int dec);
     std::string itoStr (int number);
     double strtoD (std::string number);
     int strtoI (std::string number);

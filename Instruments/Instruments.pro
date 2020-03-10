@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     lockinabstract.cpp \
+    lockinsens.cpp \
     lockinsimulation.cpp \
     lockinsr830.cpp \
     ppmsabstract.cpp \
@@ -28,6 +29,7 @@ HEADERS += \
     Instruments_global.h \
     lockinabstract.h \
     lockindatapoint.h \
+    lockinsens.h \
     lockinsimulation.h \
     lockinsr830.h \
     ppmsabstract.h \
