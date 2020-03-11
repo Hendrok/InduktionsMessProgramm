@@ -142,16 +142,16 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
         }
 
         case State::ApproachEndJc:{
-            if (datapoint->lockindata()->pvVoltLive() < mSeqJc_->voltEnd())
+            if (datapoint->lockindata()->pvVoltInputLive() < mSeqJc_->voltEnd())
             {
-                instrumentmanager_->setInputVoltage(datapoint->lockindata()->pvVoltLive() + mSeqJc_->voltRate());
+                instrumentmanager_->setInputVoltage(datapoint->lockindata()->pvVoltInputLive() + mSeqJc_->voltRate());
             }
-            if (datapoint->lockindata()->pvVoltLive() > mSeqJc_->voltEnd())
+            if (datapoint->lockindata()->pvVoltInputLive() > mSeqJc_->voltEnd())
             {
-                instrumentmanager_->setInputVoltage(datapoint->lockindata()->pvVoltLive() - mSeqJc_->voltRate());
+                instrumentmanager_->setInputVoltage(datapoint->lockindata()->pvVoltInputLive() - mSeqJc_->voltRate());
             }
             //slow approach
-            if(std::abs(mSeqJc_->voltEnd() - datapoint->lockindata()->pvVoltLive()) < mSeqJc_->voltRate())
+            if(std::abs(mSeqJc_->voltEnd() - datapoint->lockindata()->pvVoltInputLive()) < mSeqJc_->voltRate())
             {
                 mSeqJc_->setVoltRate(0.01);
             }
@@ -160,7 +160,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
                     fw_->MeasurementState(measurementState);
                     fw_->append(datapoint);
             }
-            if(std::abs(mSeqJc_->voltEnd() - datapoint->lockindata()->pvVoltLive()) < 0.01){
+            if(std::abs(mSeqJc_->voltEnd() - datapoint->lockindata()->pvVoltInputLive()) < 0.01){
                 fw_->closeFile();
                 measurementState = State::CheckForMeas;
                 measurementNumber_++;

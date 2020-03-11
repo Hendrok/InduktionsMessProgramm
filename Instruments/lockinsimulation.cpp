@@ -101,10 +101,10 @@ LockInDataPoint LockInSimulation::lockInLogik()
     LockInDataPoint lockingDpoint;
 
     auto dataPoint =std::make_shared<DataPoint> ();
-    double test =QRandomGenerator::global()->bounded(1.0)+90;
-
-    lockingDpoint.setPvPhase(test);
-    lockingDpoint.setPvVoltLive(inputVoltage_);
+    double test =QRandomGenerator::global()->bounded(1.0);
+    lockingDpoint.setPvVoltOutputLive(test);
+    lockingDpoint.setPvPhase(test+90);
+    lockingDpoint.setPvVoltInputLive(inputVoltage_);
 
     return lockingDpoint;
 

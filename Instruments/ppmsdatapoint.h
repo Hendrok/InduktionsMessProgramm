@@ -32,16 +32,11 @@ public:
     int pvStatusPpms() const;
     void setPvStatusPpms(int pvStatusPpms);
 
-    double pvVoltLive() const;
-    void setPvVoltLive(double pvVoltLive);
-
 private:
-
     //PpmsTemp
     double pvTempSetPoint_;
     double pvTempLive_;
     double pvTempRate_;
-    double pvVoltLive_;
 
     //PpmsMag
     double pvMagFieldLive_;
@@ -135,15 +130,7 @@ inline void PpmsDataPoint::setPvStatusPpms(int pvStatusPpms)
     pvStatusPpms_ = pvStatusPpms;
 }
 
-inline double PpmsDataPoint::pvVoltLive() const
-{
-return pvVoltLive_;
-}
 
-inline void PpmsDataPoint::setPvVoltLive(double pvVoltLive)
-{
-pvVoltLive_ = pvVoltLive;
-}
 
 
 

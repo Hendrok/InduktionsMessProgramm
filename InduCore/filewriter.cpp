@@ -97,13 +97,13 @@ void FileWriter::append(std::shared_ptr<DataPoint> datapoint){
         if(measurementState_ == InduManager::State::ApproachEndTc)
         {
         file_->write(QString::number(datapoint->ppmsdata()->pvTempLive()).toUtf8() +
-                     " " + QString::number(datapoint->ppmsdata()->pvVoltLive()).toUtf8() +
+                     " " + QString::number(datapoint->lockindata()->pvVoltOutputLive()).toUtf8() +
                      " " + QString::number(datapoint->lockindata()->pvPhase()).toUtf8() +"\n");
         }
         else if(measurementState_ == InduManager::State::ApproachEndJc)
         {
-            file_->write(QString::number(datapoint->lockindata()->pvVoltLive()).toUtf8() +
-                         " " + QString::number(datapoint->ppmsdata()->pvVoltLive()).toUtf8() +
+            file_->write(QString::number(datapoint->lockindata()->pvVoltInputLive()).toUtf8() +
+                         " " + QString::number(datapoint->lockindata()->pvVoltOutputLive()).toUtf8() +
                          " " + QString::number(datapoint->lockindata()->pvPhase()).toUtf8() +"\n");
 
         }

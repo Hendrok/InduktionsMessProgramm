@@ -1,11 +1,13 @@
 #include "lockinsens.h"
 
+#include "../InduCore/datapoint.h"
+
 LockInSens::LockInSens()
 {
 
 }
 
-void LockInSens::setSensitivity(int sensitivity)
+void LockInSens::setSensitivity(std::shared_ptr<DataPoint> datapoint)
 {
-    Q_UNUSED(sensitivity)
+    //if(datapoint->ppmsdata()->)
 }

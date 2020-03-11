@@ -49,7 +49,7 @@ void PpmsWidget::newData(std::shared_ptr<const DataPoint> dpoint)
         magFieldLive_->setText(QString::number(dpoint->ppmsdata()->pvMagFieldLive()));
         rotLive_->setText(QString::number(dpoint->ppmsdata()->pvRotLive()));
         chamberLevel_->setText(QString::number(dpoint->ppmsdata()->pvChamberLevel()));
-        voltageLive_->setText(QString::number(dpoint->ppmsdata()->pvVoltLive()));
+        voltageLive_->setText(QString::number(dpoint->lockindata()->pvVoltOutputLive()));
         phaseLive_->setText(QString::number(dpoint->lockindata()->pvPhase()));
     }
     

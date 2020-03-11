@@ -1,5 +1,4 @@
 #include "ppmssimulation.h"
-#include <QRandomGenerator>
 #include <memory>
 #include <QDebug>
 
@@ -65,9 +64,7 @@ PpmsDataPoint PpmsSimulation::generateVariables()
 
 
     auto dataPoint =std::make_shared<DataPoint> ();
-    double test =QRandomGenerator::global()->bounded(1.0);
 
-    ppmsDpoint.setPvVoltLive(test);  
     ppmsDpoint.setPvRotLive(angle_);
 
     if(std::abs(tempSetpoint_ - tempNow_) < tempRate_ && tempRate_ > 0.1)

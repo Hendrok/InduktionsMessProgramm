@@ -70,7 +70,7 @@ LockInDataPoint LockInSr830::lockInLogik()
 
     auto dataPoint =std::make_shared<DataPoint> ();
     lockingDpoint.setPvPhase(phase_);
-    lockingDpoint.setPvVoltLive(inputVoltage_);
+    lockingDpoint.setPvVoltInputLive(inputVoltage_);
 
     return lockingDpoint;
 }

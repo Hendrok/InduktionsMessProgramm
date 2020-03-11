@@ -1,9 +1,14 @@
 #ifndef LOCKINSENS_H
 #define LOCKINSENS_H
 #include "Instruments_global.h"
+#include <QObject>
+#include <memory>
 
-class INSTRUMENTS_EXPORT LockInSens
+class DataPoint;
+
+class INSTRUMENTS_EXPORT LockInSens: public QObject
 {
+    Q_OBJECT
 public:
     LockInSens();
 public:
@@ -37,10 +42,11 @@ public:
       MilliVolt500,
       Volt1
     };
-
-    void setSensitivity(int sensitivity);
+public slots:
+    void setSensitivity(std::shared_ptr<DataPoint> datapoint);
 private:
     Sensitivity sensitivity_;
+
 };
 
 
