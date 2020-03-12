@@ -24,21 +24,29 @@ LockInSr830::LockInSr830()
 void LockInSr830::setInputVoltageCore(double inputVoltage)
 {
     auto inputVoltageStr = "SLVL " + dtoStr(inputVoltage, 3);
+    const char* inputVolC = inputVoltageStr.c_str();
+    Q_UNUSED(inputVolC)
 }
 
 void LockInSr830::setFreqCore(double freq)
 {
     auto freqStr = "FREQ " + dtoStr(freq, 3);
+    const char* freqC = freqStr.c_str();
+    Q_UNUSED(freqC)
 }
 
 void LockInSr830::setHarmonicCore(int harmonicW)
 {
     auto harmonicStr = "HARM " + itoStr(harmonicW);
+    const char* harmC = harmonicStr.c_str();
+    Q_UNUSED(harmC)
 }
 
 void LockInSr830::setSensivityCore(int sensivity)
 {
     auto sensivityStr = "SENS " + itoStr(sensivity);
+    const char* sensC = sensivityStr.c_str();
+    Q_UNUSED(sensC)
 }
 
 double LockInSr830::inputVoltageCore()
