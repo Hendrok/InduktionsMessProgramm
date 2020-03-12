@@ -4,6 +4,11 @@
 #include <QObject>
 #include <memory>
 #include <QPair>
+#include <string>
+#include <locale>
+#include <sstream>
+#include <iomanip>
+#include <iostream>
 //Internal Classes
 #include "../InduCore/datapoint.h"
 #include "ppmsdatapoint.h"
@@ -37,6 +42,7 @@ private:
     double tempNow_;
     double magField_;
     double angle_;
+    std::stringstream sstring_;
 };
 
 #endif // PPMSCORE_H

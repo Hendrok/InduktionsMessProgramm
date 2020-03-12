@@ -22,6 +22,8 @@ PpmsInstrument::PpmsInstrument()
     , magField_(0)
     , angle_(0)
 {   
+    sstring_.imbue(std::locale::classic());
+    sstring_ << std::fixed;
 }
 
 void PpmsInstrument::setTempSetpointCore(double setpoint, double rate)
@@ -76,9 +78,8 @@ double PpmsInstrument::angleCore()
 
 std::string PpmsInstrument::dtoStr(double number,int dec)
 {
-    std::stringstream sstring;
-    sstring << std::fixed << std::setprecision(dec) << number;
-    return sstring.str();
+    sstring_ << std::setprecision(dec) << number;
+    return sstring_.str();
 }
 
 std::string PpmsInstrument::itoStr(int number)

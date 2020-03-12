@@ -4,6 +4,11 @@
 #include "Instruments_global.h"
 #include <QObject>
 #include <memory>
+#include <string>
+#include <locale>
+#include <sstream>
+#include <iomanip>
+#include <iostream>
 
 //Internal Classes
 #include "../InduCore/datapoint.h"
@@ -37,6 +42,7 @@ private:
     double sensivity_;
     double harmonicW_;
     double phase_;
+    std::stringstream sstring_;
 
 };
 

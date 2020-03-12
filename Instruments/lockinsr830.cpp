@@ -1,10 +1,6 @@
 #include "lockinsr830.h"
 #include <memory>
 #include <QDebug>
-#include <sstream>
-#include <iomanip>
-#include <iostream>
-#include <string>
 
 //Internal Classes
 #include "../InduCore/datapoint.h"
@@ -21,26 +17,28 @@ LockInSr830::LockInSr830()
     , harmonicW_(1)
     , phase_(0)
 {  
+    sstring_.imbue(std::locale::classic());
+    sstring_ << std::fixed;
 }
 
 void LockInSr830::setInputVoltageCore(double inputVoltage)
 {
-    auto inputVoltageStr = dtoStr(inputVoltage, 3);
+    auto inputVoltageStr = "SLVL " + dtoStr(inputVoltage, 3);
 }
 
 void LockInSr830::setFreqCore(double freq)
 {
-    auto freqStr = dtoStr(freq, 3);
+    auto freqStr = "FREQ " + dtoStr(freq, 3);
 }
 
 void LockInSr830::setHarmonicCore(int harmonicW)
 {
-    auto harmonicStr = itoStr(harmonicW);
+    auto harmonicStr = "HARM " + itoStr(harmonicW);
 }
 
 void LockInSr830::setSensivityCore(int sensivity)
 {
-    auto sensivityStr = itoStr(sensivity);
+    auto sensivityStr = "SENS " + itoStr(sensivity);
 }
 
 double LockInSr830::inputVoltageCore()
@@ -76,10 +74,9 @@ LockInDataPoint LockInSr830::lockInLogik()
 }
 
 std::string LockInSr830::dtoStr(double number, int dec)
-{
-    std::stringstream sstring;
-    sstring << std::fixed << std::setprecision(dec) << number;
-    return sstring.str();
+{    
+    sstring_ << std::setprecision(dec) << number;
+    return sstring_.str();
 }
 
 std::string LockInSr830::itoStr(int number)

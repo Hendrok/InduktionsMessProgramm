@@ -14,7 +14,7 @@ public:
 public:
     enum class Sensitivity
     {
-      NanoVolt2,
+      NanoVolt2 = 0,
       NanoVolt5,
       NanoVolt10,
       NanoVolt20,
@@ -45,7 +45,9 @@ public:
 public slots:
     void setSensitivity(std::shared_ptr<DataPoint> datapoint);
 private:
+    void setRefVoltage();
     Sensitivity sensitivity_;
+    double refVoltage_;
 
 };
 
