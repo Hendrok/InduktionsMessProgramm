@@ -3,24 +3,28 @@
 #include "../InduCore/datapoint.h"
 
 LockInSens::LockInSens()
-    : sensitivity_(Sensitivity::NanoVolt2)
-    , refVoltage_(0)
+    : refVoltage_(0)
+    , sensState_(0)
+    , sensitivity_(Sensitivity(sensState_))
 {
 }
 
 void LockInSens::setSensitivity(std::shared_ptr<DataPoint> datapoint)
 {
-    //TODO:  Weg finden den Statuts sensivity 1 hoch oder runter zu setzen!
-    if(datapoint->lockindata()->pvVoltOutputLive() > refVoltage_*1.1)
+    if(datapoint->lockindata()->pvVoltOutputLive() > refVoltage_*1.1 && sensState_ != 26)
     {
-        //
+        sensState_++;
+        sensitivity_ = Sensitivity(sensState_);
+        setRefVoltage();
+        setSensitivity(datapoint);
     }
-    if(datapoint->lockindata()->pvVoltOutputLive() < refVoltage_/2)
+    if(datapoint->lockindata()->pvVoltOutputLive() < refVoltage_/2 && sensState_ !=0)
     {
-        //sensitivity -1;
+        sensState_--;
+        sensitivity_ = Sensitivity(sensState_);
+        setRefVoltage();
+        setSensitivity(datapoint);
     }
-    //if(datapoint->ppmsdata()->)
-
 }
 
 void LockInSens::setRefVoltage()
@@ -54,12 +58,5 @@ void LockInSens::setRefVoltage()
     case Sensitivity::MilliVolt200:{refVoltage_ = 0.2; break;}
     case Sensitivity::MilliVolt500:{refVoltage_ = 0.5; break;}
     case Sensitivity::Volt1:{refVoltage_ =        1; break;}
-
-
     }
-
-
-
-
-
 }
