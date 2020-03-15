@@ -11,7 +11,7 @@
 #include "../InduCore/datapoint.h"
 class PpmsAbstract;
 class LockInAbstract;
-
+class GPIB;
 
 
 class INDUCONTROLCORE_EXPORT InstrumentManager : public QObject
@@ -45,6 +45,7 @@ private:
     bool simulation_ = true;
     PpmsAbstract *ppms_;
     LockInAbstract *lockin_;
+    std::shared_ptr <GPIB> gpib_;
 };
 
 #endif // INSTRUMENTMANAGER_H

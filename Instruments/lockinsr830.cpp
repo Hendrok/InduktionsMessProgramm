@@ -19,29 +19,32 @@ LockInSr830::LockInSr830(std::shared_ptr<GPIB> gpib)
     , gpib_(gpib)
     , address_(10)
 {  
-    /*openDevice();
+    openDevice();
     sstring_.imbue(std::locale::classic());
-    sstring_ << std::fixed;*/
+    sstring_ << std::fixed;
 }
 
 void LockInSr830::setInputVoltageCore(double inputVoltage)
 {
     auto inputVoltageStr = "SLVL " + dtoStr(inputVoltage, 3);
-
-    const char* inputVolC = inputVoltageStr.c_str();
-    Q_UNUSED(inputVolC)
+    gpib_->cmd(address_, inputVoltageStr);
+    qDebug()<<"setVol";
 }
 
 void LockInSr830::setFreqCore(double freq)
 {
     auto freqStr = "FREQ " + dtoStr(freq, 3);
-    //gpib_->cmd(address_, freqStr);
+    gpib_->cmd(address_, freqStr);
+    std::string freqq = "FREQ?";
+    qDebug()<<gpib_->query(address_, freqq).c_str();
+
 }
 
 void LockInSr830::setHarmonicCore(int harmonicW)
 {
     auto harmonicStr = "HARM " + itoStr(harmonicW);
-    Q_UNUSED(harmonicStr)
+    gpib_->cmd(address_, harmonicStr);
+    qDebug()<<"setHar";
 }
 
 void LockInSr830::setSensivityCore(int sensivity)
@@ -53,22 +56,22 @@ void LockInSr830::setSensivityCore(int sensivity)
 double LockInSr830::inputVoltageCore()
 {
 
-    return strtoD(0);
+    return strtoD("1");
 }
 
 double LockInSr830::freqCore()
 {
-    return strtoD(0);
+    return strtoD("1");
 }
 
 int LockInSr830::harmonicCore()
 {
-    return strtoI(0);
+    return strtoI("1");
 }
 
 int LockInSr830::sensitivityCore()
 {
-    return strtoI(0);
+    return strtoI("1");
 }
 
 LockInDataPoint LockInSr830::lockInLogik()
@@ -77,10 +80,10 @@ LockInDataPoint LockInSr830::lockInLogik()
     LockInDataPoint lockingDpoint;
 
     auto dataPoint =std::make_shared<DataPoint> ();
-    lockingDpoint.setPvVoltOutputLive(inputVoltage_);
-    lockingDpoint.setPvPhase(phase_);
     lockingDpoint.setPvVoltInputLive(inputVoltage_);
-
+    lockingDpoint.setPvPhase(strtoD(gpib_->query(address_, "OUTP? 4")));
+    lockingDpoint.setPvVoltOutputLive(strtoD(gpib_->query(address_, "OUTP? 3")));
+    // TODO: 3/4 nochmal durchlesen! Werte sind zwar richtig, aber scheinen sehr zeitversetzt?
     return lockingDpoint;
 }
 
@@ -89,12 +92,13 @@ void LockInSr830::openDevice()
     if (gpib_ == nullptr) {
         return;
     }
-
+    qDebug()<<"openDevice";
     gpib_->openDevice(10);
 }
 
 std::string LockInSr830::dtoStr(double number, int dec)
 {
+    sstring_.str(std::string());
     sstring_ << std::setprecision(dec) << number;
     return sstring_.str();
 }

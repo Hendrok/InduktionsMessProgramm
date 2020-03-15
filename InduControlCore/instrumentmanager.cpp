@@ -13,16 +13,17 @@
 
 InstrumentManager::InstrumentManager()
     : timer_(new QTimer(this))
+    , gpib_(std::make_shared<GPIB>())
 {
     connect(timer_, &QTimer::timeout,
             this, &InstrumentManager::onPolling);
-    timer_->start(200);
+    timer_->start(500);
 
     if(simulation_ == true)
     {
         ppms_ = new PpmsSimulation;
-        auto gpib = std::make_shared<GPIB>();
-        lockin_ = new LockInSr830(gpib); //BUG (nehme an hier passiert Fehler)
+
+        lockin_ = new LockInSr830(gpib_);
     }
     else
     {
