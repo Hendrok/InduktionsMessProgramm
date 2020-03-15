@@ -8,7 +8,7 @@
 #include "../Instruments/ppmsdatapoint.h"
 #include "../Instruments/lockindatapoint.h"
 
-LockInSr830::LockInSr830()
+LockInSr830::LockInSr830(std::shared_ptr<GPIB> gpib)
     : datapoint_(DataPoint())
     , inputVoltage_ (0.1)
     , voltnow_(0.1)
@@ -16,14 +16,18 @@ LockInSr830::LockInSr830()
     , sensivity_(0)
     , harmonicW_(1)
     , phase_(0)
+    , gpib_(gpib)
+    , address_(10)
 {  
+    /*openDevice();
     sstring_.imbue(std::locale::classic());
-    sstring_ << std::fixed;
+    sstring_ << std::fixed;*/
 }
 
 void LockInSr830::setInputVoltageCore(double inputVoltage)
 {
     auto inputVoltageStr = "SLVL " + dtoStr(inputVoltage, 3);
+
     const char* inputVolC = inputVoltageStr.c_str();
     Q_UNUSED(inputVolC)
 }
@@ -31,26 +35,24 @@ void LockInSr830::setInputVoltageCore(double inputVoltage)
 void LockInSr830::setFreqCore(double freq)
 {
     auto freqStr = "FREQ " + dtoStr(freq, 3);
-    const char* freqC = freqStr.c_str();
-    Q_UNUSED(freqC)
+    //gpib_->cmd(address_, freqStr);
 }
 
 void LockInSr830::setHarmonicCore(int harmonicW)
 {
     auto harmonicStr = "HARM " + itoStr(harmonicW);
-    const char* harmC = harmonicStr.c_str();
-    Q_UNUSED(harmC)
+    Q_UNUSED(harmonicStr)
 }
 
 void LockInSr830::setSensivityCore(int sensivity)
 {
     auto sensivityStr = "SENS " + itoStr(sensivity);
-    const char* sensC = sensivityStr.c_str();
-    Q_UNUSED(sensC)
+    Q_UNUSED(sensivityStr)
 }
 
 double LockInSr830::inputVoltageCore()
 {
+
     return strtoD(0);
 }
 
@@ -75,14 +77,24 @@ LockInDataPoint LockInSr830::lockInLogik()
     LockInDataPoint lockingDpoint;
 
     auto dataPoint =std::make_shared<DataPoint> ();
+    lockingDpoint.setPvVoltOutputLive(inputVoltage_);
     lockingDpoint.setPvPhase(phase_);
     lockingDpoint.setPvVoltInputLive(inputVoltage_);
 
     return lockingDpoint;
 }
 
+void LockInSr830::openDevice()
+{
+    if (gpib_ == nullptr) {
+        return;
+    }
+
+    gpib_->openDevice(10);
+}
+
 std::string LockInSr830::dtoStr(double number, int dec)
-{    
+{
     sstring_ << std::setprecision(dec) << number;
     return sstring_.str();
 }

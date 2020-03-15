@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    gpib.cpp \
     lockinabstract.cpp \
     lockinsens.cpp \
     lockinsimulation.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
 
 HEADERS += \
     Instruments_global.h \
+    gpib.h \
     lockinabstract.h \
     lockindatapoint.h \
     lockinsens.h \

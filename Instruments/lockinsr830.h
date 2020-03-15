@@ -11,6 +11,7 @@
 #include <iostream>
 
 //Internal Classes
+#include "gpib.h"
 #include "../InduCore/datapoint.h"
 #include "lockindatapoint.h"
 #include "lockinabstract.h"
@@ -19,7 +20,7 @@ class INSTRUMENTS_EXPORT LockInSr830 : public LockInAbstract
 {
     Q_OBJECT
 public:
-    LockInSr830();    
+    LockInSr830(std::shared_ptr<GPIB> gpib);
 protected:
     void setInputVoltageCore(double inputVoltage) override;
     void setFreqCore(double freq) override;
@@ -31,6 +32,7 @@ protected:
     int sensitivityCore() override;
     LockInDataPoint lockInLogik() override;
 private:
+    void openDevice();
     std::string dtoStr (double number, int dec);
     std::string itoStr (int number);
     double strtoD (std::string number);
@@ -42,7 +44,9 @@ private:
     double sensivity_;
     double harmonicW_;
     double phase_;
-    std::stringstream sstring_;
+    std::stringstream sstring_ ;
+    std::shared_ptr<GPIB> gpib_;
+    int address_;
 
 };
 

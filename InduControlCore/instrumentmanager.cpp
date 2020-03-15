@@ -8,6 +8,7 @@
 #include "../Instruments/lockinabstract.h"
 #include "../Instruments/ppmsinstrument.h"
 #include "../Instruments/lockinsr830.h"
+#include "../Instruments/gpib.h"
 
 
 InstrumentManager::InstrumentManager()
@@ -20,7 +21,8 @@ InstrumentManager::InstrumentManager()
     if(simulation_ == true)
     {
         ppms_ = new PpmsSimulation;
-        lockin_ = new LockInSimulation;
+        auto gpib = std::make_shared<GPIB>();
+        lockin_ = new LockInSr830(gpib); //BUG (nehme an hier passiert Fehler)
     }
     else
     {

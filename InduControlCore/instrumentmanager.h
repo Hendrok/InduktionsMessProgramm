@@ -13,6 +13,7 @@ class PpmsAbstract;
 class LockInAbstract;
 
 
+
 class INDUCONTROLCORE_EXPORT InstrumentManager : public QObject
 {
     Q_OBJECT
