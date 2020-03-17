@@ -40,6 +40,8 @@ private:
 
     std::map<int, int> deviceHandles_;
     char readBuffer_[512];
+
+    std::string checkStatus(int ibsta);
 };
 
 #endif // GPIB_H
