@@ -70,7 +70,7 @@ void GPIB::init()
     //library successfully loaded, get function addresses
     ibsta_ = (int *)GetProcAddress(Gpib32Lib, (LPCSTR)"user_ibsta");
     ibcntl_ = (long *)GetProcAddress(Gpib32Lib, (LPCSTR)"user_ibcnt");
-
+    iberr_ = (int *)GetProcAddress(Gpib32Lib, (LPCSTR)"user_iberr");
 
     ibclr_ = (int(__stdcall *)(int))GetProcAddress(Gpib32Lib, (LPCSTR)"ibclr");
     ibdev_ = (int(__stdcall *)(int, int, int, int, int, int))GetProcAddress(Gpib32Lib, (LPCSTR)"ibdev");
@@ -95,7 +95,8 @@ std::string GPIB::checkStatus(int ibsta)
 {
     if(ibsta & ERR)
     {
-        return "Err";
+        //return ("NI-488.2 error %d encountered", iberr_);
+        // BUG -> not working!
     }
     else if(ibsta & TIMO)
     {

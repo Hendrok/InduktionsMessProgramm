@@ -32,6 +32,7 @@ private:
 private:
     int* ibsta_;
     long* ibcntl_;
+    int* iberr_;
     int(__stdcall *ibclr_)(int ud);
     int(__stdcall *ibdev_)(int ud, int pad, int sad, int tmo, int eot, int eos);
     int(__stdcall *ibconfig_)(int ud, int option, int v);
