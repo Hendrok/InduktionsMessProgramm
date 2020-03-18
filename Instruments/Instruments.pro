@@ -24,7 +24,8 @@ SOURCES += \
     lockinsr830.cpp \
     ppmsabstract.cpp \
     ppmsinstrument.cpp \
-    ppmssimulation.cpp
+    ppmssimulation.cpp \
+    status.cpp
 
 HEADERS += \
     Instruments_global.h \
@@ -37,7 +38,8 @@ HEADERS += \
     ppmsabstract.h \
     ppmsdatapoint.h \
     ppmsinstrument.h \
-    ppmssimulation.h
+    ppmssimulation.h \
+    status.h
 
 # Default rules for deployment.
 unix {

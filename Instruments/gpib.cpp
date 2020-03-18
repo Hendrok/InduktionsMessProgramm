@@ -23,7 +23,7 @@ void GPIB::openDevice(int deviceAddress)
     if (handle >= 0) {
         deviceHandles_.insert(std::make_pair(deviceAddress, handle));
     }
-    qDebug()<<checkStatus(*ibsta_).c_str();
+    qDebug()<<statusGpib(*ibsta_).c_str();
 }
 
 bool GPIB::isOpen(int deviceAddress) const
@@ -91,12 +91,16 @@ int GPIB::getHandle(int address) const
     return handle;
 }
 
-std::string GPIB::checkStatus(int ibsta)
+void GPIB::checkstatus()
+{
+    statusGpib(*ibsta_);
+}
+
+std::string GPIB::statusGpib(int ibsta)
 {
     if(ibsta & ERR)
     {
-        //return ("NI-488.2 error %d encountered", iberr_);
-        // BUG -> not working!
+        return errorCode(*iberr_);
     }
     else if(ibsta & TIMO)
     {
@@ -153,6 +157,97 @@ std::string GPIB::checkStatus(int ibsta)
     else
     {
         return "Kein Status";
-    }
+    }   
+}
 
+std::string GPIB::errorCode(int iberr)
+{
+    if(iberr & EDVR)
+    {
+        return "System error";
+    }
+    else if(iberr & ECIC)
+    {
+        return "Function requires GPIB interface to be CIC";
+    }
+    else if(iberr & ENOL)
+    {
+        return "No Listeners on the GPIB";
+    }
+    else if(iberr & EADR)
+    {
+        return "GPIB interface not addressed correctly";
+    }
+    else if(iberr & EARG)
+    {
+        return "Invalid argument to function call";
+    }
+    else if(iberr & ESAC)
+    {
+        return "GPIB interface not System Controller as required";
+    }
+    else if(iberr & EABO)
+    {
+        return "I/O operation aborted (timeout)";
+    }
+    else if(iberr & ENEB)
+    {
+        return "Nonexistent GPIB interface";
+    }
+    else if(iberr & EDMA)
+    {
+        return "DMA error";
+    }
+    else if(iberr & EOIP)
+    {
+        return "Asynchronous I/O in progress";
+    }
+    else if(iberr & ECAP)
+    {
+        return "No capability for operation";
+    }
+    else if(iberr & EFSO)
+    {
+        return "File system error";
+    }
+    else if(iberr & EBUS)
+    {
+        return "GPIB bus error";
+    }
+    else if(iberr & ESRQ)
+    {
+        return "SRQ stuck in ON position";
+    }
+    else if(iberr & ETAB)
+    {
+        return "Table problem";
+    }
+    else if(iberr & ELCK)
+    {
+        return "Interface is locked";
+    }
+    else if(iberr & EARM)
+    {
+        return "ibnotify callback failed to rearm";
+    }
+    else if(iberr & EHDL)
+    {
+        return "Input handle is invalid";
+    }
+    else if(iberr & EWIP)
+    {
+        return "Wait in progress on specified input handle";
+    }
+    else if(iberr & ERST)
+    {
+        return "The event notification was cancelled due to a reset of the interface";
+    }
+    else if(iberr & EPWR)
+    {
+        return "The interface lost power";
+    }
+    else
+    {
+        return "no known error";
+    }
 }
