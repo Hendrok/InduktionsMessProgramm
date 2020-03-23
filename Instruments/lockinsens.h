@@ -43,7 +43,7 @@ public:
       Volt1
     };
 public slots:
-    void setSensitivity(std::shared_ptr<DataPoint> datapoint);
+    int setSensitivity(std::shared_ptr<DataPoint> datapoint);
 private:
     void setRefVoltage();
     double refVoltage_;

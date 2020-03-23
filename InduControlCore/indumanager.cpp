@@ -85,7 +85,7 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
     instrumentmanager_->setMagFieldSP(measurementSequence->magneticField(), 1000);
     instrumentmanager_->setHarmonic(measurementSequence->harmonicWave());
     instrumentmanager_->setFrequency(measurementSequence->frequency());
-    instrumentmanager_->setSensivity(0); // Das wird noch in extra Klasse verlagert:)
+    //instrumentmanager_->setSensivity(measurementSequence-); // Das wird noch in extra Klasse verlagert:)
 }
 
 void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)

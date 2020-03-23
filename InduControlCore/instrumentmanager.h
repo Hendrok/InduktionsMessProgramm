@@ -12,6 +12,7 @@
 class PpmsAbstract;
 class LockInAbstract;
 class GPIB;
+class LockInSens;
 
 
 class INDUCONTROLCORE_EXPORT InstrumentManager : public QObject
@@ -46,6 +47,7 @@ private:
     PpmsAbstract *ppms_;
     LockInAbstract *lockin_;
     std::shared_ptr <GPIB> gpib_;
+    std::shared_ptr <LockInSens> lockinsens_;
 };
 
 #endif // INSTRUMENTMANAGER_H

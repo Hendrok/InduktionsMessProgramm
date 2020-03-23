@@ -1,5 +1,5 @@
 #include "lockinsens.h"
-
+#include "QDebug"
 #include "../InduCore/datapoint.h"
 
 LockInSens::LockInSens()
@@ -9,22 +9,25 @@ LockInSens::LockInSens()
 {
 }
 
-void LockInSens::setSensitivity(std::shared_ptr<DataPoint> datapoint)
+int LockInSens::setSensitivity(std::shared_ptr<DataPoint> datapoint)
 {
     if(datapoint->lockindata()->pvVoltOutputLive() > refVoltage_*1.1 && sensState_ != 26)
     {
         sensState_++;
         sensitivity_ = Sensitivity(sensState_);
         setRefVoltage();
-        setSensitivity(datapoint);
+
     }
     if(datapoint->lockindata()->pvVoltOutputLive() < refVoltage_/2 && sensState_ !=0)
     {
         sensState_--;
         sensitivity_ = Sensitivity(sensState_);
         setRefVoltage();
-        setSensitivity(datapoint);
+
     }
+    /*qDebug()<<datapoint->lockindata()->pvVoltOutputLive();
+    qDebug()<<sensState_;*/
+    return sensState_;
 }
 
 void LockInSens::setRefVoltage()

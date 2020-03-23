@@ -9,11 +9,12 @@
 #include "../Instruments/ppmsinstrument.h"
 #include "../Instruments/lockinsr830.h"
 #include "../Instruments/gpib.h"
-
+#include "../Instruments/lockinsens.h"
 
 InstrumentManager::InstrumentManager()
     : timer_(new QTimer(this))
     , gpib_(std::make_shared<GPIB>())
+    , lockinsens_(std::make_shared<LockInSens> ())
 {
     connect(timer_, &QTimer::timeout,
             this, &InstrumentManager::onPolling);
@@ -70,11 +71,6 @@ void InstrumentManager::setFrequency(double freq)
     lockin_->setFreq(freq);
 }
 
-void InstrumentManager::setSensivity(int sensivity)
-{
-    lockin_->setSensivity(sensivity);
-}
-
 void InstrumentManager::setHarmonic(double harmonic)
 {
     lockin_->setHarmonic(harmonic);
@@ -91,4 +87,6 @@ void InstrumentManager::onPolling()
 
     auto dPoint = std::make_shared<DataPoint>(dataPoint);
     emit newData(dPoint);
+    //BUG: ich nehme an das ist sehr unsauber programmiert und ich sollte das lieber vom Indumanger (onNewData)?
+    lockin_->setSensivity(lockinsens_->setSensitivity(dPoint));
 }

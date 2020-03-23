@@ -28,7 +28,6 @@ void LockInSr830::setInputVoltageCore(double inputVoltage)
 {
     auto inputVoltageStr = "SLVL " + dtoStr(inputVoltage, 3);
     gpib_->cmd(address_, inputVoltageStr);
-    qDebug()<<"setVol";
 }
 
 void LockInSr830::setFreqCore(double freq)
@@ -36,21 +35,18 @@ void LockInSr830::setFreqCore(double freq)
     auto freqStr = "FREQ " + dtoStr(freq, 3);
     gpib_->cmd(address_, freqStr);
     std::string freqq = "FREQ?";
-    qDebug()<<gpib_->query(address_, freqq).c_str();
-
 }
 
 void LockInSr830::setHarmonicCore(int harmonicW)
 {
     auto harmonicStr = "HARM " + itoStr(harmonicW);
     gpib_->cmd(address_, harmonicStr);
-    qDebug()<<"setHar";
 }
 
 void LockInSr830::setSensivityCore(int sensivity)
 {
     auto sensivityStr = "SENS " + itoStr(sensivity);
-    Q_UNUSED(sensivityStr)
+    gpib_->cmd(address_, sensivityStr);
 }
 
 double LockInSr830::inputVoltageCore()
