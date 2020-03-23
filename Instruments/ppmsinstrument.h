@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <iostream>
 //Internal Classes
+#include "gpib.h"
 #include "../InduCore/datapoint.h"
 #include "ppmsdatapoint.h"
 #include "ppmsabstract.h"
@@ -19,7 +20,7 @@ class INSTRUMENTS_EXPORT PpmsInstrument : public PpmsAbstract
 {
     Q_OBJECT
 public:
-    PpmsInstrument();
+    PpmsInstrument(std::shared_ptr<GPIB> gpib);
 
 protected:
     void setTempSetpointCore(double setpoint, double rate) override;
@@ -28,7 +29,12 @@ protected:
     QPair<double, double> tempSetpointCore() override;
     QPair<double, double> magFieldCore() override;
     double angleCore() override;
+    double heliumCore() override;
+    int ppmsStatus() override;
+    PpmsDataPoint ppmsLogik() override;
+
 private:
+    void openDevice();
     std::string dtoStr (double number, int n);
     std::string itoStr (int number);
     double strtoD (std::string number);
@@ -43,6 +49,8 @@ private:
     double magField_;
     double angle_;
     std::stringstream sstring_;
+    std::shared_ptr<GPIB> gpib_;
+    int address_;
 };
 
 #endif // PPMSCORE_H

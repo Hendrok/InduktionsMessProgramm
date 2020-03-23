@@ -11,7 +11,7 @@
 #include "../Instruments/ppmsdatapoint.h"
 #include "../Instruments/lockindatapoint.h"
 
-PpmsInstrument::PpmsInstrument()
+PpmsInstrument::PpmsInstrument(std::shared_ptr<GPIB> gpib)
     : datapoint_(DataPoint())
     , tempSetpoint_(300)
     , tempRate_(10)
@@ -21,7 +21,10 @@ PpmsInstrument::PpmsInstrument()
     , tempNow_(300)
     , magField_(0)
     , angle_(0)
+    , gpib_(gpib)
+    , address_(0)
 {   
+    openDevice();
     sstring_.imbue(std::locale::classic());
     sstring_ << std::fixed;
 }
@@ -45,6 +48,7 @@ void PpmsInstrument::setTempSetpointCore(double setpoint, double rate)
         rate = 0.1;
     }
     std::string setTempSetpointStr= dtoStr(setpoint, 3) + " " + dtoStr(rate, 3) + " 0";
+    gpib_->cmd(address_, setTempSetpointStr);
 }
 
 void PpmsInstrument::setMagFieldCore(double magField, double magRate)
@@ -54,30 +58,64 @@ void PpmsInstrument::setMagFieldCore(double magField, double magRate)
     magField = magField *10;
     magRate = magRate *10;
     std::string setMagFieldStr= dtoStr(magField, 0) + " " + dtoStr(magRate, 0);
+    gpib_->cmd(address_, setMagFieldStr);
 }
 
 void PpmsInstrument::setAngleCore(double angle)
 {
     std::string angleStr = itoStr(angle);
+    gpib_->cmd(address_, angleStr);
 }
+
 
 QPair<double, double> PpmsInstrument::tempSetpointCore()
 {
-    return QPair(0,0);
+
+    return QPair(strtoD(gpib_->query(address_,"TEMP?")),0);
 }
 
 QPair<double, double> PpmsInstrument::magFieldCore()
 {
-    return QPair(0,0);
+    return QPair(strtoD(gpib_->query(address_,"FIELD?")),0);
 }
 
 double PpmsInstrument::angleCore()
 {
-    return 0;
+    return strtoD(gpib_->query(address_, "ANGLE?")); //TODO: Befehl nachgucken ist geraten
 }
 
+double PpmsInstrument::heliumCore()
+{
+    return strtoD(gpib_->query(address_, "LEVEL?"));
+}
+
+int PpmsInstrument::ppmsStatus()
+{
+    return strtoI(gpib_->query(address_, "GETDAT? 524295 1"));
+}
+
+PpmsDataPoint PpmsInstrument::ppmsLogik()
+{
+    PpmsDataPoint ppmsDpoint;
+    auto dataPoint =std::make_shared<DataPoint> ();
+    ppmsDpoint.setPvTempLive(tempSetpointCore().first);
+    ppmsDpoint.setPvMagFieldLive(magFieldCore().first);
+    ppmsDpoint.setPvChamberLevel(heliumCore());
+    ppmsDpoint.setPvStatusPpms(ppmsStatus());
+    return ppmsDpoint;
+}
+
+void PpmsInstrument::openDevice()
+{
+    if (gpib_ == nullptr) {
+        return;
+    }
+    qDebug()<<"openDevice";
+    gpib_->openDevice(10);
+}
 std::string PpmsInstrument::dtoStr(double number,int dec)
 {
+    sstring_.str(std::string());
     sstring_ << std::setprecision(dec) << number;
     return sstring_.str();
 }

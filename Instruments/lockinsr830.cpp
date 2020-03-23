@@ -51,8 +51,7 @@ void LockInSr830::setSensivityCore(int sensivity)
 
 double LockInSr830::inputVoltageCore()
 {
-
-    return strtoD("1");
+    return strtoD(gpib_->query(address_,"SLVL?"));
 }
 
 double LockInSr830::freqCore()
@@ -76,7 +75,7 @@ LockInDataPoint LockInSr830::lockInLogik()
     LockInDataPoint lockingDpoint;
 
     auto dataPoint =std::make_shared<DataPoint> ();
-    lockingDpoint.setPvVoltInputLive(inputVoltage_);
+    lockingDpoint.setPvVoltInputLive(inputVoltageCore());
     lockingDpoint.setPvPhase(strtoD(gpib_->query(address_, "OUTP? 4")));
     lockingDpoint.setPvVoltOutputLive(strtoD(gpib_->query(address_, "OUTP? 3")));
     // TODO: 3/4 nochmal durchlesen! Werte sind zwar richtig, aber scheinen sehr zeitversetzt?

@@ -23,7 +23,10 @@ protected:
     QPair<double,double> tempSetpointCore() override;
     QPair<double, double> magFieldCore() override;
     double angleCore() override;
-    PpmsDataPoint generateVariables() override;
+    double heliumCore() override;
+    int ppmsStatus() override;
+    PpmsDataPoint ppmsLogik() override;
+
 
 private:
     DataPoint datapoint_;

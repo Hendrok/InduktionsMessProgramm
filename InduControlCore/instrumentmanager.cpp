@@ -24,11 +24,12 @@ InstrumentManager::InstrumentManager()
     {
         ppms_ = new PpmsSimulation;
 
-        lockin_ = new LockInSr830(gpib_);
+        lockin_ = new LockInSimulation;
     }
     else
     {
-
+        ppms_ = new PpmsInstrument(gpib_);
+        lockin_ = new LockInSr830(gpib_);
     }
     connect(ppms_, &PpmsAbstract::newTempSP,
             this, &InstrumentManager::newTempSP);
@@ -82,7 +83,7 @@ void InstrumentManager::onPolling()
 {
     DataPoint dataPoint;
 
-    dataPoint.setPpmsdata(std::make_shared<const PpmsDataPoint>(ppms_->generateVariables()));
+    dataPoint.setPpmsdata(std::make_shared<const PpmsDataPoint>(ppms_->ppmsLogik()));
     dataPoint.setLockindata(std::make_shared<const LockInDataPoint>(lockin_->lockInLogik()));
 
     auto dPoint = std::make_shared<DataPoint>(dataPoint);

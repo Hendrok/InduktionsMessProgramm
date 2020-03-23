@@ -57,12 +57,20 @@ double PpmsSimulation::angleCore()
     return angle_;
 }
 
+double PpmsSimulation::heliumCore()
+{
+    return ppmsHelium_;
+}
 
-PpmsDataPoint PpmsSimulation::generateVariables()
+int PpmsSimulation::ppmsStatus()
+{
+    return (0000);
+}
+
+
+PpmsDataPoint PpmsSimulation::ppmsLogik()
 {
     PpmsDataPoint ppmsDpoint;
-
-
     auto dataPoint =std::make_shared<DataPoint> ();
 
     ppmsDpoint.setPvRotLive(angle_);

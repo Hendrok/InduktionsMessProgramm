@@ -114,7 +114,7 @@ void StartDialog::setupUI()
     frequencyTc_->setValue(3333.33);
 
     voltageAmplitudeTc_ = new QDoubleSpinBox();
-    voltageAmplitudeTc_->setDecimals(2);
+    voltageAmplitudeTc_->setDecimals(3);
     voltageAmplitudeTc_->setSingleStep(0.1);
     voltageAmplitudeTc_->setRange(0,10);
     voltageAmplitudeTc_->setValue(0.1);
@@ -167,8 +167,8 @@ void StartDialog::setupUI()
     voltStartJc_ = new QDoubleSpinBox();
     voltStartJc_->setDecimals(3);
     voltStartJc_->setSingleStep(0.01);
-    voltStartJc_->setRange(0,10);
-    voltStartJc_->setValue(0.0);
+    voltStartJc_->setRange(0.004,10);
+    voltStartJc_->setValue(0.010);
 
     voltEndJc_ = new QDoubleSpinBox();
     voltEndJc_->setDecimals(3);

@@ -13,7 +13,7 @@ public:
     void setTempSetpoint(double setpoint, double rate);
     void setMagField(double magField, double magRate);
     void setAngle(double angle);
-    virtual PpmsDataPoint generateVariables() = 0;
+    virtual PpmsDataPoint ppmsLogik() = 0;
 protected:
     virtual void setTempSetpointCore(double setpoint,double rate) = 0;
     virtual void setMagFieldCore(double magField, double magRate) = 0;
@@ -21,6 +21,8 @@ protected:
     virtual QPair<double,double> tempSetpointCore() = 0;
     virtual QPair<double, double> magFieldCore() = 0;
     virtual double angleCore() = 0;
+    virtual double heliumCore() = 0;
+    virtual int ppmsStatus() = 0;
 
 signals:
     void newTempSP(double setpoint, double rate) ;
