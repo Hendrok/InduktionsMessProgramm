@@ -22,7 +22,7 @@ protected:
     virtual QPair<double, double> magFieldCore() = 0;
     virtual double angleCore() = 0;
     virtual double heliumCore() = 0;
-    virtual int ppmsStatus() = 0;
+    virtual std::string ppmsStatus() = 0;
 
 signals:
     void newTempSP(double setpoint, double rate) ;

@@ -62,9 +62,10 @@ double PpmsSimulation::heliumCore()
     return ppmsHelium_;
 }
 
-int PpmsSimulation::ppmsStatus()
+std::string PpmsSimulation::ppmsStatus()
 {
-    return (0000);
+    std::string p = "1, 20, 242142, 12, 8 ,10";
+    return (p);
 }
 
 
@@ -102,6 +103,7 @@ PpmsDataPoint PpmsSimulation::ppmsLogik()
     }
     ppmsDpoint.setPvTempLive(tempNow_);
     ppmsDpoint.setPvMagFieldLive(magFieldNow_);
+    ppmsDpoint.setPvStatusPpms(ppmsStatus());
     return ppmsDpoint;
 
 }

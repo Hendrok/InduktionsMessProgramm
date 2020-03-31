@@ -49,6 +49,11 @@ private:
     QLabel* voltageLive_;
     QLabel* phaseLive_;
 
+    QString tempStatStr_;
+    QString magStatStr_;
+    QString chambStatStr_;
+    QString rotStatStr_;
+
 
 };
 

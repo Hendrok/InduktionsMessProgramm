@@ -1,6 +1,7 @@
 #ifndef PPMSDATAPOINT_H
 #define PPMSDATAPOINT_H
 
+#include <string>
 
 #include "Instruments_global.h"
 
@@ -29,8 +30,8 @@ public:
     double pvChamberLevel() const;
     void setPvChamberLevel(double pvChamberLevel);
 
-    int pvStatusPpms() const;
-    void setPvStatusPpms(int pvStatusPpms);
+    std::string pvStatusPpms() const;
+    void setPvStatusPpms(const std::string &pvStatusPpms);
 
 private:
     //PpmsTemp
@@ -47,7 +48,7 @@ private:
     //PPmsHeliumChamber
     double pvChamberLevel_;
 
-    int pvStatusPpms_;
+    std::string pvStatusPpms_;
 };
 inline PpmsDataPoint::PpmsDataPoint()
     : pvTempSetPoint_(300)
@@ -56,7 +57,7 @@ inline PpmsDataPoint::PpmsDataPoint()
     , pvMagFieldLive_(0)
     , pvRotLive_(0)
     , pvChamberLevel_(60)
-    , pvStatusPpms_(0)
+    , pvStatusPpms_("")
 {
 }
 
@@ -120,14 +121,14 @@ inline void PpmsDataPoint::setPvChamberLevel(double pvChamberLevel)
     pvChamberLevel_ = pvChamberLevel;
 }
 
-inline int PpmsDataPoint::pvStatusPpms() const
+inline std::string PpmsDataPoint::pvStatusPpms() const
 {
-    return pvStatusPpms_;
+return pvStatusPpms_;
 }
 
-inline void PpmsDataPoint::setPvStatusPpms(int pvStatusPpms)
+inline void PpmsDataPoint::setPvStatusPpms(const std::string &pvStatusPpms)
 {
-    pvStatusPpms_ = pvStatusPpms;
+pvStatusPpms_ = pvStatusPpms;
 }
 
 

@@ -89,9 +89,9 @@ double PpmsInstrument::heliumCore()
     return strtoD(gpib_->query(address_, "LEVEL?"));
 }
 
-int PpmsInstrument::ppmsStatus()
+std::string PpmsInstrument::ppmsStatus()
 {
-    return strtoI(gpib_->query(address_, "GETDAT? 524295 1"));
+    return gpib_->query(address_, "GETDAT? 524295 1");
 }
 
 PpmsDataPoint PpmsInstrument::ppmsLogik()
