@@ -23,7 +23,6 @@ InstrumentManager::InstrumentManager()
     if(simulation_ == true)
     {
         ppms_ = new PpmsSimulation;
-
         lockin_ = new LockInSimulation;
     }
     else
