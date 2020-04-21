@@ -35,24 +35,28 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-unix|win32: LIBS += -L$$OUT_PWD/../InduControlCore/ -lInduControlCore
-
-INCLUDEPATH += $$PWD/../InduControlCore
-DEPENDPATH += $$PWD/../InduControlCore
-
-
-
-unix:!macx|win32: LIBS += -L$$OUT_PWD/../InduCore/ -lInduCore
-
-INCLUDEPATH += $$PWD/../InduCore
-DEPENDPATH += $$PWD/../InduCore
-
-
-unix|win32: LIBS += -L$$OUT_PWD/../Instruments/ -lInstruments
-
-INCLUDEPATH += $$PWD/../Instruments
-DEPENDPATH += $$PWD/../Instruments
 
 RESOURCES += \
     Ressourcen.qrc
 
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Instruments/release/ -lInstruments
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Instruments/debug/ -lInstruments
+else:unix:!macx: LIBS += -L$$OUT_PWD/../Instruments/ -lInstruments
+
+INCLUDEPATH += $$PWD/../Instruments
+DEPENDPATH += $$PWD/../Instruments
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../InduControlCore/release/ -lInduControlCore
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../InduControlCore/debug/ -lInduControlCore
+else:unix:!macx: LIBS += -L$$OUT_PWD/../InduControlCore/ -lInduControlCore
+
+INCLUDEPATH += $$PWD/../InduControlCore
+DEPENDPATH += $$PWD/../InduControlCore
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../InduCore/release/ -lInduCore
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../InduCore/debug/ -lInduCore
+else:unix:!macx: LIBS += -L$$OUT_PWD/../InduCore/ -lInduCore
+
+INCLUDEPATH += $$PWD/../InduCore
+DEPENDPATH += $$PWD/../InduCore

@@ -20,7 +20,7 @@ InstrumentManager::InstrumentManager()
             this, &InstrumentManager::onPolling);
     timer_->start(500);
 
-    if(simulation_ == true)
+    if(simulation_ == 1)
     {
         ppms_ = new PpmsSimulation;
         lockin_ = new LockInSimulation;

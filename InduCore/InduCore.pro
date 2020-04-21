@@ -36,7 +36,11 @@ unix {
 }
 !isEmpty(target.path): INSTALLS += target
 
-unix|win32: LIBS += -L$$OUT_PWD/../Instruments/ -lInstruments
+
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Instruments/release/ -lInstruments
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Instruments/debug/ -lInstruments
+else:unix:!macx: LIBS += -L$$OUT_PWD/../Instruments/ -lInstruments
 
 INCLUDEPATH += $$PWD/../Instruments
 DEPENDPATH += $$PWD/../Instruments
