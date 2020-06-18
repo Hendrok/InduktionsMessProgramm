@@ -64,6 +64,9 @@ private:
     QDoubleSpinBox* coilAngleJc_;
     QDoubleSpinBox* harmonicWaveJc_;
 
+
+
+
 private slots:
     void updateUI();
 };

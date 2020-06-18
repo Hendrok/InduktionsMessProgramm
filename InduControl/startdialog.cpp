@@ -8,6 +8,8 @@
 #include <QLineEdit>
 #include <vector>
 #include <QButtonGroup>
+#include <QMessageBox>
+#include <math.h>
 
 //Internal Classes
 #include "../InduCore/measurementsequence.h"
@@ -280,6 +282,38 @@ std::vector <std::shared_ptr<const MeasurementSequence>> StartDialog::createSequ
     std::vector <std::shared_ptr<const MeasurementSequence>> vecSeq;
     if(tcbutton_->isChecked())
     {
+        double t1 = tempStartTc_->value();
+        double t2 = tempEndTc_->value();
+        double t;
+        if(t1>t2)
+        {
+            t=t2;
+        }
+        else
+        {
+            t=t1;
+        }
+
+        double rSpule = 2.21781 + t*0.07341 + pow(t,2) * -0.00641 + pow(t,3) * 2.05056E-4 +
+                pow(t,4) * -1.61876E-6 + pow(t,5) * 4.14126E-9;
+        double maxV = rSpule*0.5; // U=R*I  max I =0.5
+
+        if(voltageAmplitudeTc_->value() > maxV)
+        {
+            QMessageBox msgBox;
+            QString text1 =( "The maximum current is not allowed to surpass 0.5A. \n"
+                        "The selected voltage is so high at given temperature, that it surpasses the given number.\n"
+                        "The maximum Voltage is: " );
+            text1.append(QString::number(maxV));
+
+            msgBox.setText(text1);
+
+            msgBox.exec();
+        }
+
+        else{
+
+
         MeasSeqTc seq;
         seq.setSupraName(sampleNameTc_->text());
         seq.setTempStart(tempStartTc_->value());
@@ -297,9 +331,41 @@ std::vector <std::shared_ptr<const MeasurementSequence>> StartDialog::createSequ
                         QString::number(coilAngleTc_->value()) + "d"
                         );
         vecSeq.push_back(std::make_shared<const MeasSeqTc>(seq));
+        }
     }
     else if(jcbutton_->isChecked())
     {
+        double v1 = voltStartJc_->value();
+        double v2 = voltEndJc_->value();
+        double v;
+        if(v1>v2)
+        {
+            v=v1;
+        }
+        else
+        {
+            v=v2;
+        }
+        double t=tempJc_->value();
+
+        double rSpule = 2.21781 + t*0.07341 + pow(t,2) * -0.00641 + pow(t,3) * 2.05056E-4 +
+                pow(t,4) * -1.61876E-6 + pow(t,5) * 4.14126E-9;
+        double maxV = rSpule*0.5; // U=R*I  max I =0.5
+
+        if(v > maxV)
+        {
+            QMessageBox msgBox;
+            QString text1 =( "The maximum current is not allowed to surpass 0.5A. \n"
+                        "The selected voltage is so high at given temperature, that it surpasses the given number.\n"
+                        "The maximum Voltage is: " );
+            text1.append(QString::number(maxV));
+
+            msgBox.setText(text1);
+
+            msgBox.exec();
+        }
+        else
+        {
         MeasSeqJc seqJc;
         seqJc.setSupraName(sampleNameJc_->text());
         seqJc.setTemperature(tempJc_->value());
@@ -318,7 +384,7 @@ std::vector <std::shared_ptr<const MeasurementSequence>> StartDialog::createSequ
                 );
 
         vecSeq.push_back(std::make_shared<const MeasSeqJc>(seqJc));
-
+        }
     }
 
     return vecSeq;
