@@ -22,11 +22,12 @@ PpmsInstrument::PpmsInstrument(std::shared_ptr<GPIB> gpib)
     , magField_(0)
     , angle_(0)
     , gpib_(gpib)
-    , address_(0)
+    , address_(15)
 {   
     openDevice();
     sstring_.imbue(std::locale::classic());
     sstring_ << std::fixed;
+
 }
 
 void PpmsInstrument::setTempSetpointCore(double setpoint, double rate)
@@ -81,7 +82,7 @@ QPair<double, double> PpmsInstrument::magFieldCore()
 
 double PpmsInstrument::angleCore()
 {
-    return strtoD(gpib_->query(address_, "ANGLE?")); //TODO: Befehl nachgucken ist geraten
+    return strtoD(gpib_->query(address_, "ANGLE?"));   //TODO: Befehl nachgucken ist geraten, Befehl wohl unnötig da im Pppms status schon vorhanden.
 }
 
 double PpmsInstrument::heliumCore()
@@ -111,7 +112,7 @@ void PpmsInstrument::openDevice()
         return;
     }
     qDebug()<<"openDevice";
-    gpib_->openDevice(10);
+    gpib_->openDevice(15);
 }
 std::string PpmsInstrument::dtoStr(double number,int dec)
 {
