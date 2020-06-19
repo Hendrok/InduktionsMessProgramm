@@ -14,7 +14,6 @@ class LockInAbstract;
 class GPIB;
 class LockInSens;
 
-
 class INDUCONTROLCORE_EXPORT InstrumentManager : public QObject
 {
     Q_OBJECT
@@ -27,6 +26,8 @@ signals:
     void newFreqSP(double freq);
     void newSensivitySP(int sensivity);
     void newHarmonicSP(int harmonicW);
+    void newErrorMessageMag(QString errormessageMag);
+    void newErrorMessageHel(QString errormessageHel);
 public:
     InstrumentManager();
     ~InstrumentManager() = default;

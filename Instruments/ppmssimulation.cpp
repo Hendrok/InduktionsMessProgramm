@@ -48,7 +48,13 @@ QPair<double, double> PpmsSimulation::tempSetpointCore()
 }
 
 QPair<double, double> PpmsSimulation::magFieldCore()
-{
+{  
+    if(magFieldSP_>9000)
+    {
+
+        emit newErrorMagSp("Magnetfeld zu hoch");
+        emit newErrorMagHel("zu wenig hel");
+    }
     return QPair(magFieldSP_, magRate_);
 }
 
@@ -101,9 +107,10 @@ PpmsDataPoint PpmsSimulation::ppmsLogik()
     {
         magFieldNow_ = magFieldNow_ - magRate_;
     }
+
     ppmsDpoint.setPvTempLive(tempNow_);
     ppmsDpoint.setPvMagFieldLive(magFieldNow_);
     ppmsDpoint.setPvStatusPpms(ppmsStatus());
     return ppmsDpoint;
-
 }
+

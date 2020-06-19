@@ -14,8 +14,6 @@
 #include "../InduCore/datapoint.h"
 #include "ppmsdatapoint.h"
 #include "ppmsabstract.h"
-
-
 class INSTRUMENTS_EXPORT PpmsInstrument : public PpmsAbstract
 {
     Q_OBJECT
@@ -32,6 +30,7 @@ protected:
     double heliumCore() override;
     std::string ppmsStatus() override;
     PpmsDataPoint ppmsLogik() override;
+
 
 private:
     void openDevice();
@@ -51,6 +50,7 @@ private:
     std::stringstream sstring_;
     std::shared_ptr<GPIB> gpib_;
     int address_;
+
 };
 
 #endif // PPMSCORE_H

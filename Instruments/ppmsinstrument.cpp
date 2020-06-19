@@ -12,6 +12,7 @@
 #include "../Instruments/ppmsdatapoint.h"
 #include "../Instruments/lockindatapoint.h"
 
+
 PpmsInstrument::PpmsInstrument(std::shared_ptr<GPIB> gpib)
     : datapoint_(DataPoint())
     , tempSetpoint_(300)
@@ -74,17 +75,19 @@ void PpmsInstrument::setMagFieldCore(double magField, double magRate)
         magRate =190;
 
 
-    if (maxPosMagField > magField)
+    if (maxPosMagField < magField)
     {
         magField=maxPosMagField;
-        QString text1 =( "The maximum magField is too high and will automaticly be reduced to: ");
-        text1.append(QString::number(maxPosMagField));
-        qDebug()<<text1;
+        QString errorMag =( "The maximum magField is too high and will automaticly be reduced to: ");
+        errorMag.append(QString::number(maxPosMagField));
+        emit newErrorMagSp(errorMag);
     }
     //Safety to protect ppms:
     if(strtoD(gpib_->query(address_, "LEVEL?"))<60)
     {
         magField=0;
+        QString errorhel =("Helium is too low for Magnetic Field!");
+        emit newErrorMagHel(errorhel);
     }
 
     std::string setMagFieldStr= dtoStr(magField, 0) + " " + dtoStr(magRate, 0);

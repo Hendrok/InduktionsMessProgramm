@@ -12,6 +12,7 @@
 #include "../Instruments/ppmsdatapoint.h"
 
 
+
 InduManager::InduManager()
     : measurementNumber_(0)
     , instrumentmanager_(std::make_unique<InstrumentManager>())
@@ -36,6 +37,11 @@ InduManager::InduManager()
             this, &InduManager::onNewSensivitySP);
     connect(instrumentmanager_.get(), &InstrumentManager::newHarmonicSP,
             this, &InduManager::onNewHarmonicSP);
+    connect(instrumentmanager_.get(), &InstrumentManager::newErrorMessageMag,
+            this, &InduManager::onNewErrorMessageMag);
+    connect(instrumentmanager_.get(), &InstrumentManager::newErrorMessageHel,
+            this, &InduManager::onNewErrorMessageHel);
+
 }
 
 InduManager::~InduManager()
@@ -220,4 +226,13 @@ void InduManager::onNewHarmonicSP(int harmonicW)
     emit newHarmonicSP(harmonicW);
 }
 
+void InduManager::onNewErrorMessageMag(QString errorMag)
+{
+    emit newErrorMessageMag(errorMag);
+}
+
+void InduManager::onNewErrorMessageHel(QString errorHel)
+{
+    emit newErrorMessageHel(errorHel);
+}
 

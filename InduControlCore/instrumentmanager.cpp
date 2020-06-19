@@ -11,6 +11,7 @@
 #include "../Instruments/gpib.h"
 #include "../Instruments/lockinsens.h"
 
+
 InstrumentManager::InstrumentManager()
     : timer_(new QTimer(this))
     , gpib_(std::make_shared<GPIB>())
@@ -44,6 +45,10 @@ InstrumentManager::InstrumentManager()
             this, &InstrumentManager::newSensivitySP);
     connect(lockin_, &LockInAbstract::newHarmonicSP,
             this, &InstrumentManager::newHarmonicSP);
+    connect(ppms_, &PpmsAbstract::newErrorMagSp,
+            this, &InstrumentManager::newErrorMessageMag);
+    connect(ppms_, &PpmsAbstract::newErrorMagHel,
+            this, &InstrumentManager::newErrorMessageHel);
 
 }
 

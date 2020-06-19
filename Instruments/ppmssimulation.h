@@ -10,6 +10,7 @@
 #include "../InduCore/datapoint.h"
 #include "ppmsdatapoint.h"
 
+
 class INSTRUMENTS_EXPORT PpmsSimulation : public PpmsAbstract
 {
     Q_OBJECT
@@ -40,7 +41,6 @@ private:
     double magRate_;
     double magFieldNow_;
     double angle_;
-
 };
 
 #endif // PPMSSIMULATION_H

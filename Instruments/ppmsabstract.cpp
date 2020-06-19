@@ -20,3 +20,4 @@ void PpmsAbstract::setAngle(double angle)
     auto angleReport = angleCore();
     emit newAngleSP(angleReport);
 }
+

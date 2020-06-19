@@ -34,6 +34,9 @@ signals:
     void newFreqSP(double freq);
     void newSensivitySP(int sensivity);
     void newHarmonicSP(int harmonicW);
+    void newErrorMessageMag(QString errormessageMag);
+    void newErrorMessageHel(QString errormessageHel);
+
 
 private slots:
     void onNewData(std::shared_ptr<DataPoint> datapoint);
@@ -43,6 +46,9 @@ private slots:
     void onNewFreqSP(double freq);
     void onNewSensivitySP(int sensivity);
     void onNewHarmonicSP(int harmonicW);
+    void onNewErrorMessageMag(QString errormessageMag);
+    void onNewErrorMessageHel(QString errormessageHel);
+
 
 
 private:

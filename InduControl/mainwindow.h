@@ -41,6 +41,8 @@ private slots:
     void onNewTempSP(double temp, double rate);
     void onNewMagSP(double magField, double magRate);
     void onNewAngleSP(double angle);
+    void onNewErrorMessageMag(QString errormessageMag);
+    void onNewErrorMessageHel(QString errormessageHel);
 private:
     void setupUi();
     void createStatusBar();

@@ -11,6 +11,9 @@
 #include "../Instruments/ppmssimulation.h"
 #include "ppmswidget.h"
 #include "measurementstable.h"
+#include "QDialog"
+
+#include "../Instruments/ppmsinstrument.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -39,6 +42,10 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::onNewMagSP);
     connect(indumanager_, &InduManager::newAngleSP,
             this, &MainWindow::onNewAngleSP);
+    connect(indumanager_, &InduManager::newErrorMessageMag,
+            this, &MainWindow::onNewErrorMessageMag);
+    connect(indumanager_, &InduManager::newErrorMessageHel,
+            this, &MainWindow::onNewErrorMessageHel);
 }
 
 MainWindow::~MainWindow()
@@ -128,6 +135,31 @@ void MainWindow::onNewMagSP(double magField, double magRate)
 void MainWindow::onNewAngleSP(double angle)
 {
     ppmsWidget_->newAngleSP(angle);
+}
+
+void MainWindow::onNewErrorMessageMag(QString errormessageMag)
+{
+    //QDialog msgBox;
+
+    qDebug()<<errormessageMag;
+    QMessageBox* msgBox = new QMessageBox( this );
+       msgBox->setAttribute( Qt::WA_DeleteOnClose ); //makes sure the msgbox is deleted automatically when closed
+       msgBox->setStandardButtons( QMessageBox::Ok );
+       msgBox->setWindowTitle( tr("Error") );
+       msgBox->setText(errormessageMag);
+       msgBox->setModal( false ); // if you want it non-modal
+       msgBox->open( this, SLOT(msgBoxClosed(QAbstractButton*)) );
+}
+
+void MainWindow::onNewErrorMessageHel(QString errormessageHel)
+{
+    QMessageBox* msgBox = new QMessageBox( this );
+       msgBox->setAttribute( Qt::WA_DeleteOnClose ); //makes sure the msgbox is deleted automatically when closed
+       msgBox->setStandardButtons( QMessageBox::Ok );
+       msgBox->setWindowTitle( tr("Error") );
+       msgBox->setText(errormessageHel);
+       msgBox->setModal( false ); // if you want it non-modal
+       msgBox->open( this, SLOT(msgBoxClosed(QAbstractButton*)) );
 }
 
 void MainWindow::createQLineDiagramm()
