@@ -5,6 +5,7 @@
 #include <QPair>
 #include <sstream>
 #include <iomanip>
+
 //Internal Classes
 #include "../InduCore/datapoint.h"
 #include "../InduControlCore/instrumentmanager.h"
@@ -54,10 +55,38 @@ void PpmsInstrument::setTempSetpointCore(double setpoint, double rate)
 
 void PpmsInstrument::setMagFieldCore(double magField, double magRate)
 {
-    //TODO: Abfrage MagField, spezifisch für 9/14 T!
-    //transform to oe
+    //Safety for 9t
+
+    //Umrechnung in Oe
     magField = magField *10;
     magRate = magRate *10;
+
+    QString magcnf;
+    //QString = String den uns Ppms gibt
+    magcnf=(QString::fromStdString(gpib_->query(address_,"MAGCNF?")));
+    auto list = magcnf.split('\t',QString::SkipEmptyParts);
+    //nur die erste Zahl die herausgegebn wird ist für uns wichtig
+    double maxPosMagField = list[0].toDouble();
+
+    if(maxPosMagField>90000)
+        magRate = 120;
+    else
+        magRate =190;
+
+
+    if (maxPosMagField > magField)
+    {
+        magField=maxPosMagField;
+        QString text1 =( "The maximum magField is too high and will automaticly be reduced to: ");
+        text1.append(QString::number(maxPosMagField));
+        qDebug()<<text1;
+    }
+    //Safety to protect ppms:
+    if(strtoD(gpib_->query(address_, "LEVEL?"))<60)
+    {
+        magField=0;
+    }
+
     std::string setMagFieldStr= dtoStr(magField, 0) + " " + dtoStr(magRate, 0);
     gpib_->cmd(address_, setMagFieldStr);
 }
