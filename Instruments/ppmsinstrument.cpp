@@ -50,7 +50,7 @@ void PpmsInstrument::setTempSetpointCore(double setpoint, double rate)
     {
         rate = 0.1;
     }
-    std::string setTempSetpointStr= dtoStr(setpoint, 3) + " " + dtoStr(rate, 3) + " 0";
+     std::string setTempSetpointStr= "TEMP "+ dtoStr(setpoint, 3) + " " + dtoStr(rate, 3) + " 0";
     gpib_->cmd(address_, setTempSetpointStr);
 }
 
@@ -65,7 +65,7 @@ void PpmsInstrument::setMagFieldCore(double magField, double magRate)
     QString magcnf;
     //QString = String den uns Ppms gibt
     magcnf=(QString::fromStdString(gpib_->query(address_,"MAGCNF?")));
-    auto list = magcnf.split('\t',QString::SkipEmptyParts);
+    auto list = magcnf.split(',',QString::SkipEmptyParts);
     //nur die erste Zahl die herausgegebn wird ist für uns wichtig
     double maxPosMagField = list[0].toDouble();
 
@@ -90,40 +90,56 @@ void PpmsInstrument::setMagFieldCore(double magField, double magRate)
         emit newErrorMagHel(errorhel);
     }
 
-    std::string setMagFieldStr= dtoStr(magField, 0) + " " + dtoStr(magRate, 0);
+    std::string setMagFieldStr= "Field " +dtoStr(magField, 0) + " " + dtoStr(magRate, 0);
     gpib_->cmd(address_, setMagFieldStr);
 }
 
 void PpmsInstrument::setAngleCore(double angle)
 {
-    std::string angleStr = itoStr(angle);
+    std::string angleStr = "ANGLE" + itoStr(angle);
     gpib_->cmd(address_, angleStr);
 }
 
 
 QPair<double, double> PpmsInstrument::tempSetpointCore()
 {
-
-    return QPair(strtoD(gpib_->query(address_,"TEMP?")),0);
+    QString string = gpib_->query(address_,"TEMP?").c_str();
+    //QString = String den uns Ppms gibt
+    auto list = string.split(',',QString::SkipEmptyParts);
+    //nur die erste Zahl die herausgegebn wird ist für uns wichtig
+    return QPair(list[0].toDouble(),list[1].toDouble());
 }
 
 QPair<double, double> PpmsInstrument::magFieldCore()
 {
-    return QPair(strtoD(gpib_->query(address_,"FIELD?")),0);
+    QString string = gpib_->query(address_,"FIELD?").c_str();
+    //QString = String den uns Ppms gibt
+    auto list = string.split(',',QString::SkipEmptyParts);
+    //nur die erste Zahl die herausgegebn wird ist für uns wichtig
+    return QPair(list[0].toDouble(),list[1].toDouble());
 }
 
 double PpmsInstrument::angleCore()
 {
-    return strtoD(gpib_->query(address_, "ANGLE?"));   //TODO: Befehl nachgucken ist geraten, Befehl wohl unnötig da im Pppms status schon vorhanden.
+    QString string = gpib_->query(address_,"MOVE?").c_str();
+    //QString = String den uns Ppms gibt
+    auto list = string.split(',',QString::SkipEmptyParts);
+    //nur die erste Zahl die herausgegebn wird ist für uns wichtig
+    return list[0].toDouble();
 }
 
 double PpmsInstrument::heliumCore()
 {
-    return strtoD(gpib_->query(address_, "LEVEL?"));
+    QString string = gpib_->query(address_,"LEVEL?").c_str();
+    //QString = String den uns Ppms gibt
+    auto list = string.split(',',QString::SkipEmptyParts);
+    //nur die erste Zahl die herausgegebn wird ist für uns wichtig
+    return list[0].toDouble();
 }
 
 std::string PpmsInstrument::ppmsStatus()
 {
+
     return gpib_->query(address_, "GETDAT? 524295 1");
 }
 
@@ -131,11 +147,46 @@ PpmsDataPoint PpmsInstrument::ppmsLogik()
 {
     PpmsDataPoint ppmsDpoint;
     auto dataPoint =std::make_shared<DataPoint> ();
-    ppmsDpoint.setPvTempLive(tempSetpointCore().first);
-    ppmsDpoint.setPvMagFieldLive(magFieldCore().first);
+    ppmsDpoint.setPvTempLive(getLiveData()[0]);
+    ppmsDpoint.setPvTempSetPoint(tempSetpointCore().first);
+    ppmsDpoint.setPvTempRate(tempSetpointCore().second);
+
+    ppmsDpoint.setPvMagFieldLive(getLiveData()[1]);
+    ppmsDpoint.setPvMagSetPoint(magFieldCore().first);
+
+    ppmsDpoint.setPvRotLive(getLiveData()[2]);
+    ppmsDpoint.setPvRotSetPoint(angleCore());
     ppmsDpoint.setPvChamberLevel(heliumCore());
+    ppmsDpoint.setPvSamplePressure(getLiveData()[3]);
     ppmsDpoint.setPvStatusPpms(ppmsStatus());
+
     return ppmsDpoint;
+}
+
+std::vector<double> PpmsInstrument::getLiveData()
+{
+    auto getdat=(QString::fromStdString(gpib_->query(address_,"GETDAT? 8912911 1")));
+    //qDebug()<<getdat;
+    auto Datavector = getdat.split(',');
+
+    auto tempNow= Datavector[3];
+    auto magFieldNow = Datavector[4];
+    auto angleNow = Datavector[5];
+    auto samplePressure = Datavector[6];
+    //auto usertemp = Datavector[7];
+
+
+    std::vector <double> liveData;
+
+    liveData.push_back(tempNow.toDouble());
+    liveData.push_back(magFieldNow.toDouble());
+    liveData.push_back(angleNow.toDouble());
+    liveData.push_back(samplePressure.toDouble());
+    //liveData.push_back(usertemp.toDouble());
+
+
+    return liveData;
+
 }
 
 void PpmsInstrument::openDevice()
@@ -145,6 +196,7 @@ void PpmsInstrument::openDevice()
     }
     qDebug()<<"openDevice";
     gpib_->openDevice(15);
+    gpib_->cmd(address_,"USERTEMP 23 1.9 1.8 2 1");
 }
 std::string PpmsInstrument::dtoStr(double number,int dec)
 {

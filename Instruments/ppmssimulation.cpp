@@ -70,7 +70,7 @@ double PpmsSimulation::heliumCore()
 
 std::string PpmsSimulation::ppmsStatus()
 {
-    std::string p = "1, 20, 242142, 12, 8 ,10";
+    std::string p = "524295,14994671.48,4369,305.0004,0.057,0.0000013";
     return (p);
 }
 
@@ -80,7 +80,7 @@ PpmsDataPoint PpmsSimulation::ppmsLogik()
     PpmsDataPoint ppmsDpoint;
     auto dataPoint =std::make_shared<DataPoint> ();
 
-    ppmsDpoint.setPvRotLive(angle_);
+
 
     if(std::abs(tempSetpoint_ - tempNow_) < tempRate_ && tempRate_ > 0.1)
     {
@@ -109,8 +109,22 @@ PpmsDataPoint PpmsSimulation::ppmsLogik()
     }
 
     ppmsDpoint.setPvTempLive(tempNow_);
+    ppmsDpoint.setPvTempSetPoint(tempSetpoint_);
+
     ppmsDpoint.setPvMagFieldLive(magFieldNow_);
+    ppmsDpoint.setPvMagSetPoint(magFieldSP_);
+
+    ppmsDpoint.setPvRotLive(angle_);
+    ppmsDpoint.setPvRotSetPoint(angle_);
+
     ppmsDpoint.setPvStatusPpms(ppmsStatus());
+    ppmsDpoint.setPvSamplePressure(1);
     return ppmsDpoint;
 }
+
+std::vector<double> PpmsSimulation::getLiveData()
+{
+
+}
+
 

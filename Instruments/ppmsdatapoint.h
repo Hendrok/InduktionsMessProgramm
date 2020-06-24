@@ -33,6 +33,15 @@ public:
     std::string pvStatusPpms() const;
     void setPvStatusPpms(const std::string &pvStatusPpms);
 
+    double pvMagSetPoint() const;
+    void setPvMagSetPoint(double pvMagSetPoint);
+
+    double pvRotSetPoint() const;
+    void setPvRotSetPoint(double pvRotSetPoint);
+
+    double pvSamplePressure() const;
+    void setPvSamplePressure(double pvSamplePressure);
+
 private:
     //PpmsTemp
     double pvTempSetPoint_;
@@ -41,12 +50,15 @@ private:
 
     //PpmsMag
     double pvMagFieldLive_;
+    double pvMagSetPoint_;
 
     //PpmsRot
     double pvRotLive_;
+    double pvRotSetPoint_;
 
     //PPmsHeliumChamber
     double pvChamberLevel_;
+    double pvSamplePressure_;
 
     std::string pvStatusPpms_;
 };
@@ -55,8 +67,11 @@ inline PpmsDataPoint::PpmsDataPoint()
     , pvTempLive_(300)
     , pvTempRate_(1)
     , pvMagFieldLive_(0)
+    , pvMagSetPoint_(0)
     , pvRotLive_(0)
+    , pvRotSetPoint_(0)
     , pvChamberLevel_(60)
+    , pvSamplePressure_(0)
     , pvStatusPpms_("")
 {
 }
@@ -129,6 +144,36 @@ return pvStatusPpms_;
 inline void PpmsDataPoint::setPvStatusPpms(const std::string &pvStatusPpms)
 {
 pvStatusPpms_ = pvStatusPpms;
+}
+
+inline double PpmsDataPoint::pvMagSetPoint() const
+{
+return pvMagSetPoint_;
+}
+
+inline void PpmsDataPoint::setPvMagSetPoint(double pvMagSetPoint)
+{
+pvMagSetPoint_ = pvMagSetPoint;
+}
+
+inline double PpmsDataPoint::pvRotSetPoint() const
+{
+return pvRotSetPoint_;
+}
+
+inline void PpmsDataPoint::setPvRotSetPoint(double pvRotSetPoint)
+{
+pvRotSetPoint_ = pvRotSetPoint;
+}
+
+inline double PpmsDataPoint::pvSamplePressure() const
+{
+return pvSamplePressure_;
+}
+
+inline void PpmsDataPoint::setPvSamplePressure(double pvSamplePressure)
+{
+pvSamplePressure_ = pvSamplePressure;
 }
 
 

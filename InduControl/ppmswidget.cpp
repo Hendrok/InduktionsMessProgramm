@@ -29,6 +29,7 @@ PpmsWidget::PpmsWidget(QWidget *parent)
     , rotStatus_(nullptr)
     , chamberStatus_(nullptr)
     , chamberLevel_(nullptr)
+    , sampleSpacePressure_(nullptr)
     , voltageLive_(nullptr)
     , phaseLive_(nullptr)
 {    
@@ -54,6 +55,7 @@ void PpmsWidget::newData(std::shared_ptr<const DataPoint> dpoint)
         magFieldLive_->setText(QString::number(dpoint->ppmsdata()->pvMagFieldLive()));
         rotLive_->setText(QString::number(dpoint->ppmsdata()->pvRotLive()));
         chamberLevel_->setText(QString::number(dpoint->ppmsdata()->pvChamberLevel()));
+        sampleSpacePressure_->setText(QString::number(dpoint->ppmsdata()->pvSamplePressure()));
         voltageLive_->setText(QString::number(dpoint->lockindata()->pvVoltOutputLive()));
         phaseLive_->setText(QString::number(dpoint->lockindata()->pvPhase()));
 
@@ -67,7 +69,7 @@ void PpmsWidget::newData(std::shared_ptr<const DataPoint> dpoint)
                 for (int i = 0; i < comma_counter + 1; i++) {
                     Datavector.push_back(stof(datastring.substr(current_position, datastring.find(",", current_position) - current_position)));
                     current_position = datastring.find(",", current_position) + 1;
-        }
+            }
         /*
         *Kurze Erklärung: es wird auf die 3te Zahl zugegriffen und dann mit den & operator geguckt wo sich die Binärzahlen unterscheiden/gleichen
         *die ersten 4 Zahlen (also 0->15) sind die erste if abfrage usw.
@@ -180,6 +182,8 @@ void PpmsWidget::setupUI()
     chamberStatus_->setText("");
     chamberLevel_ = new QLabel();
     chamberLevel_->setText("");
+    sampleSpacePressure_ = new QLabel();
+    sampleSpacePressure_->setText("");
 
     voltageLive_ = new QLabel();
     voltageLive_->setText("");
@@ -203,6 +207,7 @@ void PpmsWidget::setupUI()
 
     auto labelChamberLevel = new QLabel ("Helium Level:");
     auto labelChamberStatus = new QLabel ("Status:");
+    auto labelSampleSpacePressure = new QLabel ("Chamber Pressure: ");
 
     auto labelVoltageLive = new QLabel ("Voltage:");
     auto labelPhaseLive = new QLabel ("Phase:");
@@ -245,10 +250,10 @@ void PpmsWidget::setupUI()
 
     ChamberGridLayout->addWidget(labelChamberLevel, 0, 0);
     ChamberGridLayout->addWidget(chamberLevel_, 0, 1);
-    ChamberGridLayout->addWidget(labelChamberStatus, 1, 0);
-    ChamberGridLayout->addWidget(chamberStatus_ , 1, 1);
-    ChamberGridLayout->addWidget(labelempty, 2, 0);
-    ChamberGridLayout->addWidget(labelempty, 2, 1);
+    ChamberGridLayout->addWidget(labelChamberStatus, 2, 0);
+    ChamberGridLayout->addWidget(chamberStatus_ , 2, 1);
+    ChamberGridLayout->addWidget(labelSampleSpacePressure, 1, 0);
+    ChamberGridLayout->addWidget(sampleSpacePressure_, 1, 1);
     ChamberGridLayout->addWidget(labelempty, 3, 0);
     ChamberGridLayout->addWidget(labelempty, 3, 1);
 

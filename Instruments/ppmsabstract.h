@@ -4,6 +4,7 @@
 #include "QPair"
 #include <QObject>
 #include "ppmsdatapoint.h"
+#include <vector>
 
 
 class INSTRUMENTS_EXPORT PpmsAbstract : public QObject
@@ -24,6 +25,7 @@ protected:
     virtual double angleCore() = 0;
     virtual double heliumCore() = 0;
     virtual std::string ppmsStatus() = 0;
+    virtual std::vector <double> getLiveData()=0;
 
 signals:
     void newTempSP(double setpoint, double rate) ;

@@ -30,6 +30,7 @@ protected:
     double heliumCore() override;
     std::string ppmsStatus() override;
     PpmsDataPoint ppmsLogik() override;
+    std::vector <double> getLiveData() override;
 
 
 private:

@@ -44,6 +44,7 @@ private:
     //Chamber
     QLabel* chamberStatus_;
     QLabel* chamberLevel_;
+    QLabel* sampleSpacePressure_;
 
     //Lockin
     QLabel* voltageLive_;

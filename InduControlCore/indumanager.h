@@ -61,6 +61,7 @@ private:
     State measurementState;
     double magFieldSP_;
     double angleSP_;
+
 };
 
 #endif // INDUMANAGER_H

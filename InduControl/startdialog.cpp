@@ -104,8 +104,8 @@ void StartDialog::setupUI()
     magneticFieldTc_->setValue(0);
 
     coilAngleTc_ = new QDoubleSpinBox();
-    coilAngleTc_->setDecimals(2);
-    coilAngleTc_->setSingleStep(0.1);
+    coilAngleTc_->setDecimals(1);
+    coilAngleTc_->setSingleStep(0.5);
     coilAngleTc_->setRange(0,360);
     coilAngleTc_->setValue(0);
 
@@ -197,8 +197,8 @@ void StartDialog::setupUI()
     frequencyJc_->setValue(3333.33);
 
     coilAngleJc_ = new QDoubleSpinBox();
-    coilAngleJc_->setDecimals(2);
-    coilAngleJc_->setSingleStep(0.1);
+    coilAngleJc_->setDecimals(1);
+    coilAngleJc_->setSingleStep(0.5);
     coilAngleJc_->setRange(0,360);
     coilAngleJc_->setValue(0);
 

@@ -88,10 +88,9 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
     }
 
     instrumentmanager_->setAngle(measurementSequence->coilAngle());
-    instrumentmanager_->setMagFieldSP(measurementSequence->magneticField(), 1000);
+    instrumentmanager_->setMagFieldSP(measurementSequence->magneticField(), 200);
     instrumentmanager_->setHarmonic(measurementSequence->harmonicWave());
     instrumentmanager_->setFrequency(measurementSequence->frequency());
-    //instrumentmanager_->setSensivity(measurementSequence-); // Das wird noch in extra Klasse verlagert:)
 }
 
 void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
@@ -108,9 +107,9 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
             }
     //Tc
         case State::ApproachStartTc:{
-                if(std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < 0.1 &&
-                   std::abs(magFieldSP_ - datapoint->ppmsdata()->pvMagFieldLive()) < 10 &&
-                   std::abs(angleSP_ - datapoint->ppmsdata()->pvRotLive()) < 1 )
+                if(std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < 0.1) //&&
+                    //std::abs(magFieldSP_ - datapoint->ppmsdata()->pvMagFieldLive()) < 10 &&
+                   //std::abs(angleSP_ - datapoint->ppmsdata()->pvRotLive()) < 1 )
                 {
                     measurementState = State::ApproachEndTc;
                     instrumentmanager_->setTempSetpoint(mSeqTc_->tempEnd(), mSeqTc_->temperatureRate());
@@ -150,17 +149,18 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
         case State::ApproachEndJc:{
             if (datapoint->lockindata()->pvVoltInputLive() < mSeqJc_->voltEnd())
             {
-                instrumentmanager_->setInputVoltage(datapoint->lockindata()->pvVoltInputLive() + mSeqJc_->voltRate());
+                instrumentmanager_->setInputVoltage(datapoint->lockindata()->pvVoltInputLive() + mSeqJc_->voltRate());   
             }
             if (datapoint->lockindata()->pvVoltInputLive() > mSeqJc_->voltEnd())
             {
+
                 instrumentmanager_->setInputVoltage(datapoint->lockindata()->pvVoltInputLive() - mSeqJc_->voltRate());
             }
             //slow approach
-            if(std::abs(mSeqJc_->voltEnd() - datapoint->lockindata()->pvVoltInputLive()) < mSeqJc_->voltRate())
+            /*if(std::abs(mSeqJc_->voltEnd() - datapoint->lockindata()->pvVoltInputLive()) < mSeqJc_->voltRate())
             {
                 mSeqJc_->setVoltRate(0.01);
-            }
+            }*/
 
             if(fw_!= nullptr){
                     fw_->MeasurementState(measurementState);
