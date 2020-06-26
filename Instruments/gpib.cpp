@@ -51,6 +51,7 @@ std::string GPIB::query(int deviceAddress, std::string queryStr)
     {
     queryStr.append("\n");
     }
+
     ibwrt_(handle, (LPSTR)queryStr.c_str(), (LONG)(queryStr.size() + 1));
     ibrd_(handle, readBuffer_, 512L);
     readBuffer_[(*ibcntl_) - 1] = '\0';

@@ -35,8 +35,6 @@ protected:
 private:
     void openDevice();
     std::string dtoStr (double number, int n);
-    std::string itoStr (int number);
-    double strtoD (std::string number);
     int strtoI (std::string number);
     DataPoint datapoint_;
     double tempSetpoint_;
@@ -47,6 +45,7 @@ private:
     double tempNow_;
     double magField_;
     double angle_;
+    double maxPosMagField_;
     std::stringstream sstring_;
     std::shared_ptr<GPIB> gpib_;
     int address_;

@@ -27,8 +27,8 @@ InstrumentManager::InstrumentManager()
     if(simulation_ == 1)
     {
         ppms_ = new PpmsSimulation;
-        //lockin_ = new LockInSimulation;
-        lockin_ = new LockInSr830(gpib_);
+        lockin_ = new LockInSimulation;
+        //lockin_ = new LockInSr830(gpib_);
         //ppms_ = new PpmsInstrument(gpib_);
     }
     else

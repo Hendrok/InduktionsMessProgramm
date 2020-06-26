@@ -19,17 +19,17 @@ PpmsInstrument::PpmsInstrument(std::shared_ptr<GPIB> gpib)
     , tempRate_(10)
     , fieldSetpoint_(0)
     , fieldRate_(10)
-    , ppmsHelium_(100)
+    , ppmsHelium_(0)
     , tempNow_(300)
     , magField_(0)
     , angle_(0)
+    , maxPosMagField_(0)
     , gpib_(gpib)
     , address_(15)
-{   
+{
     openDevice();
     sstring_.imbue(std::locale::classic());
     sstring_ << std::fixed;
-
 }
 
 void PpmsInstrument::setTempSetpointCore(double setpoint, double rate)
@@ -50,42 +50,28 @@ void PpmsInstrument::setTempSetpointCore(double setpoint, double rate)
     {
         rate = 0.1;
     }
-     std::string setTempSetpointStr= "TEMP "+ dtoStr(setpoint, 3) + " " + dtoStr(rate, 3) + " 0";
+
+    std::string setTempSetpointStr= "TEMP "+ dtoStr(setpoint, 3) + " " + dtoStr(rate, 3) + " 0";
     gpib_->cmd(address_, setTempSetpointStr);
 }
 
 void PpmsInstrument::setMagFieldCore(double magField, double magRate)
 {
-    //Safety for 9t
-
     //Umrechnung in Oe
-    magField = magField *10;
-    magRate = magRate *10;
+    magField *= 10;
+    magRate = (maxPosMagField_ > 90000) ? 120 : 190;
 
-    QString magcnf;
-    //QString = String den uns Ppms gibt
-    magcnf=(QString::fromStdString(gpib_->query(address_,"MAGCNF?")));
-    auto list = magcnf.split(',',QString::SkipEmptyParts);
-    //nur die erste Zahl die herausgegebn wird ist für uns wichtig
-    double maxPosMagField = list[0].toDouble();
-
-    if(maxPosMagField>90000)
-        magRate = 120;
-    else
-        magRate =190;
-
-
-    if (maxPosMagField < magField)
+    if (maxPosMagField_ < magField)
     {
-        magField=maxPosMagField;
-        QString errorMag =( "The maximum magField is too high and will automaticly be reduced to: ");
-        errorMag.append(QString::number(maxPosMagField));
+        magField = maxPosMagField_;
+        QString errorMag = ("The maximum magField is too high and will automaticly be reduced to: ");
+        errorMag.append(QString::number(maxPosMagField_));
         emit newErrorMagSp(errorMag);
     }
     //Safety to protect ppms:
-    if(strtoD(gpib_->query(address_, "LEVEL?"))<60)
+    if(ppmsHelium_ < 60)
     {
-        magField=0;
+        magField = 0;
         QString errorhel =("Helium is too low for Magnetic Field!");
         emit newErrorMagHel(errorhel);
     }
@@ -96,10 +82,9 @@ void PpmsInstrument::setMagFieldCore(double magField, double magRate)
 
 void PpmsInstrument::setAngleCore(double angle)
 {
-    std::string angleStr = "ANGLE" + itoStr(angle);
+    std::string angleStr = "ANGLE" + std::to_string(angle);
     gpib_->cmd(address_, angleStr);
 }
-
 
 QPair<double, double> PpmsInstrument::tempSetpointCore()
 {
@@ -127,40 +112,41 @@ double PpmsInstrument::angleCore()
     //nur die erste Zahl die herausgegebn wird ist für uns wichtig
     return list[0].toDouble();
 }
+
 double PpmsInstrument::heliumCore()
 {
     QString string = gpib_->query(address_,"LEVEL?").c_str();
     //QString = String den uns Ppms gibt
     auto list = string.split(',',QString::SkipEmptyParts);
     //nur die erste Zahl die herausgegebn wird ist für uns wichtig
-    return list[0].toDouble();
+    ppmsHelium_ = list[0].toDouble();
+    return ppmsHelium_;
 }
+
 PpmsDataPoint PpmsInstrument::ppmsLogik()
 {
     PpmsDataPoint ppmsDpoint;
-    auto dataPoint =std::make_shared<DataPoint> ();
+    auto dataPoint = std::make_shared<DataPoint>();
 
-    auto getdat=(QString::fromStdString(gpib_->query(address_,"GETDAT? 8912911 1")));
+    QString getdat = (gpib_->query(address_,"GETDAT? 8912911").c_str());
     //qDebug()<<getdat;
     auto Datavector = getdat.split(',');
 
-    if(Datavector.size() >= 7)
+    if(Datavector.size() > 7)
     {
-    ppmsDpoint.setPvStatusPpms(Datavector[2].toStdString());
-    ppmsDpoint.setPvTempLive(Datavector[3].toDouble());
-    ppmsDpoint.setPvMagFieldLive( Datavector[4].toDouble());
-    ppmsDpoint.setPvRotLive(Datavector[5].toDouble());
-    ppmsDpoint.setPvSamplePressure(Datavector[6].toDouble());
+        ppmsDpoint.setPvStatusPpms(Datavector[2].toStdString());
+        ppmsDpoint.setPvTempLive(Datavector[3].toDouble());
+        ppmsDpoint.setPvMagFieldLive( Datavector[4].toDouble());
+        ppmsDpoint.setPvRotLive(Datavector[5].toDouble());
+        ppmsDpoint.setPvSamplePressure(Datavector[6].toDouble());
     }
 
-    Sleep(10);
+    Sleep(1);
 
     ppmsDpoint.setPvChamberLevel(heliumCore());
 
-
     return ppmsDpoint;
 }
-
 
 void PpmsInstrument::openDevice()
 {
@@ -170,7 +156,15 @@ void PpmsInstrument::openDevice()
     qDebug()<<"openDevice";
     gpib_->openDevice(15);
     gpib_->cmd(address_,"USERTEMP 23 1.9 1.8 2 1");
+
+    QString magcnf;
+    //QString = String den uns Ppms gibt
+    magcnf = (QString::fromStdString(gpib_->query(address_,"MAGCNF?")));
+    auto list = magcnf.split(',',QString::SkipEmptyParts);
+    //nur die erste Zahl die herausgegebn wird ist für uns wichtig
+    maxPosMagField_ = list[0].toDouble();
 }
+
 std::string PpmsInstrument::dtoStr(double number,int dec)
 {
     sstring_.str(std::string());
@@ -178,23 +172,6 @@ std::string PpmsInstrument::dtoStr(double number,int dec)
     return sstring_.str();
 }
 
-std::string PpmsInstrument::itoStr(int number)
-{
-    return std::to_string(number);
-
-}
-
-double PpmsInstrument::strtoD(std::string number)
-{
-    return std::stod(number);
-
-}
-
-int PpmsInstrument::strtoI(std::string number)
-{
-    return std::stod(number);
-
-}
 
 
 
