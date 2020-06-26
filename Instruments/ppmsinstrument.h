@@ -28,9 +28,8 @@ protected:
     QPair<double, double> magFieldCore() override;
     double angleCore() override;
     double heliumCore() override;
-    std::string ppmsStatus() override;
     PpmsDataPoint ppmsLogik() override;
-    std::vector <double> getLiveData() override;
+
 
 
 private:

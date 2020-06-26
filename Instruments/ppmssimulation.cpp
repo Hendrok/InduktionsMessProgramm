@@ -22,7 +22,6 @@ PpmsSimulation::PpmsSimulation()
      , angle_(0)
 {
 }
-
 void PpmsSimulation::setTempSetpointCore(double setpoint, double rate)
 {
     tempSetpoint_ = setpoint;
@@ -68,13 +67,6 @@ double PpmsSimulation::heliumCore()
     return ppmsHelium_;
 }
 
-std::string PpmsSimulation::ppmsStatus()
-{
-    std::string p = "524295,14994671.48,4369,305.0004,0.057,0.0000013";
-    return (p);
-}
-
-
 PpmsDataPoint PpmsSimulation::ppmsLogik()
 {
     PpmsDataPoint ppmsDpoint;
@@ -109,22 +101,14 @@ PpmsDataPoint PpmsSimulation::ppmsLogik()
     }
 
     ppmsDpoint.setPvTempLive(tempNow_);
-    ppmsDpoint.setPvTempSetPoint(tempSetpoint_);
-
     ppmsDpoint.setPvMagFieldLive(magFieldNow_);
-    ppmsDpoint.setPvMagSetPoint(magFieldSP_);
-
     ppmsDpoint.setPvRotLive(angle_);
-    ppmsDpoint.setPvRotSetPoint(angle_);
-
-    ppmsDpoint.setPvStatusPpms(ppmsStatus());
     ppmsDpoint.setPvSamplePressure(1);
+    ppmsDpoint.setPvStatusPpms("4369");
+
     return ppmsDpoint;
 }
 
-std::vector<double> PpmsSimulation::getLiveData()
-{
 
-}
 
 

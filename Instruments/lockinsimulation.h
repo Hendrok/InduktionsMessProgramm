@@ -22,6 +22,7 @@ protected:
     void setFreqCore(double freq) override;
     void setSensivityCore(int sensivity) override;
     void setHarmonicCore(int harmonicW) override;
+    void delay();
     double inputVoltageCore() override;
     double freqCore() override;
     int harmonicCore() override;

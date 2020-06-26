@@ -2,13 +2,13 @@
 #include <QRandomGenerator>
 #include <memory>
 #include <QDebug>
-
+#include <QTime>
 //Internal Classes
 #include "../InduCore/datapoint.h"
 #include "../InduControlCore/instrumentmanager.h"
 #include "../Instruments/ppmsdatapoint.h"
 #include "../Instruments/lockindatapoint.h"
-
+#include <windows.h> // for Sleep
 /* FIXME
  * Im Moment setzt du die Setpoints als interne Attribute, was soweit
  * korrekt ist, das habe ich auch so gemacht. Allerdings emittierst du
@@ -76,6 +76,11 @@ void LockInSimulation::setHarmonicCore(int harmonicW)
     harmonicW_ = harmonicW;
 }
 
+void LockInSimulation::delay()
+{
+  //  _sleep(1000);
+}
+
 double LockInSimulation::inputVoltageCore()
 {
     return inputVoltage_;
@@ -102,6 +107,7 @@ LockInDataPoint LockInSimulation::lockInLogik()
 
     auto dataPoint =std::make_shared<DataPoint> ();
     double test =QRandomGenerator::global()->bounded(1.0);
+    delay();
     lockingDpoint.setPvVoltOutputLive(test);
     lockingDpoint.setPvPhase(test+90);
     lockingDpoint.setPvVoltInputLive(inputVoltage_);

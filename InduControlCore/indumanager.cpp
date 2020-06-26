@@ -10,7 +10,7 @@
 #include "../InduCore/datapoint.h"
 #include "../InduCore/filewriter.h"
 #include "../Instruments/ppmsdatapoint.h"
-
+#include <QThread>
 
 
 InduManager::InduManager()
@@ -22,7 +22,7 @@ InduManager::InduManager()
     , measurementState(State::Idle)
     , magFieldSP_(0)
     , angleSP_(0)
-{
+{   
     connect(instrumentmanager_.get(), &InstrumentManager::newData,
             this, &InduManager::onNewData);
     connect(instrumentmanager_.get(), &InstrumentManager::newTempSP,
@@ -41,7 +41,6 @@ InduManager::InduManager()
             this, &InduManager::onNewErrorMessageMag);
     connect(instrumentmanager_.get(), &InstrumentManager::newErrorMessageHel,
             this, &InduManager::onNewErrorMessageHel);
-
 }
 
 InduManager::~InduManager()

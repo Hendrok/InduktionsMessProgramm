@@ -56,7 +56,7 @@ double LockInSr830::inputVoltageCore()
 
 double LockInSr830::freqCore()
 {
-    return strtoD("1");
+    return strtoD(gpib_->query(address_, "FREQ?"));
 }
 
 int LockInSr830::harmonicCore()

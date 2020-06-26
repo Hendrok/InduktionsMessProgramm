@@ -92,10 +92,12 @@ void MainWindow::createActions()
 
 void MainWindow::onStartMessungButton()
 {
+
     StartDialog* startDialog = new StartDialog(this);
     connect(startDialog, &StartDialog::createMeasurement,
             this, &MainWindow::onCreateMeasurement);
     startDialog->show();
+
 }
 
 void MainWindow::onCreateMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mSeq)

@@ -127,7 +127,6 @@ double PpmsInstrument::angleCore()
     //nur die erste Zahl die herausgegebn wird ist für uns wichtig
     return list[0].toDouble();
 }
-
 double PpmsInstrument::heliumCore()
 {
     QString string = gpib_->query(address_,"LEVEL?").c_str();
@@ -136,58 +135,32 @@ double PpmsInstrument::heliumCore()
     //nur die erste Zahl die herausgegebn wird ist für uns wichtig
     return list[0].toDouble();
 }
-
-std::string PpmsInstrument::ppmsStatus()
-{
-
-    return gpib_->query(address_, "GETDAT? 524295 1");
-}
-
 PpmsDataPoint PpmsInstrument::ppmsLogik()
 {
     PpmsDataPoint ppmsDpoint;
     auto dataPoint =std::make_shared<DataPoint> ();
-    ppmsDpoint.setPvTempLive(getLiveData()[0]);
-    ppmsDpoint.setPvTempSetPoint(tempSetpointCore().first);
-    ppmsDpoint.setPvTempRate(tempSetpointCore().second);
 
-    ppmsDpoint.setPvMagFieldLive(getLiveData()[1]);
-    ppmsDpoint.setPvMagSetPoint(magFieldCore().first);
-
-    ppmsDpoint.setPvRotLive(getLiveData()[2]);
-    ppmsDpoint.setPvRotSetPoint(angleCore());
-    ppmsDpoint.setPvChamberLevel(heliumCore());
-    ppmsDpoint.setPvSamplePressure(getLiveData()[3]);
-    ppmsDpoint.setPvStatusPpms(ppmsStatus());
-
-    return ppmsDpoint;
-}
-
-std::vector<double> PpmsInstrument::getLiveData()
-{
     auto getdat=(QString::fromStdString(gpib_->query(address_,"GETDAT? 8912911 1")));
     //qDebug()<<getdat;
     auto Datavector = getdat.split(',');
 
-    auto tempNow= Datavector[3];
-    auto magFieldNow = Datavector[4];
-    auto angleNow = Datavector[5];
-    auto samplePressure = Datavector[6];
-    //auto usertemp = Datavector[7];
+    if(Datavector.size() >= 7)
+    {
+    ppmsDpoint.setPvStatusPpms(Datavector[2].toStdString());
+    ppmsDpoint.setPvTempLive(Datavector[3].toDouble());
+    ppmsDpoint.setPvMagFieldLive( Datavector[4].toDouble());
+    ppmsDpoint.setPvRotLive(Datavector[5].toDouble());
+    ppmsDpoint.setPvSamplePressure(Datavector[6].toDouble());
+    }
+
+    Sleep(10);
+
+    ppmsDpoint.setPvChamberLevel(heliumCore());
 
 
-    std::vector <double> liveData;
-
-    liveData.push_back(tempNow.toDouble());
-    liveData.push_back(magFieldNow.toDouble());
-    liveData.push_back(angleNow.toDouble());
-    liveData.push_back(samplePressure.toDouble());
-    //liveData.push_back(usertemp.toDouble());
-
-
-    return liveData;
-
+    return ppmsDpoint;
 }
+
 
 void PpmsInstrument::openDevice()
 {

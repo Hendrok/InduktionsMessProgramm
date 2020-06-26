@@ -1,5 +1,7 @@
 #include "instrumentmanager.h"
 #include <QDebug>
+#include <QThread>
+#include <QtConcurrent/QtConcurrent>
 
 //Internal Classes
 #include "../Instruments/ppmssimulation.h"
@@ -19,13 +21,14 @@ InstrumentManager::InstrumentManager()
 {
     connect(timer_, &QTimer::timeout,
             this, &InstrumentManager::onPolling);
+
     timer_->start(1000);
 
     if(simulation_ == 1)
     {
         ppms_ = new PpmsSimulation;
-        lockin_ = new LockInSimulation;
-        //lockin_ = new LockInSr830(gpib_);
+        //lockin_ = new LockInSimulation;
+        lockin_ = new LockInSr830(gpib_);
         //ppms_ = new PpmsInstrument(gpib_);
     }
     else
@@ -88,10 +91,8 @@ void InstrumentManager::setHarmonic(double harmonic)
 void InstrumentManager::onPolling()
 {
     DataPoint dataPoint;
-
     dataPoint.setPpmsdata(std::make_shared<const PpmsDataPoint>(ppms_->ppmsLogik()));
     dataPoint.setLockindata(std::make_shared<const LockInDataPoint>(lockin_->lockInLogik()));
-
     auto dPoint = std::make_shared<DataPoint>(dataPoint);
     emit newData(dPoint);
     //BUG: ich nehme an das ist sehr unsauber programmiert und ich sollte das lieber vom Indumanger (onNewData)?
