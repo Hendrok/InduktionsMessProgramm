@@ -21,6 +21,7 @@ PpmsWidget::PpmsWidget(QWidget *parent)
     , tempLive_ (nullptr)
     , tempRate_ (nullptr)
     , tempStatus_(nullptr)
+    , userTemp_(nullptr)
     , magSetPoint_(nullptr)
     , magFieldLive_ (nullptr)
     , magStatus_ (nullptr)
@@ -51,6 +52,7 @@ void PpmsWidget::newData(std::shared_ptr<const DataPoint> dpoint)
 {
     if(dpoint != nullptr){
         tempLive_->setText(QString::number(dpoint->ppmsdata()->pvTempLive()));
+        userTemp_->setText(QString::number(dpoint->ppmsdata()->pvUserTemp()));
         tempStatus_->setText(tempStatStr_);
         magFieldLive_->setText(QString::number(dpoint->ppmsdata()->pvMagFieldLive()));
         rotLive_->setText(QString::number(dpoint->ppmsdata()->pvRotLive()));
@@ -151,6 +153,8 @@ void PpmsWidget::setupUI()
     tempRate_->setText("");
     tempStatus_ = new QLabel();
     tempStatus_->setText("");
+    userTemp_ = new QLabel();
+    userTemp_->setText("");
 
     magSetPoint_ = new QLabel();
     magSetPoint_->setText("");
@@ -185,6 +189,7 @@ void PpmsWidget::setupUI()
     auto labelTempSetPoint = new QLabel ("Set Point:");
     auto labelTempRate = new QLabel ("Temp. Rate:");
     auto labelTempStatus = new QLabel ("Status:");
+    auto labelUserTemp = new QLabel ("User Temp");
 
     auto labelMagFeldLive = new QLabel ("Mag. Field:");
     auto labelMagSetPoint = new QLabel ("Set Point:");
@@ -251,10 +256,10 @@ void PpmsWidget::setupUI()
     VoltageGridLayout->addWidget(voltageLive_, 0, 1);
     VoltageGridLayout->addWidget(phaseLive_, 1, 1);
     VoltageGridLayout->addWidget(labelPhaseLive, 1, 0);
-    VoltageGridLayout->addWidget(labelempty, 2, 0);
-    VoltageGridLayout->addWidget(labelempty, 2, 1);
     VoltageGridLayout->addWidget(labelempty, 3, 0);
     VoltageGridLayout->addWidget(labelempty, 3, 1);
+    VoltageGridLayout->addWidget(labelUserTemp, 2, 0);
+    VoltageGridLayout->addWidget(userTemp_, 2, 1);
 
     QWidget* tempWidget = new QWidget();
     tempWidget->setLayout(TempGridLayout);
@@ -276,6 +281,4 @@ void PpmsWidget::setupUI()
     setLayout(mainLayout);
 
 
-
 }
-

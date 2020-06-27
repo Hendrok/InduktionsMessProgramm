@@ -42,10 +42,14 @@ public:
     double pvSamplePressure() const;
     void setPvSamplePressure(double pvSamplePressure);
 
+    double pvUserTemp() const;
+    void setPvUserTemp(double pvUserTemp);
+
 private:
     //PpmsTemp
     double pvTempSetPoint_;
     double pvTempLive_;
+    double pvUserTemp_;
     double pvTempRate_;
 
     //PpmsMag
@@ -65,6 +69,7 @@ private:
 inline PpmsDataPoint::PpmsDataPoint()
     : pvTempSetPoint_(300)
     , pvTempLive_(300)
+    , pvUserTemp_(300)
     , pvTempRate_(1)
     , pvMagFieldLive_(0)
     , pvMagSetPoint_(0)
@@ -174,6 +179,16 @@ return pvSamplePressure_;
 inline void PpmsDataPoint::setPvSamplePressure(double pvSamplePressure)
 {
 pvSamplePressure_ = pvSamplePressure;
+}
+
+inline double PpmsDataPoint::pvUserTemp() const
+{
+return pvUserTemp_;
+}
+
+inline void PpmsDataPoint::setPvUserTemp(double pvUserTemp)
+{
+pvUserTemp_ = pvUserTemp;
 }
 
 

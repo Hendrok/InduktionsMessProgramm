@@ -96,6 +96,15 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
 {
     emit newData(datapoint);
 
+    //ppmsStatus
+    QString ppmsStatusStr = QString::fromStdString(datapoint->ppmsdata()->pvStatusPpms());
+    auto ppmsStatus = ppmsStatusStr.toDouble();
+    bool tempStable = false;
+    bool magStable = false;
+    bool rotStable = false;
+    if ((static_cast<int>(ppmsStatus) & 0b1111) == 1) { tempStable = true ; }
+    if (((static_cast<int>(ppmsStatus) >> 4) & 0b1111) == 1) { magStable = true ; }
+    if (((static_cast<int>(ppmsStatus) >> 12) & 0b1111) == 1) { rotStable = true ; }
     switch (measurementState)
     {
         case State::Idle:{
@@ -106,9 +115,12 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
             }
     //Tc
         case State::ApproachStartTc:{
-                if(std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < 0.1) //&&
-                    //std::abs(magFieldSP_ - datapoint->ppmsdata()->pvMagFieldLive()) < 10 &&
-                   //std::abs(angleSP_ - datapoint->ppmsdata()->pvRotLive()) < 1 )
+                if( std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < 0.5 &&
+                        std::abs(magFieldSP_ - datapoint->ppmsdata()->pvMagFieldLive()) < 10 &&
+                        std::abs(angleSP_ - datapoint->ppmsdata()->pvRotLive()) < 3 &&
+                        tempStable == true &&
+                        magStable == true &&
+                        rotStable == true)
                 {
                     measurementState = State::ApproachEndTc;
                     instrumentmanager_->setTempSetpoint(mSeqTc_->tempEnd(), mSeqTc_->temperatureRate());
@@ -123,7 +135,8 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
                     fw_->append(datapoint);
                }
 
-               if(std::abs(mSeqTc_->tempEnd() - datapoint->ppmsdata()->pvTempLive()) < 0.1)
+               if(std::abs(mSeqTc_->tempEnd() - datapoint->ppmsdata()->pvTempLive()) < 0.1 &&
+                       tempStable == true)
                {
                     fw_->closeFile();
                     measurementState = State::CheckForMeas;
@@ -134,9 +147,12 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
             }
     //Jc
         case State::ApproachStartJc:{
-                if(std::abs(mSeqJc_->temperature() - datapoint->ppmsdata()->pvTempLive()) < 0.1 &&
-                   std::abs(magFieldSP_ - datapoint->ppmsdata()->pvMagFieldLive()) < 10 &&
-                   std::abs(angleSP_ - datapoint->ppmsdata()->pvRotLive()) < 1 )
+                if( std::abs(mSeqJc_->temperature() - datapoint->ppmsdata()->pvTempLive()) < 0.1 &&
+                        std::abs(magFieldSP_ - datapoint->ppmsdata()->pvMagFieldLive()) < 10 &&
+                        std::abs(angleSP_ - datapoint->ppmsdata()->pvRotLive()) < 1 &&
+                        tempStable == true &&
+                        magStable == true &&
+                        rotStable == true)
                 {
                     measurementState = State::ApproachEndJc;
                     instrumentmanager_->setInputVoltage(mSeqJc_->voltStart());

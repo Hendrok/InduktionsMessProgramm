@@ -29,6 +29,7 @@ private:
     QLabel* tempLive_;
     QLabel* tempRate_;
     QLabel* tempStatus_;
+    QLabel* userTemp_;
 
     //MagBlock
     QLabel* magSetPoint_;

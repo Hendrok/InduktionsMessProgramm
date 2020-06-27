@@ -105,6 +105,7 @@ PpmsDataPoint PpmsSimulation::ppmsLogik()
     ppmsDpoint.setPvRotLive(angle_);
     ppmsDpoint.setPvSamplePressure(1);
     ppmsDpoint.setPvStatusPpms("4369");
+    ppmsDpoint.setPvUserTemp(300);
 
     return ppmsDpoint;
 }

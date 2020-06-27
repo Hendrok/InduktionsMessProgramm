@@ -139,6 +139,7 @@ PpmsDataPoint PpmsInstrument::ppmsLogik()
         ppmsDpoint.setPvMagFieldLive( Datavector[4].toDouble());
         ppmsDpoint.setPvRotLive(Datavector[5].toDouble());
         ppmsDpoint.setPvSamplePressure(Datavector[6].toDouble());
+        ppmsDpoint.setPvUserTemp(Datavector[7].toDouble());
     }
 
     Sleep(1);
