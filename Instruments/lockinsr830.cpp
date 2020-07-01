@@ -45,8 +45,10 @@ void LockInSr830::setHarmonicCore(int harmonicW)
 
 void LockInSr830::setSensivityCore(int sensivity)
 {
+
     auto sensivityStr = "SENS " + itoStr(sensivity);
     gpib_->cmd(address_, sensivityStr);
+
 }
 
 double LockInSr830::inputVoltageCore()
@@ -76,6 +78,7 @@ LockInDataPoint LockInSr830::lockInLogik()
 
     auto dataPoint =std::make_shared<DataPoint> ();
     lockingDpoint.setPvVoltInputLive(inputVoltageCore());
+
     lockingDpoint.setPvPhase(strtoD(gpib_->query(address_, "OUTP? 4")));
     lockingDpoint.setPvVoltOutputLive(strtoD(gpib_->query(address_, "OUTP? 3")));
     // TODO: 3/4 nochmal durchlesen! Werte sind zwar richtig, aber scheinen sehr zeitversetzt?

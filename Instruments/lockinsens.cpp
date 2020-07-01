@@ -11,14 +11,14 @@ LockInSens::LockInSens()
 
 int LockInSens::setSensitivity(std::shared_ptr<DataPoint> datapoint)
 {
-    if(datapoint->lockindata()->pvVoltOutputLive() > refVoltage_*1.1 && sensState_ != 26)
+    if(datapoint->lockindata()->pvVoltOutputLive() > refVoltage_*0.9 && sensState_ != 26)
     {
         sensState_++;
         sensitivity_ = Sensitivity(sensState_);
         setRefVoltage();
 
     }
-    if(datapoint->lockindata()->pvVoltOutputLive() < refVoltage_/2 && sensState_ !=0)
+    if(datapoint->lockindata()->pvVoltOutputLive() < refVoltage_/2.5 && sensState_ !=0)
     {
         sensState_--;
         sensitivity_ = Sensitivity(sensState_);
@@ -32,6 +32,7 @@ int LockInSens::setSensitivity(std::shared_ptr<DataPoint> datapoint)
 
 void LockInSens::setRefVoltage()
 {
+
     switch (sensitivity_)
     {
     case Sensitivity::NanoVolt2:{refVoltage_ =    0.000000002; break;}
@@ -61,5 +62,5 @@ void LockInSens::setRefVoltage()
     case Sensitivity::MilliVolt200:{refVoltage_ = 0.2; break;}
     case Sensitivity::MilliVolt500:{refVoltage_ = 0.5; break;}
     case Sensitivity::Volt1:{refVoltage_ =        1; break;}
-    }
+    }   
 }

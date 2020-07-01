@@ -58,6 +58,7 @@ void PpmsWidget::newData(std::shared_ptr<const DataPoint> dpoint)
         rotLive_->setText(QString::number(dpoint->ppmsdata()->pvRotLive()));
         chamberLevel_->setText(QString::number(dpoint->ppmsdata()->pvChamberLevel()));
         sampleSpacePressure_->setText(QString::number(dpoint->ppmsdata()->pvSamplePressure()));
+        inputVoltageLive_->setText(QString::number(dpoint->lockindata()->pvVoltInputLive()));
         voltageLive_->setText(QString::number(dpoint->lockindata()->pvVoltOutputLive()));
         phaseLive_->setText(QString::number(dpoint->lockindata()->pvPhase()));
 
@@ -179,6 +180,8 @@ void PpmsWidget::setupUI()
     sampleSpacePressure_ = new QLabel();
     sampleSpacePressure_->setText("");
 
+    inputVoltageLive_ = new QLabel();
+    inputVoltageLive_->setText("");
     voltageLive_ = new QLabel();
     voltageLive_->setText("");
     phaseLive_ = new QLabel();
@@ -204,7 +207,8 @@ void PpmsWidget::setupUI()
     auto labelChamberStatus = new QLabel ("Status:");
     auto labelSampleSpacePressure = new QLabel ("Chamber Pressure: ");
 
-    auto labelVoltageLive = new QLabel ("Voltage:");
+    auto labelInputVoltageLive = new QLabel ("InputVoltage: ");
+    auto labelVoltageLive = new QLabel ("OutputVoltage:");
     auto labelPhaseLive = new QLabel ("Phase:");
 
     auto labelempty = new QLabel ("");
@@ -252,14 +256,14 @@ void PpmsWidget::setupUI()
     ChamberGridLayout->addWidget(labelempty, 3, 0);
     ChamberGridLayout->addWidget(labelempty, 3, 1);
 
-    VoltageGridLayout->addWidget(labelVoltageLive, 0, 0);
-    VoltageGridLayout->addWidget(voltageLive_, 0, 1);
-    VoltageGridLayout->addWidget(phaseLive_, 1, 1);
-    VoltageGridLayout->addWidget(labelPhaseLive, 1, 0);
-    VoltageGridLayout->addWidget(labelempty, 3, 0);
-    VoltageGridLayout->addWidget(labelempty, 3, 1);
-    VoltageGridLayout->addWidget(labelUserTemp, 2, 0);
-    VoltageGridLayout->addWidget(userTemp_, 2, 1);
+    VoltageGridLayout->addWidget(labelInputVoltageLive, 0, 0);
+    VoltageGridLayout->addWidget(inputVoltageLive_, 0, 1);
+    VoltageGridLayout->addWidget(labelVoltageLive, 1, 0);
+    VoltageGridLayout->addWidget(voltageLive_, 1, 1);
+    VoltageGridLayout->addWidget(labelPhaseLive, 2, 0);
+    VoltageGridLayout->addWidget(phaseLive_, 2, 1);
+    VoltageGridLayout->addWidget(labelUserTemp, 3, 0);
+    VoltageGridLayout->addWidget(userTemp_, 3, 1);
 
     QWidget* tempWidget = new QWidget();
     tempWidget->setLayout(TempGridLayout);

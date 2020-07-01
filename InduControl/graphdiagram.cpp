@@ -25,8 +25,8 @@ GraphDiagram::GraphDiagram(QWidget *parent)
     , filename1_("filename")
     , tempmin_(0)
     , tempmax_(100)
-    , voltmin_(0)
-    , voltmax_(0)
+    , voltmin_(10)
+    , voltmax_(10)
     , phase_(0)
     , graphMeas_(false)
     , series_(new QLineSeries())
@@ -46,9 +46,11 @@ void GraphDiagram::appendDataPoint(std::shared_ptr<const DataPoint> datapoint)
     if(measurementState_ == InduManager::State::ApproachEndTc)
     {
     // Range of Y-Axis
-    if(voltmin_==0){voltmin_=datapoint->lockindata()->pvVoltOutputLive();}
-    if(voltmin_>datapoint->lockindata()->pvVoltOutputLive()){voltmin_=datapoint->lockindata()->pvVoltOutputLive()-0.1;}
-    if(voltmax_<datapoint->lockindata()->pvVoltOutputLive()){voltmax_=datapoint->lockindata()->pvVoltOutputLive()+0.1;}
+    if(voltmin_ == 10) {voltmin_ = datapoint->lockindata()->pvVoltOutputLive();}
+    if(voltmax_ == 10) {voltmax_ = datapoint->lockindata()->pvVoltOutputLive();}
+    //if(voltmin_<=0){voltmin_=datapoint->lockindata()->pvVoltOutputLive();}
+    if(voltmin_>datapoint->lockindata()->pvVoltOutputLive()){voltmin_=datapoint->lockindata()->pvVoltOutputLive()-0.01;}
+    if(voltmax_<datapoint->lockindata()->pvVoltOutputLive()){voltmax_=datapoint->lockindata()->pvVoltOutputLive()+0.01;}
     axisY_->setRange(voltmin_,voltmax_);
 
     series_->append(datapoint->ppmsdata()->pvTempLive(), datapoint->lockindata()->pvVoltOutputLive());
@@ -58,9 +60,11 @@ void GraphDiagram::appendDataPoint(std::shared_ptr<const DataPoint> datapoint)
     else if(measurementState_ == InduManager::State::ApproachEndJc)
     {
     // Range of Y-Axis
-    if(voltmin_==0){voltmin_=datapoint->lockindata()->pvVoltOutputLive();}
-    if(voltmin_>datapoint->lockindata()->pvVoltOutputLive()){voltmin_=datapoint->lockindata()->pvVoltOutputLive()-0.1;}
-    if(voltmax_<datapoint->lockindata()->pvVoltOutputLive()){voltmax_=datapoint->lockindata()->pvVoltOutputLive()+0.1;}
+    if(voltmin_ == 10) {voltmin_ = datapoint->lockindata()->pvVoltOutputLive();}
+    if(voltmax_ == 10) {voltmax_ = datapoint->lockindata()->pvVoltOutputLive();}
+    //if(voltmin_ <= 0){voltmin_=datapoint->lockindata()->pvVoltOutputLive();}
+    if(voltmin_>datapoint->lockindata()->pvVoltOutputLive()){voltmin_=datapoint->lockindata()->pvVoltOutputLive()-0.01;}
+    if(voltmax_<datapoint->lockindata()->pvVoltOutputLive()){voltmax_=datapoint->lockindata()->pvVoltOutputLive()+0.01;}
     axisY_->setRange(voltmin_,voltmax_);
 
     series_->append(datapoint->lockindata()->pvVoltInputLive(), datapoint->lockindata()->pvVoltOutputLive());

@@ -115,7 +115,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
             }
     //Tc
         case State::ApproachStartTc:{
-                if( std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < 0.5 &&
+                if( std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < 0.7 &&
                         std::abs(magFieldSP_ - datapoint->ppmsdata()->pvMagFieldLive()) < 10 &&
                         std::abs(angleSP_ - datapoint->ppmsdata()->pvRotLive()) < 3 &&
                         tempStable == true &&
@@ -135,7 +135,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
                     fw_->append(datapoint);
                }
 
-               if(std::abs(mSeqTc_->tempEnd() - datapoint->ppmsdata()->pvTempLive()) < 0.1 &&
+               if(std::abs(mSeqTc_->tempEnd() - datapoint->ppmsdata()->pvTempLive()) < 0.6 &&
                        tempStable == true)
                {
                     fw_->closeFile();
@@ -147,7 +147,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
             }
     //Jc
         case State::ApproachStartJc:{
-                if( std::abs(mSeqJc_->temperature() - datapoint->ppmsdata()->pvTempLive()) < 0.1 &&
+                if( std::abs(mSeqJc_->temperature() - datapoint->ppmsdata()->pvTempLive()) < 0.6 &&
                         std::abs(magFieldSP_ - datapoint->ppmsdata()->pvMagFieldLive()) < 10 &&
                         std::abs(angleSP_ - datapoint->ppmsdata()->pvRotLive()) < 1 &&
                         tempStable == true &&

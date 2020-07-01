@@ -37,8 +37,14 @@ void GPIB::cmd(int deviceAddress, std::string command)
     if (handle == -1) {
         return;
     }
+
+    if(deviceAddress==10){
     command.append("\n");
-    ibwrt_(handle, (LPSTR)command.c_str(), (LONG)(command.size() + 1));
+    ibwrt_(handle, (LPSTR)command.c_str(), (LONG)(command.size()));
+    }
+    else{
+    ibwrt_(handle, (LPSTR)command.c_str(), (LONG)(command.size()+1));
+    }
 }
 
 std::string GPIB::query(int deviceAddress, std::string queryStr)
@@ -47,12 +53,14 @@ std::string GPIB::query(int deviceAddress, std::string queryStr)
     if (handle == -1) {
         return std::string();
     }
-    if(deviceAddress==10)
-    {
-    queryStr.append("\n");
-    }
 
-    ibwrt_(handle, (LPSTR)queryStr.c_str(), (LONG)(queryStr.size() + 1));
+    if(deviceAddress==10){         //Lockin benötigt leerzeichen vor dem Befehl, PPMS nicht
+        queryStr.append("\n");
+        ibwrt_(handle, (LPSTR)queryStr.c_str(), (LONG)(queryStr.size()));
+    }
+    else{
+    ibwrt_(handle, (LPSTR)queryStr.c_str(), (LONG)(queryStr.size()+1));
+    }
     ibrd_(handle, readBuffer_, 512L);
     readBuffer_[(*ibcntl_) - 1] = '\0';
     return std::string(readBuffer_);

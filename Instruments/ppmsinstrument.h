@@ -49,6 +49,7 @@ private:
     std::stringstream sstring_;
     std::shared_ptr<GPIB> gpib_;
     int address_;
+    int askhelium_;
 
 };
 

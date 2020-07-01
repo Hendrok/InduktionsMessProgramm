@@ -48,6 +48,7 @@ private:
     QLabel* sampleSpacePressure_;
 
     //Lockin
+    QLabel* inputVoltageLive_;
     QLabel* voltageLive_;
     QLabel* phaseLive_;
 
