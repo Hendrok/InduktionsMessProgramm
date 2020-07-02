@@ -14,13 +14,15 @@ PpmsSimulation::PpmsSimulation()
      , tempRate_(10)
      , fieldSetpoint_(0)
      , fieldRate_(10)
-     , ppmsHelium_(100)
      , tempNow_(300)
      , magFieldSP_(0)
      , magRate_(0)
      , magFieldNow_(0)
      , angle_(0)
 {
+    maxPosMagField_ = 9000;
+    maxRateMag_ = 100;
+    ppmsHelium_ = 60;
 }
 void PpmsSimulation::setTempSetpointCore(double setpoint, double rate)
 {

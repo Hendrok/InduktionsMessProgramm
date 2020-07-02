@@ -20,7 +20,8 @@ void GPIB::openDevice(int deviceAddress)
 {
     //open device
     int handle = ibdev_(0, deviceAddress, 0, T3s, 1, 0);
-    if (handle >= 0) {
+    if (handle >= 0)
+    {
         deviceHandles_.insert(std::make_pair(deviceAddress, handle));
     }
     qDebug()<<statusGpib(*ibsta_).c_str();
@@ -31,39 +32,57 @@ bool GPIB::isOpen(int deviceAddress) const
   return (getHandle(deviceAddress) >= 0);
 }
 
-void GPIB::cmd(int deviceAddress, std::string command)
+void GPIB::cmd(int deviceAddress, std::string command, int delay, bool termchar)
 {
     int handle = getHandle(deviceAddress);
-    if (handle == -1) {
+    if (handle == -1)
+    {
         return;
     }
 
-    if(deviceAddress==10){
-    command.append("\n");
-    ibwrt_(handle, (LPSTR)command.c_str(), (LONG)(command.size()));
+    if(termchar == true)
+    {
+        command.append("\n");
+        ibwrt_(handle, (LPSTR)command.c_str(), (LONG)(command.size()));
     }
-    else{
-    ibwrt_(handle, (LPSTR)command.c_str(), (LONG)(command.size()+1));
+    else
+    {
+        ibwrt_(handle, (LPSTR)command.c_str(), (LONG)(command.size()+1));
+    }
+
+    if(delay > 0)
+    {
+        Sleep(delay);
     }
 }
 
-std::string GPIB::query(int deviceAddress, std::string queryStr)
+std::string GPIB::query(int deviceAddress, std::string queryStr, int delay, bool termchar)
 {
     int handle = getHandle(deviceAddress);
-    if (handle == -1) {
+    if (handle == -1)
+    {
         return std::string();
     }
 
-    if(deviceAddress==10){         //Lockin benötigt leerzeichen vor dem Befehl, PPMS nicht
+    if(termchar == true)
+    {
+        //Lockin benötigt leerzeichen vor dem Befehl, PPMS nicht
         queryStr.append("\n");
         ibwrt_(handle, (LPSTR)queryStr.c_str(), (LONG)(queryStr.size()));
     }
-    else{
-    ibwrt_(handle, (LPSTR)queryStr.c_str(), (LONG)(queryStr.size()+1));
+    else
+    {
+        ibwrt_(handle, (LPSTR)queryStr.c_str(), (LONG)(queryStr.size()+1));
     }
+
     ibrd_(handle, readBuffer_, 512L);
     readBuffer_[(*ibcntl_) - 1] = '\0';
     return std::string(readBuffer_);
+
+    if(delay > 0)
+    {
+        Sleep(delay);
+    }
 }
 
 //private:

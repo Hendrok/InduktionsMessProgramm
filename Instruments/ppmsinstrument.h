@@ -18,7 +18,7 @@ class INSTRUMENTS_EXPORT PpmsInstrument : public PpmsAbstract
 {
     Q_OBJECT
 public:
-    PpmsInstrument(std::shared_ptr<GPIB> gpib);
+    PpmsInstrument(std::shared_ptr<GPIB> gpib, int address);
 
 protected:
     void setTempSetpointCore(double setpoint, double rate) override;
@@ -35,22 +35,10 @@ protected:
 private:
     void openDevice();
     std::string dtoStr (double number, int n);
-    int strtoI (std::string number);
-    DataPoint datapoint_;
-    double tempSetpoint_;
-    double tempRate_;
-    double fieldSetpoint_;
-    double fieldRate_;
-    double ppmsHelium_;
-    double tempNow_;
-    double magField_;
-    double angle_;
-    double maxPosMagField_;
     std::stringstream sstring_;
     std::shared_ptr<GPIB> gpib_;
     int address_;
-    int askhelium_;
-
+    std::int32_t dataMask_;
 };
 
 #endif // PPMSCORE_H

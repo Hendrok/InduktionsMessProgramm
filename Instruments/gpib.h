@@ -22,8 +22,8 @@ public:
     void openDevice(int deviceAddress);
     bool isOpen(int deviceAddress) const;
 
-    void cmd(int deviceAddress, std::string command);
-    std::string query(int deviceAddress, std::string queryStr);
+    void cmd(int deviceAddress, std::string command, int delay, bool termchar);
+    std::string query(int deviceAddress, std::string queryStr, int delay, bool termchar);
     void checkstatus();
 private:
     void init();
@@ -42,9 +42,9 @@ private:
     std::map<int, int> deviceHandles_;
     char readBuffer_[512];
 
-
     std::string statusGpib(int ibsta);
     std::string errorCode(int iberr);
+
 };
 
 #endif // GPIB_H

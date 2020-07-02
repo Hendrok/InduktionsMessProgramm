@@ -124,7 +124,7 @@ void StartDialog::setupUI()
     harmonicWaveTc_ = new QDoubleSpinBox();
     harmonicWaveTc_->setDecimals(0);
     harmonicWaveTc_->setSingleStep(1);
-    harmonicWaveTc_->setRange(1,3);
+    harmonicWaveTc_->setRange(1,50);
     harmonicWaveTc_->setValue(1);
 
     auto labelSampleName = new QLabel("Sample Name:");

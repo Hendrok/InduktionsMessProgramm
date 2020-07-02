@@ -34,7 +34,6 @@ private:
     double tempRate_;
     double fieldSetpoint_;
     double fieldRate_;
-    double ppmsHelium_;
     double tempNow_;
     double magFieldSP_;
     double magRate_;

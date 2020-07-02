@@ -24,7 +24,9 @@ protected:
     virtual QPair<double, double> magFieldCore() = 0;
     virtual double angleCore() = 0;
     virtual double heliumCore() = 0;
-
+    double maxPosMagField_ = 0;
+    double maxRateMag_ = 0;
+    double ppmsHelium_ = 0;
 signals:
     void newTempSP(double setpoint, double rate) ;
     void newMagSP(double magField, double magRate) ;

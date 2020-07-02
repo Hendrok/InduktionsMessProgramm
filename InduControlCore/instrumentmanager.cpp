@@ -12,7 +12,8 @@
 #include "../Instruments/lockinsr830.h"
 #include "../Instruments/gpib.h"
 #include "../Instruments/lockinsens.h"
-
+const int PPMSADDRESS = 15;
+//const int LOCKINADRESS = 10;
 
 InstrumentManager::InstrumentManager()
     : timer_(new QTimer(this))
@@ -29,11 +30,11 @@ InstrumentManager::InstrumentManager()
         ppms_ = new PpmsSimulation;
         lockin_ = new LockInSimulation;
         //lockin_ = new LockInSr830(gpib_);
-        //ppms_ = new PpmsInstrument(gpib_);
+        //ppms_ = new PpmsInstrument(gpib_, PPMSADDRESS);
     }
     else
     {
-        ppms_ = new PpmsInstrument(gpib_);
+        ppms_ = new PpmsInstrument(gpib_, PPMSADDRESS);
         lockin_ = new LockInSr830(gpib_);
     }
     connect(ppms_, &PpmsAbstract::newTempSP,

@@ -8,6 +8,8 @@
 #include "../Instruments/ppmsdatapoint.h"
 #include "../Instruments/lockindatapoint.h"
 
+const int DELAYGPIB = 0;
+
 LockInSr830::LockInSr830(std::shared_ptr<GPIB> gpib)
     : datapoint_(DataPoint())
     , inputVoltage_ (0.1)
@@ -27,38 +29,38 @@ LockInSr830::LockInSr830(std::shared_ptr<GPIB> gpib)
 void LockInSr830::setInputVoltageCore(double inputVoltage)
 {
     auto inputVoltageStr = "SLVL " + dtoStr(inputVoltage, 3);
-    gpib_->cmd(address_, inputVoltageStr);
+    gpib_->cmd(address_, inputVoltageStr, DELAYGPIB , true);
 }
 
 void LockInSr830::setFreqCore(double freq)
 {
     auto freqStr = "FREQ " + dtoStr(freq, 3);
-    gpib_->cmd(address_, freqStr);
+    gpib_->cmd(address_, freqStr, DELAYGPIB , true);
     std::string freqq = "FREQ?";
 }
 
 void LockInSr830::setHarmonicCore(int harmonicW)
 {
     auto harmonicStr = "HARM " + itoStr(harmonicW);
-    gpib_->cmd(address_, harmonicStr);
+    gpib_->cmd(address_, harmonicStr, DELAYGPIB , true);
 }
 
 void LockInSr830::setSensivityCore(int sensivity)
 {
 
     auto sensivityStr = "SENS " + itoStr(sensivity);
-    gpib_->cmd(address_, sensivityStr);
+    gpib_->cmd(address_, sensivityStr, DELAYGPIB , true);
 
 }
 
 double LockInSr830::inputVoltageCore()
 {
-    return strtoD(gpib_->query(address_,"SLVL?"));
+    return strtoD(gpib_->query(address_,"SLVL?", DELAYGPIB , true));
 }
 
 double LockInSr830::freqCore()
 {
-    return strtoD(gpib_->query(address_, "FREQ?"));
+    return strtoD(gpib_->query(address_, "FREQ?", DELAYGPIB , true));
 }
 
 int LockInSr830::harmonicCore()
@@ -79,19 +81,20 @@ LockInDataPoint LockInSr830::lockInLogik()
     auto dataPoint =std::make_shared<DataPoint> ();
     lockingDpoint.setPvVoltInputLive(inputVoltageCore());
 
-    lockingDpoint.setPvPhase(strtoD(gpib_->query(address_, "OUTP? 4")));
-    lockingDpoint.setPvVoltOutputLive(strtoD(gpib_->query(address_, "OUTP? 3")));
+    lockingDpoint.setPvPhase(strtoD(gpib_->query(address_, "OUTP? 4", DELAYGPIB , true)));
+    lockingDpoint.setPvVoltOutputLive(strtoD(gpib_->query(address_, "OUTP? 3", DELAYGPIB , true)));
     // TODO: 3/4 nochmal durchlesen! Werte sind zwar richtig, aber scheinen sehr zeitversetzt?
     return lockingDpoint;
 }
 
 void LockInSr830::openDevice()
 {
-    if (gpib_ == nullptr) {
+    if (gpib_ == nullptr)
+    {
         return;
     }
     qDebug()<<"openDevice";
-    gpib_->openDevice(10);
+    gpib_->openDevice(address_);
 }
 
 std::string LockInSr830::dtoStr(double number, int dec)
