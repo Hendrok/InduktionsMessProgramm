@@ -26,8 +26,6 @@ signals:
     void newFreqSP(double freq);
     void newSensivitySP(int sensivity);
     void newHarmonicSP(int harmonicW);
-    void newErrorMessageMag(QString errormessageMag);
-    void newErrorMessageHel(QString errormessageHel);
     void newErrorMessagePpms(QString ppmsError);
 public:
     InstrumentManager();

@@ -37,10 +37,6 @@ InduManager::InduManager()
             this, &InduManager::onNewSensivitySP);
     connect(instrumentmanager_.get(), &InstrumentManager::newHarmonicSP,
             this, &InduManager::onNewHarmonicSP);
-    connect(instrumentmanager_.get(), &InstrumentManager::newErrorMessageMag,
-            this, &InduManager::onNewErrorMessageMag);
-    connect(instrumentmanager_.get(), &InstrumentManager::newErrorMessageHel,
-            this, &InduManager::onNewErrorMessageHel);
     connect(instrumentmanager_.get(), &InstrumentManager::newErrorMessagePpms,
             this, &InduManager::onNewErrorMessagePpms);
 }
@@ -243,18 +239,9 @@ void InduManager::onNewHarmonicSP(int harmonicW)
     emit newHarmonicSP(harmonicW);
 }
 
-void InduManager::onNewErrorMessageMag(QString errorMag)
-{
-    emit newErrorMessageMag(errorMag);
-}
-
-void InduManager::onNewErrorMessageHel(QString errorHel)
-{
-    emit newErrorMessageHel(errorHel);
-}
-
 void InduManager::onNewErrorMessagePpms(QString errormessagePpms)
 {
+    qDebug()<<"hi";
     emit newErrorMessagePpms(errormessagePpms);
 }
 

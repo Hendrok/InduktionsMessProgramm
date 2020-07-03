@@ -23,7 +23,7 @@ void GPIB::openDevice(int deviceAddress)
     int handle = ibdev_(0, deviceAddress, 0, T3s, 1, 0);
     if(errorCode(*ibsta_).size() != 0)
     {
-        //TODO: FEHLERMELDUNG
+        errormessage_ = statusGpib(*ibsta_);
         return;
     }
 
@@ -107,6 +107,7 @@ void GPIB::init()
     //load library and check if loading failed
     Gpib32Lib = LoadLibraryA("gpib-32.dll");
     if (!Gpib32Lib) {
+        errormessage_ = "Gpib TreiberBib nicht geladen";
         return;
     }
 
@@ -133,7 +134,8 @@ void GPIB::init()
        ibonl_ == nullptr)
     {
        FreeLibrary(Gpib32Lib);
-       //TODO: Fehlermeldung Gpib TreiberBib nicht geladen
+       errormessage_ = "Gpib TreiberBib nicht geladen";
+
     }
 
 
@@ -154,6 +156,11 @@ int GPIB::getHandle(int address) const
 void GPIB::checkstatus()
 {
     statusGpib(*ibsta_);
+}
+
+std::string GPIB::getError() const
+{
+    return errormessage_;
 }
 
 std::string GPIB::statusGpib(int ibsta)

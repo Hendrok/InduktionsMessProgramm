@@ -43,13 +43,13 @@ void PpmsAbstract::setMagField(double magField, double magRate)
         magField = maxPosMagField_;
         QString errorMag = ("The maximum magField is too high and will automaticly be reduced to: ");
         errorMag.append(QString::number(maxPosMagField_));
-        emit newErrorMagSp(errorMag);
+        emit newErrorPPMS(errorMag);
     }
     if(ppmsHelium_ < 60)
     {
         magField = 0;
         QString errorhel =("Helium is too low for Magnetic Field!");
-        emit newErrorMagHel(errorhel);
+        emit newErrorPPMS(errorhel);
     }
 
     setMagFieldCore(magField, maxRateMag_);

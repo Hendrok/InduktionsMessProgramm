@@ -49,10 +49,6 @@ InstrumentManager::InstrumentManager()
             this, &InstrumentManager::newSensivitySP);
     connect(lockin_, &LockInAbstract::newHarmonicSP,
             this, &InstrumentManager::newHarmonicSP);
-    connect(ppms_, &PpmsAbstract::newErrorMagSp,
-            this, &InstrumentManager::newErrorMessageMag);
-    connect(ppms_, &PpmsAbstract::newErrorMagHel,
-            this, &InstrumentManager::newErrorMessageHel);
     connect(ppms_, &PpmsAbstract::newErrorPPMS,
             this, &InstrumentManager::newErrorMessagePpms);
 

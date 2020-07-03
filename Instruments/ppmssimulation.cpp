@@ -52,9 +52,7 @@ QPair<double, double> PpmsSimulation::magFieldCore()
 {  
     if(magFieldSP_>9000)
     {
-
-        emit newErrorMagSp("Magnetfeld zu hoch");
-        emit newErrorMagHel("zu wenig hel");
+        emit newErrorPPMS("Magnetfeld zu hoch");
     }
     return QPair(magFieldSP_, magRate_);
 }

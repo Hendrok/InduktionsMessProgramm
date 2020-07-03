@@ -30,11 +30,8 @@ protected:
 signals:
     void newTempSP(double setpoint, double rate) ;
     void newMagSP(double magField, double magRate) ;
-    void newAngleSP(double angle) ;
-    void newErrorMagSp(QString errorMag);
-    void newErrorMagHel(QString errorHel);
+    void newAngleSP(double angle) ;   
     void newErrorPPMS(QString ppmsError);
-
 };
 
 #endif // PPMSABSTRACT_H

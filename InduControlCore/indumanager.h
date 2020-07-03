@@ -34,8 +34,6 @@ signals:
     void newFreqSP(double freq);
     void newSensivitySP(int sensivity);
     void newHarmonicSP(int harmonicW);
-    void newErrorMessageMag(QString errormessageMag);
-    void newErrorMessageHel(QString errormessageHel);
     void newErrorMessagePpms(QString errormessagePpms);
 
 private slots:
@@ -46,8 +44,6 @@ private slots:
     void onNewFreqSP(double freq);
     void onNewSensivitySP(int sensivity);
     void onNewHarmonicSP(int harmonicW);
-    void onNewErrorMessageMag(QString errormessageMag);
-    void onNewErrorMessageHel(QString errormessageHel);
     void onNewErrorMessagePpms(QString errormessagePpms);
 
 

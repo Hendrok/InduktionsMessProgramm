@@ -150,6 +150,7 @@ PpmsDataPoint PpmsInstrument::ppmsLogik()
     return ppmsDpoint;
 }
 
+
 void PpmsInstrument::openDevice()
 {
     if (gpib_ == nullptr) {
@@ -160,9 +161,7 @@ void PpmsInstrument::openDevice()
     if(!gpib_->isOpen(address_))
     {
        qDebug()<<"1";
-       //BUG:: wieso klappt das nicht
-
-       emit newErrorPPMS("test");
+       emit newErrorPPMS(gpib_->getError().c_str());
        return;
     }
 

@@ -29,7 +29,6 @@ protected:
     double angleCore() override;
     double heliumCore() override;
     PpmsDataPoint ppmsLogik() override;
-
 private:
     void openDevice();
     std::string dtoStr (double number, int n);
@@ -37,6 +36,7 @@ private:
     std::shared_ptr<GPIB> gpib_;
     int address_;
     std::int32_t dataMask_;
+
 };
 
 #endif // PPMSCORE_H

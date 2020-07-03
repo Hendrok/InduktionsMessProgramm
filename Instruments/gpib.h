@@ -26,6 +26,8 @@ public:
     void cmd(int deviceAddress, std::string command, int delay, bool termchar);
     std::string query(int deviceAddress, std::string queryStr, int delay, bool termchar);
     void checkstatus();
+
+    std::string getError() const;
 private:
     void init();
     int getHandle(int address) const;
@@ -47,6 +49,7 @@ private:
     std::string statusGpib(int ibsta);
     std::string errorCode(int iberr);
 
+    std::string errormessage_;
 };
 
 #endif // GPIB_H
