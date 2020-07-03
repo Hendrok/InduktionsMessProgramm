@@ -20,6 +20,7 @@ public:
     GPIB();
 
     void openDevice(int deviceAddress);
+    void closeDevice(int deviceAddress);
     bool isOpen(int deviceAddress) const;
 
     void cmd(int deviceAddress, std::string command, int delay, bool termchar);
@@ -38,6 +39,7 @@ private:
     int(__stdcall *ibconfig_)(int ud, int option, int v);
     int(__stdcall *ibrd_)(int ud, PVOID buf, LONG cnt);
     int(__stdcall *ibwrt_)(int ud, PVOID buf, LONG cnt);
+    int(__stdcall *ibonl_)(int ud, int v);
 
     std::map<int, int> deviceHandles_;
     char readBuffer_[512];

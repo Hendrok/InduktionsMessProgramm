@@ -118,7 +118,7 @@ void StartDialog::setupUI()
     voltageAmplitudeTc_ = new QDoubleSpinBox();
     voltageAmplitudeTc_->setDecimals(3);
     voltageAmplitudeTc_->setSingleStep(0.1);
-    voltageAmplitudeTc_->setRange(0,10);
+    voltageAmplitudeTc_->setRange(0,1);
     voltageAmplitudeTc_->setValue(0.1);
 
     harmonicWaveTc_ = new QDoubleSpinBox();
@@ -169,20 +169,20 @@ void StartDialog::setupUI()
     voltStartJc_ = new QDoubleSpinBox();
     voltStartJc_->setDecimals(3);
     voltStartJc_->setSingleStep(0.01);
-    voltStartJc_->setRange(0.004,5);
-    voltStartJc_->setValue(0.010);
+    voltStartJc_->setRange(0.004,1);
+    voltStartJc_->setValue(0.004);
 
     voltEndJc_ = new QDoubleSpinBox();
     voltEndJc_->setDecimals(3);
     voltEndJc_->setSingleStep(0.01);
-    voltEndJc_->setRange(0,5);
-    voltEndJc_->setValue(2.0);
+    voltEndJc_->setRange(0,1);
+    voltEndJc_->setValue(1.0);
 
     VoltRateJc_ = new QDoubleSpinBox();
     VoltRateJc_->setDecimals(3);
-    VoltRateJc_->setSingleStep(0.01);
+    VoltRateJc_->setSingleStep(0.001);
     VoltRateJc_->setRange(0,0.1);
-    VoltRateJc_->setValue(0.01);
+    VoltRateJc_->setValue(0.002);
 
     magneticFieldJc_ = new QDoubleSpinBox();
     magneticFieldJc_->setDecimals(2);
@@ -205,7 +205,7 @@ void StartDialog::setupUI()
     harmonicWaveJc_ = new QDoubleSpinBox();
     harmonicWaveJc_->setDecimals(0);
     harmonicWaveJc_->setSingleStep(1);
-    harmonicWaveJc_->setRange(1,3);
+    harmonicWaveJc_->setRange(1,50);
     harmonicWaveJc_->setValue(1);
 
     auto labelSampleNameJc = new QLabel("Sample Name:");

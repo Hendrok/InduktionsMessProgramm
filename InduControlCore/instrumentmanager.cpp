@@ -53,6 +53,8 @@ InstrumentManager::InstrumentManager()
             this, &InstrumentManager::newErrorMessageMag);
     connect(ppms_, &PpmsAbstract::newErrorMagHel,
             this, &InstrumentManager::newErrorMessageHel);
+    connect(ppms_, &PpmsAbstract::newErrorPPMS,
+            this, &InstrumentManager::newErrorMessagePpms);
 
 }
 

@@ -28,6 +28,7 @@ signals:
     void newHarmonicSP(int harmonicW);
     void newErrorMessageMag(QString errormessageMag);
     void newErrorMessageHel(QString errormessageHel);
+    void newErrorMessagePpms(QString ppmsError);
 public:
     InstrumentManager();
     ~InstrumentManager() = default;

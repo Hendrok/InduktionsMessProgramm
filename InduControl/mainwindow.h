@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <QMainWindow>
+#include <QCloseEvent>
 
 #include "../InduControlCore/indumanager.h"
 
@@ -31,6 +32,7 @@ public:
     ~MainWindow();
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
+    void closeEvent (QCloseEvent *event) override;
 
 private slots:
     void onStartMessungButton();
@@ -43,6 +45,7 @@ private slots:
     void onNewAngleSP(double angle);
     void onNewErrorMessageMag(QString errormessageMag);
     void onNewErrorMessageHel(QString errormessageHel);
+    void onNewErrorMessagePpms(QString errormessagePpms);
 private:
     void setupUi();
     void createStatusBar();

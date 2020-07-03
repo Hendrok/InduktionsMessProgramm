@@ -49,8 +49,8 @@ void GraphDiagram::appendDataPoint(std::shared_ptr<const DataPoint> datapoint)
     if(voltmin_ == 10) {voltmin_ = datapoint->lockindata()->pvVoltOutputLive();}
     if(voltmax_ == 10) {voltmax_ = datapoint->lockindata()->pvVoltOutputLive();}
     //if(voltmin_<=0){voltmin_=datapoint->lockindata()->pvVoltOutputLive();}
-    if(voltmin_>datapoint->lockindata()->pvVoltOutputLive()){voltmin_=datapoint->lockindata()->pvVoltOutputLive()-0.01;}
-    if(voltmax_<datapoint->lockindata()->pvVoltOutputLive()){voltmax_=datapoint->lockindata()->pvVoltOutputLive()+0.01;}
+    if(voltmin_>datapoint->lockindata()->pvVoltOutputLive()){voltmin_=datapoint->lockindata()->pvVoltOutputLive()-0.00001;}
+    if(voltmax_<datapoint->lockindata()->pvVoltOutputLive()){voltmax_=datapoint->lockindata()->pvVoltOutputLive()+0.00001;}
     axisY_->setRange(voltmin_,voltmax_);
 
     series_->append(datapoint->ppmsdata()->pvTempLive(), datapoint->lockindata()->pvVoltOutputLive());

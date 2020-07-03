@@ -30,8 +30,6 @@ protected:
     double heliumCore() override;
     PpmsDataPoint ppmsLogik() override;
 
-
-
 private:
     void openDevice();
     std::string dtoStr (double number, int n);

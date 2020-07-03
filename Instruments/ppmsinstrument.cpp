@@ -66,6 +66,11 @@ void PpmsInstrument::setAngleCore(double angle)
 
 QPair<double, double> PpmsInstrument::tempSetpointCore()
 {
+    if(!gpib_->isOpen(address_))
+    {
+        return QPair(0,0);
+    }
+
     QString string = gpib_->query(address_, "TEMP?", DELAYGPIB, false).c_str();
     //QString besteht z.b aus (300,20.0)
     auto list = string.split(',', QString::SkipEmptyParts);
@@ -75,6 +80,10 @@ QPair<double, double> PpmsInstrument::tempSetpointCore()
 
 QPair<double, double> PpmsInstrument::magFieldCore()
 {
+    if(!gpib_->isOpen(address_))
+    {
+        return QPair(0,0);
+    }
     QString string = gpib_->query(address_, "FIELD?", DELAYGPIB, false).c_str();
     //QString = String den uns Ppms gibt
     auto list = string.split(',', QString::SkipEmptyParts);
@@ -84,6 +93,10 @@ QPair<double, double> PpmsInstrument::magFieldCore()
 
 double PpmsInstrument::angleCore()
 {
+    if(!gpib_->isOpen(address_))
+    {
+        return 0;
+    }
     QString string = gpib_->query(address_, "MOVE?", DELAYGPIB, false).c_str();
     //QString = String den uns Ppms gibt
     auto list = string.split(',', QString::SkipEmptyParts);
@@ -93,6 +106,10 @@ double PpmsInstrument::angleCore()
 
 double PpmsInstrument::heliumCore()
 {
+    if(!gpib_->isOpen(address_))
+    {
+        return 0;
+    }
     QString string = gpib_->query(address_, "LEVEL?", DELAYGPIB, false).c_str();
     //QString = String den uns Ppms gibt
     auto list = string.split(',', QString::SkipEmptyParts);
@@ -103,6 +120,10 @@ double PpmsInstrument::heliumCore()
 
 PpmsDataPoint PpmsInstrument::ppmsLogik()
 {
+    if(!gpib_->isOpen(address_))
+    {
+        return PpmsDataPoint();
+    }
     PpmsDataPoint ppmsDpoint;
     std::string dataMask = QString::number(dataMask_).toStdString();
     std::string getDatStr = "GETDAT? " + dataMask + " 0";
@@ -115,7 +136,7 @@ PpmsDataPoint PpmsInstrument::ppmsLogik()
     }
     ppmsDpoint.setPvStatusPpms(Datavector[2].toStdString());
     ppmsDpoint.setPvTempLive(Datavector[3].toDouble());
-    ppmsDpoint.setPvMagFieldLive( Datavector[4].toDouble());
+    ppmsDpoint.setPvMagFieldLive( Datavector[4].toDouble() / OE_IN_MT);
     ppmsDpoint.setPvRotLive(Datavector[5].toDouble());
     ppmsDpoint.setPvSamplePressure(Datavector[6].toDouble());
 
@@ -134,8 +155,16 @@ void PpmsInstrument::openDevice()
     if (gpib_ == nullptr) {
         return;
     }
-    qDebug()<<"openDevice";
+    qDebug()<<"openDevice PPMS";
     gpib_->openDevice(address_);
+    if(!gpib_->isOpen(address_))
+    {
+       qDebug()<<"1";
+       //BUG:: wieso klappt das nicht
+
+       emit newErrorPPMS("test");
+       return;
+    }
 
     dataMask_ += BITSTATUS; // Stat
     dataMask_ += BITTEMP; // Temp

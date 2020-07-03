@@ -28,12 +28,20 @@ LockInSr830::LockInSr830(std::shared_ptr<GPIB> gpib)
 
 void LockInSr830::setInputVoltageCore(double inputVoltage)
 {
+    if(!gpib_->isOpen(address_))
+    {
+        return;
+    }
     auto inputVoltageStr = "SLVL " + dtoStr(inputVoltage, 3);
     gpib_->cmd(address_, inputVoltageStr, DELAYGPIB , true);
 }
 
 void LockInSr830::setFreqCore(double freq)
 {
+    if(!gpib_->isOpen(address_))
+    {
+        return;
+    }
     auto freqStr = "FREQ " + dtoStr(freq, 3);
     gpib_->cmd(address_, freqStr, DELAYGPIB , true);
     std::string freqq = "FREQ?";
@@ -41,13 +49,20 @@ void LockInSr830::setFreqCore(double freq)
 
 void LockInSr830::setHarmonicCore(int harmonicW)
 {
+    if(!gpib_->isOpen(address_))
+    {
+        return;
+    }
     auto harmonicStr = "HARM " + itoStr(harmonicW);
     gpib_->cmd(address_, harmonicStr, DELAYGPIB , true);
 }
 
 void LockInSr830::setSensivityCore(int sensivity)
 {
-
+    if(!gpib_->isOpen(address_))
+    {
+        return;
+    }
     auto sensivityStr = "SENS " + itoStr(sensivity);
     gpib_->cmd(address_, sensivityStr, DELAYGPIB , true);
 
@@ -55,27 +70,48 @@ void LockInSr830::setSensivityCore(int sensivity)
 
 double LockInSr830::inputVoltageCore()
 {
+    if(!gpib_->isOpen(address_))
+    {
+        return 0;
+    }
     return strtoD(gpib_->query(address_,"SLVL?", DELAYGPIB , true));
 }
 
 double LockInSr830::freqCore()
 {
+    if(!gpib_->isOpen(address_))
+    {
+        return 0;
+    }
     return strtoD(gpib_->query(address_, "FREQ?", DELAYGPIB , true));
 }
 
 int LockInSr830::harmonicCore()
 {
+    if(!gpib_->isOpen(address_))
+    {
+        return 0;
+    }
+    //TODO: Da muss noch was gemacht werden
     return strtoI("1");
 }
 
 int LockInSr830::sensitivityCore()
 {
+    if(!gpib_->isOpen(address_))
+    {
+        return 0;
+    }
+    //TODO: Da muss noch was gemacht werden
     return strtoI("1");
 }
 
 LockInDataPoint LockInSr830::lockInLogik()
 {
-
+    if(!gpib_->isOpen(address_))
+    {
+        return LockInDataPoint();
+    }
     LockInDataPoint lockingDpoint;
 
     auto dataPoint =std::make_shared<DataPoint> ();
@@ -93,8 +129,14 @@ void LockInSr830::openDevice()
     {
         return;
     }
-    qDebug()<<"openDevice";
+    qDebug()<<"openDevice LOCKIN";
     gpib_->openDevice(address_);
+
+    if(!gpib_->isOpen(address_))
+    {
+        return;
+        //TODO: Hier kommt Fehlermeldung
+    }
 }
 
 std::string LockInSr830::dtoStr(double number, int dec)

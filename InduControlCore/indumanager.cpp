@@ -41,6 +41,8 @@ InduManager::InduManager()
             this, &InduManager::onNewErrorMessageMag);
     connect(instrumentmanager_.get(), &InstrumentManager::newErrorMessageHel,
             this, &InduManager::onNewErrorMessageHel);
+    connect(instrumentmanager_.get(), &InstrumentManager::newErrorMessagePpms,
+            this, &InduManager::onNewErrorMessagePpms);
 }
 
 InduManager::~InduManager()
@@ -249,5 +251,10 @@ void InduManager::onNewErrorMessageMag(QString errorMag)
 void InduManager::onNewErrorMessageHel(QString errorHel)
 {
     emit newErrorMessageHel(errorHel);
+}
+
+void InduManager::onNewErrorMessagePpms(QString errormessagePpms)
+{
+    emit newErrorMessagePpms(errormessagePpms);
 }
 

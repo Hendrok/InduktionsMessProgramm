@@ -46,6 +46,8 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::onNewErrorMessageMag);
     connect(indumanager_, &InduManager::newErrorMessageHel,
             this, &MainWindow::onNewErrorMessageHel);
+    connect(indumanager_, &InduManager::newErrorMessagePpms,
+            this, &MainWindow::onNewErrorMessagePpms);
 }
 
 MainWindow::~MainWindow()
@@ -61,6 +63,19 @@ QSize MainWindow::sizeHint() const
 QSize MainWindow::minimumSizeHint() const
 {
     return QSize(800, 400);
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    QMessageBox::StandardButton resBtn = QMessageBox::question( this, "Quit?",
+                                                                tr("Are you sure?\n"),
+                                                                QMessageBox::No | QMessageBox::Yes,
+                                                                QMessageBox::Yes);
+    if (resBtn != QMessageBox::Yes) {
+        event->ignore();
+    } else {
+        event->accept();
+    }
 }
 
 void MainWindow::setupUi()
@@ -160,6 +175,18 @@ void MainWindow::onNewErrorMessageHel(QString errormessageHel)
        msgBox->setStandardButtons( QMessageBox::Ok );
        msgBox->setWindowTitle( tr("Error") );
        msgBox->setText(errormessageHel);
+       msgBox->setModal( false ); // if you want it non-modal
+       msgBox->open( this, SLOT(msgBoxClosed(QAbstractButton*)) );
+}
+
+void MainWindow::onNewErrorMessagePpms(QString errormessagePpms)
+{
+    qDebug()<<"hi";
+    QMessageBox* msgBox = new QMessageBox( this );
+       msgBox->setAttribute( Qt::WA_DeleteOnClose ); //makes sure the msgbox is deleted automatically when closed
+       msgBox->setStandardButtons( QMessageBox::Ok );
+       msgBox->setWindowTitle( tr("Error") );
+       msgBox->setText(errormessagePpms);
        msgBox->setModal( false ); // if you want it non-modal
        msgBox->open( this, SLOT(msgBoxClosed(QAbstractButton*)) );
 }

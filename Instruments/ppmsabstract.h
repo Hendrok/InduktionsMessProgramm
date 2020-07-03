@@ -14,8 +14,8 @@ public:
     void setTempSetpoint(double setpoint, double rate);
     void setMagField(double magField, double magRate);
     void setAngle(double angle);
-    void getErrormessageMag(QString errorMag);
     virtual PpmsDataPoint ppmsLogik() = 0;
+
 protected:
     virtual void setTempSetpointCore(double setpoint,double rate) = 0;
     virtual void setMagFieldCore(double magField, double magRate) = 0;
@@ -33,6 +33,7 @@ signals:
     void newAngleSP(double angle) ;
     void newErrorMagSp(QString errorMag);
     void newErrorMagHel(QString errorHel);
+    void newErrorPPMS(QString ppmsError);
 
 };
 

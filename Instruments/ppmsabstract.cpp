@@ -73,3 +73,4 @@ void PpmsAbstract::setAngle(double angle)
     emit newAngleSP(angleReport);
 }
 
+

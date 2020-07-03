@@ -36,7 +36,7 @@ signals:
     void newHarmonicSP(int harmonicW);
     void newErrorMessageMag(QString errormessageMag);
     void newErrorMessageHel(QString errormessageHel);
-
+    void newErrorMessagePpms(QString errormessagePpms);
 
 private slots:
     void onNewData(std::shared_ptr<DataPoint> datapoint);
@@ -48,6 +48,7 @@ private slots:
     void onNewHarmonicSP(int harmonicW);
     void onNewErrorMessageMag(QString errormessageMag);
     void onNewErrorMessageHel(QString errormessageHel);
+    void onNewErrorMessagePpms(QString errormessagePpms);
 
 
 

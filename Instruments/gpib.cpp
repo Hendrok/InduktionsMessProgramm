@@ -11,6 +11,7 @@ GPIB::GPIB()
     , ibconfig_(nullptr)
     , ibrd_(nullptr)
     , ibwrt_(nullptr)
+    , ibonl_(nullptr)
 {
     init();
 }
@@ -20,11 +21,31 @@ void GPIB::openDevice(int deviceAddress)
 {
     //open device
     int handle = ibdev_(0, deviceAddress, 0, T3s, 1, 0);
+    if(errorCode(*ibsta_).size() != 0)
+    {
+        //TODO: FEHLERMELDUNG
+        return;
+    }
+
     if (handle >= 0)
     {
+        //ibclr_(handle); //TODO:eventuell nicht so wichtig
         deviceHandles_.insert(std::make_pair(deviceAddress, handle));
     }
     qDebug()<<statusGpib(*ibsta_).c_str();
+}
+
+void GPIB::closeDevice(int deviceAddress)
+{
+    /*
+     * muss man noch Testen
+    int handle = getHandle(deviceAddress);
+    if (handle == -1)
+    {
+        return;
+    }
+    ibonl_(handle, 0);
+    */
 }
 
 bool GPIB::isOpen(int deviceAddress) const
@@ -58,31 +79,23 @@ void GPIB::cmd(int deviceAddress, std::string command, int delay, bool termchar)
 
 std::string GPIB::query(int deviceAddress, std::string queryStr, int delay, bool termchar)
 {
+    cmd(deviceAddress, queryStr, 0, termchar);
+
     int handle = getHandle(deviceAddress);
     if (handle == -1)
     {
-        return std::string();
-    }
-
-    if(termchar == true)
-    {
-        //Lockin benötigt leerzeichen vor dem Befehl, PPMS nicht
-        queryStr.append("\n");
-        ibwrt_(handle, (LPSTR)queryStr.c_str(), (LONG)(queryStr.size()));
-    }
-    else
-    {
-        ibwrt_(handle, (LPSTR)queryStr.c_str(), (LONG)(queryStr.size()+1));
+        return "";
     }
 
     ibrd_(handle, readBuffer_, 512L);
     readBuffer_[(*ibcntl_) - 1] = '\0';
-    return std::string(readBuffer_);
 
     if(delay > 0)
     {
         Sleep(delay);
     }
+
+    return std::string(readBuffer_);
 }
 
 //private:
@@ -107,6 +120,23 @@ void GPIB::init()
     ibconfig_ = (int(__stdcall*)(int, int, int))GetProcAddress(Gpib32Lib, (LPCSTR)"ibconfig");
     ibrd_ = (int(__stdcall *)(int, PVOID, LONG))GetProcAddress(Gpib32Lib, (LPCSTR)"ibrd");
     ibwrt_ = (int(__stdcall *)(int, PVOID, LONG))GetProcAddress(Gpib32Lib, (LPCSTR)"ibwrt");
+    ibonl_ = (int(__stdcall *)(int, int))GetProcAddress(Gpib32Lib, (LPCSTR)"ibonl");
+
+    if(ibsta_ == nullptr ||
+       ibcntl_ == nullptr ||
+       iberr_ == nullptr ||
+       ibclr_ == nullptr ||
+       ibdev_ == nullptr ||
+       ibconfig_ == nullptr ||
+       ibrd_ == nullptr ||
+       ibwrt_ == nullptr ||
+       ibonl_ == nullptr)
+    {
+       FreeLibrary(Gpib32Lib);
+       //TODO: Fehlermeldung Gpib TreiberBib nicht geladen
+    }
+
+
 }
 
 int GPIB::getHandle(int address) const
