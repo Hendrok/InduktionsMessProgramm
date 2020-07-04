@@ -136,7 +136,7 @@ LockInDataPoint LockInSr830::lockInLogik()
 
     lockingDpoint.setPvPhase(strtoD(gpib_->query(address_, "OUTP? 4", DELAYGPIB , true)));
     lockingDpoint.setPvVoltOutputLive(strtoD(gpib_->query(address_, "OUTP? 3", DELAYGPIB , true)));
-    // TODO: 3/4 nochmal durchlesen! Werte sind zwar richtig, aber scheinen sehr zeitversetzt?
+
     return lockingDpoint;
 }
 
