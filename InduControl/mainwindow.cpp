@@ -95,7 +95,7 @@ void MainWindow::setupUi()
     mTable->setMaximumWidth(250);
     mainLayout->addLayout(GraphandList);
     mainLayout->addSpacing(10);
-    ppmsWidget_->setMaximumHeight(200);
+    ppmsWidget_->setMaximumHeight(180);
     ppmsWidget_->height();
     mainLayout->addWidget(ppmsWidget_);
     mainLayoutWidget->setLayout(mainLayout);
@@ -118,7 +118,7 @@ void MainWindow::createActions()
 void MainWindow::createRotatorButton()
 {
     rotCheckBox_ = new QCheckBox("C&ase sensitive", this);
-    rotCheckBox_->setText("Rotator On/Off");
+    rotCheckBox_->setText("Rotator Off");
 }
 
 void MainWindow::onStartMessungButton()
@@ -144,6 +144,14 @@ void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> m
 void MainWindow::onNewRotState(bool rot)
 {
     indumanager_->rotatorState(rot);
+    if(rot == true)
+    {
+        rotCheckBox_->setText("Rotator On");
+    }
+    else
+    {
+        rotCheckBox_->setText("Rotator Off");
+    }
 }
 
 void MainWindow::onNewData(std::shared_ptr<const DataPoint> datapoint)
