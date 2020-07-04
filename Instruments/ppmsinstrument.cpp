@@ -52,11 +52,13 @@ void PpmsInstrument::openDevice()
     dataMask_ += BITSTATUS; // Stat
     dataMask_ += BITTEMP; // Temp
     dataMask_ += BITMAG; // Mag
-    dataMask_ += BITANGLE; // Angle
     dataMask_ += BITPRESSURE; // pressure
 
     if(rotState_ == true)
-    dataMask_ += BITUSERTEMP; // userTemp
+    {
+        dataMask_ += BITANGLE; // Angle
+        dataMask_ += BITUSERTEMP; // userTemp
+    }
 
     QString magcnf;
 
@@ -74,6 +76,7 @@ void PpmsInstrument::newRotatorstate(bool rot)
         gpib_->cmd(address_ ,"Bridge 1,999.023,100.000,0,0,9.0", DELAYGPIB, false);
         gpib_->cmd(address_ ,"USERTEMP 23 1.9 1.8 2 1", DELAYGPIB, false);
         rotState_ = true;
+        dataMask_ += BITANGLE; // Angle
         dataMask_ += BITUSERTEMP; // userTemp
         qDebug()<<dataMask_;
     }
@@ -83,6 +86,7 @@ void PpmsInstrument::newRotatorstate(bool rot)
         //gpib_->cmd(address_ ,"Bridge 1,999.023,100.000,0,0,9.0", DELAYGPIB, false);
         gpib_->cmd(address_ ,"USERTEMP 0", DELAYGPIB, false);
         rotState_ = false;
+        dataMask_ -= BITANGLE; // Angle
         dataMask_ -= BITUSERTEMP; // userTemp
         qDebug()<<dataMask_;
     }
@@ -110,7 +114,7 @@ void PpmsInstrument::setMagFieldCore(double magField, double magRate)
 
 void PpmsInstrument::setAngleCore(double angle)
 {
-    if(!gpib_->isOpen(address_))
+    if(!gpib_->isOpen(address_) || rotState_ == false)
     {
         return;
     }
@@ -147,7 +151,7 @@ QPair<double, double> PpmsInstrument::magFieldCore()
 
 double PpmsInstrument::angleCore()
 {
-    if(!gpib_->isOpen(address_))
+    if(!gpib_->isOpen(address_) || rotState_ == false)
     {
         return 0;
     }
@@ -191,11 +195,12 @@ PpmsDataPoint PpmsInstrument::ppmsLogik()
     ppmsDpoint.setPvStatusPpms(Datavector[2].toStdString());
     ppmsDpoint.setPvTempLive(Datavector[3].toDouble());
     ppmsDpoint.setPvMagFieldLive( Datavector[4].toDouble() / OE_IN_MT);
-    ppmsDpoint.setPvRotLive(Datavector[5].toDouble());
-    ppmsDpoint.setPvSamplePressure(Datavector[6].toDouble());
+    ppmsDpoint.setPvSamplePressure(Datavector[5].toDouble());
 
-    if(Datavector[0].toInt() & BITUSERTEMP)
+    if(Datavector[0].toInt() & BITUSERTEMP && rotState_ == true)
     {
+        ppmsDpoint.setPvRotLive(Datavector[5].toDouble());
+        ppmsDpoint.setPvSamplePressure(Datavector[6].toDouble());
         ppmsDpoint.setPvUserTemp(Datavector[7].toDouble());
     }
 
