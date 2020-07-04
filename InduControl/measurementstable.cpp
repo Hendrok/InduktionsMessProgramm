@@ -34,10 +34,6 @@ void MeasurementsTable::newMeasurement(const std::vector<std::shared_ptr<const M
         QListWidgetItem* item = new QListWidgetItem;
         item->setText(mSeq[i]->fileName());
         listWidget->addItem(item);
-        /*TODO:
-         * for Schleife ändern->
-         *new QListWidgetItem(tr(QString::to(Element->fileName())), listWidget);
-        */
     }
 }
 

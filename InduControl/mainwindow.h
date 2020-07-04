@@ -5,7 +5,7 @@
 #include <vector>
 #include <QMainWindow>
 #include <QCloseEvent>
-
+#include <QCheckBox>
 #include "../InduControlCore/indumanager.h"
 
 QT_BEGIN_NAMESPACE
@@ -38,18 +38,19 @@ private slots:
     void onStartMessungButton();
     void onCreateMeasurement(std::vector<std::shared_ptr<const MeasurementSequence>> mSeq);
     void onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq);
+    void onNewRotState(bool rot);
     void onNewData(std::shared_ptr<const DataPoint> datapoint);
     void onNewMeasurementState(InduManager::State newState);
     void onNewTempSP(double temp, double rate);
     void onNewMagSP(double magField, double magRate);
     void onNewAngleSP(double angle);
-    void onNewErrorMessagePpms(QString errormessagePpms);
+    void onNewErrorMessage(QString errormessagePpms);
 private:
     void setupUi();
     void createStatusBar();
     void createActions();
     void createQLineDiagramm();
-
+    void createRotatorButton();
 
     GraphDiagram *graph_;
     InduManager* indumanager_;
@@ -57,6 +58,6 @@ private:
     PpmsWidget* ppmsWidget_;
     QWidget* mainLayoutWidget;
     MeasurementsTable* mTable;
-
+    QCheckBox *rotCheckBox_;
 };
 #endif // MAINWINDOW_H

@@ -16,6 +16,8 @@ class INSTRUMENTS_EXPORT PpmsSimulation : public PpmsAbstract
     Q_OBJECT
 public:
     PpmsSimulation();
+    void openDevice() override;
+    void newRotatorstate(bool rot) override;
 
 protected:
     void setTempSetpointCore(double setpoint, double rate) override;
@@ -26,7 +28,6 @@ protected:
     double angleCore() override;
     double heliumCore() override;
     PpmsDataPoint ppmsLogik() override;
-
 
 private:
     DataPoint datapoint_;

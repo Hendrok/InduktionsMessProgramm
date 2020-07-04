@@ -27,11 +27,65 @@ const int BITUSERTEMP = 1 << 23; // userTemp
 PpmsInstrument::PpmsInstrument(std::shared_ptr<GPIB> gpib, int address)
     : gpib_(gpib)
     , address_(address)
+    , rotState_(false)
     , dataMask_(0)
 {
-    openDevice();
     sstring_.imbue(std::locale::classic());
     sstring_ << std::fixed;
+}
+
+void PpmsInstrument::openDevice()
+{
+    if (gpib_ == nullptr) {
+        return;
+    }
+    qDebug()<<"openDevice PPMS";
+    gpib_->openDevice(address_);
+    if(!gpib_->isOpen(address_))
+    {
+        QString errormessage = "Ppms: ";
+        errormessage.append(gpib_->getError().c_str());
+        emit newErrorPPMS(errormessage);
+        return;
+    }
+
+    dataMask_ += BITSTATUS; // Stat
+    dataMask_ += BITTEMP; // Temp
+    dataMask_ += BITMAG; // Mag
+    dataMask_ += BITANGLE; // Angle
+    dataMask_ += BITPRESSURE; // pressure
+
+    if(rotState_ == true)
+    dataMask_ += BITUSERTEMP; // userTemp
+
+    QString magcnf;
+
+    magcnf = (QString::fromStdString(gpib_->query(address_,"MAGCNF?", DELAYGPIB, false)));
+    auto list = magcnf.split(',',QString::SkipEmptyParts);
+
+    maxPosMagField_ = list[0].toDouble();
+    maxRateMag_ = (maxPosMagField_ > MAXFIELDPPMS9) ? MAXFIELDRATEPPMS14 : MAXFIELDRATEPPMS9;
+}
+
+void PpmsInstrument::newRotatorstate(bool rot)
+{
+    if(rot == true)
+    {
+        gpib_->cmd(address_ ,"Bridge 1,999.023,100.000,0,0,9.0", DELAYGPIB, false);
+        gpib_->cmd(address_ ,"USERTEMP 23 1.9 1.8 2 1", DELAYGPIB, false);
+        rotState_ = true;
+        dataMask_ += BITUSERTEMP; // userTemp
+        qDebug()<<dataMask_;
+    }
+    else
+    {
+        //TODO: Rotator Voltage aus?
+        //gpib_->cmd(address_ ,"Bridge 1,999.023,100.000,0,0,9.0", DELAYGPIB, false);
+        gpib_->cmd(address_ ,"USERTEMP 0", DELAYGPIB, false);
+        rotState_ = false;
+        dataMask_ -= BITUSERTEMP; // userTemp
+        qDebug()<<dataMask_;
+    }
 }
 
 void PpmsInstrument::setTempSetpointCore(double setpoint, double rate)
@@ -148,41 +202,6 @@ PpmsDataPoint PpmsInstrument::ppmsLogik()
     ppmsDpoint.setPvChamberLevel(heliumCore());
 
     return ppmsDpoint;
-}
-
-
-void PpmsInstrument::openDevice()
-{
-    if (gpib_ == nullptr) {
-        return;
-    }
-    qDebug()<<"openDevice PPMS";
-    gpib_->openDevice(address_);
-    if(!gpib_->isOpen(address_))
-    {
-       qDebug()<<"1";
-       emit newErrorPPMS(gpib_->getError().c_str());
-       return;
-    }
-
-    dataMask_ += BITSTATUS; // Stat
-    dataMask_ += BITTEMP; // Temp
-    dataMask_ += BITMAG; // Mag
-    dataMask_ += BITANGLE; // Angle
-    dataMask_ += BITPRESSURE; // pressure
-    dataMask_ += BITUSERTEMP; // userTemp
-
-    gpib_->cmd(address_ ,"Bridge 1,999.023,100.000,0,0,9.0", DELAYGPIB, false);
-
-    gpib_->cmd(address_ ,"USERTEMP 23 1.9 1.8 2 1", DELAYGPIB, false);
-
-    QString magcnf;
-
-    magcnf = (QString::fromStdString(gpib_->query(address_,"MAGCNF?", DELAYGPIB, false)));
-    auto list = magcnf.split(',',QString::SkipEmptyParts);
-
-    maxPosMagField_ = list[0].toDouble();
-    maxRateMag_ = (maxPosMagField_ > MAXFIELDPPMS9) ? MAXFIELDRATEPPMS14 : MAXFIELDRATEPPMS9;
 }
 
 std::string PpmsInstrument::dtoStr(double number,int dec)

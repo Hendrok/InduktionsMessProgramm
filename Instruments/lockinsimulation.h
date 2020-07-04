@@ -16,7 +16,7 @@ class INSTRUMENTS_EXPORT LockInSimulation : public LockInAbstract
     Q_OBJECT
 public:
     LockInSimulation();
-
+    void openDevice() override;
 protected:
     void setInputVoltageCore(double inputVoltage) override;
     void setFreqCore(double freq) override;

@@ -20,9 +20,11 @@ class INDUCONTROLCORE_EXPORT InduManager : public QObject
 public:
     explicit InduManager();
     ~InduManager();
+    void openDevice();
     enum class State { Idle, ApproachStartTc, ApproachEndTc, CheckForMeas, ApproachStartJc, ApproachEndJc};
     void appendMeasurement(std::vector<std::shared_ptr<const MeasurementSequence>> mVecSeq);
     void startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence);
+    void rotatorState(bool rot);
 
 signals:
     void newData(std::shared_ptr<const DataPoint>);
@@ -34,7 +36,7 @@ signals:
     void newFreqSP(double freq);
     void newSensivitySP(int sensivity);
     void newHarmonicSP(int harmonicW);
-    void newErrorMessagePpms(QString errormessagePpms);
+    void newErrorMessage(QString errormessagePpms);
 
 private slots:
     void onNewData(std::shared_ptr<DataPoint> datapoint);
@@ -44,7 +46,7 @@ private slots:
     void onNewFreqSP(double freq);
     void onNewSensivitySP(int sensivity);
     void onNewHarmonicSP(int harmonicW);
-    void onNewErrorMessagePpms(QString errormessagePpms);
+    void onNewErrorMessage(QString errormessagePpms);
 
 
 

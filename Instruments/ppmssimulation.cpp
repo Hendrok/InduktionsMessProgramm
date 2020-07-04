@@ -24,6 +24,23 @@ PpmsSimulation::PpmsSimulation()
     maxRateMag_ = 100;
     ppmsHelium_ = 60;
 }
+
+void PpmsSimulation::openDevice()
+{
+
+}
+
+void PpmsSimulation::newRotatorstate(bool rot)
+{
+    if(rot == true)
+    {
+        qDebug()<<"true";
+    }
+    else
+    {
+        qDebug()<<"false";
+    }
+}
 void PpmsSimulation::setTempSetpointCore(double setpoint, double rate)
 {
     tempSetpoint_ = setpoint;

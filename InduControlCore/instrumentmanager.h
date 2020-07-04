@@ -26,10 +26,11 @@ signals:
     void newFreqSP(double freq);
     void newSensivitySP(int sensivity);
     void newHarmonicSP(int harmonicW);
-    void newErrorMessagePpms(QString ppmsError);
+    void newErrorMessage(QString ppmsError);
 public:
     InstrumentManager();
     ~InstrumentManager() = default;
+    void openDevice();
     void setTempSetpoint(double setpoint, double rate);
     void setInputVoltage(double inputVoltage);
     void setMagFieldSP(double magField, double magRate);
@@ -37,6 +38,7 @@ public:
     void setFrequency(double freq);
     void setSensivity(int sensivity);
     void setHarmonic(double harmonic);
+    void rotatorState(bool rot);
 
 private slots:
     void onPolling();

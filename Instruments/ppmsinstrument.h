@@ -19,6 +19,8 @@ class INSTRUMENTS_EXPORT PpmsInstrument : public PpmsAbstract
     Q_OBJECT
 public:
     PpmsInstrument(std::shared_ptr<GPIB> gpib, int address);
+    void openDevice() override;
+    void newRotatorstate(bool rot) override;
 
 protected:
     void setTempSetpointCore(double setpoint, double rate) override;
@@ -29,12 +31,13 @@ protected:
     double angleCore() override;
     double heliumCore() override;
     PpmsDataPoint ppmsLogik() override;
+
 private:
-    void openDevice();
     std::string dtoStr (double number, int n);
     std::stringstream sstring_;
     std::shared_ptr<GPIB> gpib_;
     int address_;
+    bool rotState_;
     std::int32_t dataMask_;
 
 };

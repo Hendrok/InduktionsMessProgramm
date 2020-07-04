@@ -34,9 +34,10 @@ InstrumentManager::InstrumentManager()
     }
     else
     {
-        ppms_ = new PpmsInstrument(gpib_, PPMSADDRESS);
         lockin_ = new LockInSr830(gpib_);
+        ppms_ = new PpmsInstrument(gpib_, PPMSADDRESS);
     }
+
     connect(ppms_, &PpmsAbstract::newTempSP,
             this, &InstrumentManager::newTempSP);
     connect(ppms_, &PpmsAbstract::newMagSP,
@@ -50,8 +51,15 @@ InstrumentManager::InstrumentManager()
     connect(lockin_, &LockInAbstract::newHarmonicSP,
             this, &InstrumentManager::newHarmonicSP);
     connect(ppms_, &PpmsAbstract::newErrorPPMS,
-            this, &InstrumentManager::newErrorMessagePpms);
+            this, &InstrumentManager::newErrorMessage);
+    connect(lockin_, &LockInAbstract::newErrorLockIN,
+            this, &InstrumentManager::newErrorMessage);
+}
 
+void InstrumentManager::openDevice()
+{
+    ppms_->openDevice();
+    lockin_->openDevice();
 }
 
 void InstrumentManager::setTempSetpoint(double setpoint, double rate)
@@ -85,6 +93,11 @@ void InstrumentManager::setHarmonic(double harmonic)
     lockin_->setHarmonic(harmonic);
 }
 
+void InstrumentManager::rotatorState(bool rot)
+{
+    ppms_->newRotatorstate(rot);
+}
+
 
 
 void InstrumentManager::onPolling()
@@ -94,6 +107,6 @@ void InstrumentManager::onPolling()
     dataPoint.setLockindata(std::make_shared<const LockInDataPoint>(lockin_->lockInLogik()));
     auto dPoint = std::make_shared<DataPoint>(dataPoint);
     emit newData(dPoint);
-    //BUG: ich nehme an das ist sehr unsauber programmiert und ich sollte das lieber vom Indumanger (onNewData)?
+    //TODO Sensitivity verbessern
     lockin_->setSensivity(lockinsens_->setSensitivity(dPoint));
 }

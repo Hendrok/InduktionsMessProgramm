@@ -37,12 +37,18 @@ InduManager::InduManager()
             this, &InduManager::onNewSensivitySP);
     connect(instrumentmanager_.get(), &InstrumentManager::newHarmonicSP,
             this, &InduManager::onNewHarmonicSP);
-    connect(instrumentmanager_.get(), &InstrumentManager::newErrorMessagePpms,
-            this, &InduManager::onNewErrorMessagePpms);
+    connect(instrumentmanager_.get(), &InstrumentManager::newErrorMessage,
+            this, &InduManager::onNewErrorMessage);
 }
 
 InduManager::~InduManager()
 {
+
+}
+
+void InduManager::openDevice()
+{
+    instrumentmanager_->openDevice();
 }
 
 
@@ -88,6 +94,11 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
     instrumentmanager_->setMagFieldSP(measurementSequence->magneticField(), 200);
     instrumentmanager_->setHarmonic(measurementSequence->harmonicWave());
     instrumentmanager_->setFrequency(measurementSequence->frequency());
+}
+
+void InduManager::rotatorState(bool rot)
+{
+    instrumentmanager_->rotatorState(rot);
 }
 
 void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
@@ -239,9 +250,8 @@ void InduManager::onNewHarmonicSP(int harmonicW)
     emit newHarmonicSP(harmonicW);
 }
 
-void InduManager::onNewErrorMessagePpms(QString errormessagePpms)
+void InduManager::onNewErrorMessage(QString errormessagePpms)
 {
-    qDebug()<<"hi";
-    emit newErrorMessagePpms(errormessagePpms);
+    emit newErrorMessage(errormessagePpms);
 }
 

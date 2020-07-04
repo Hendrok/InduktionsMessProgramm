@@ -21,9 +21,26 @@ LockInSr830::LockInSr830(std::shared_ptr<GPIB> gpib)
     , gpib_(gpib)
     , address_(10)
 {  
-    openDevice();
     sstring_.imbue(std::locale::classic());
     sstring_ << std::fixed;
+}
+
+void LockInSr830::openDevice()
+{
+    if (gpib_ == nullptr)
+    {
+        return;
+    }
+    qDebug()<<"openDevice LOCKIN";
+    gpib_->openDevice(address_);
+
+    if(!gpib_->isOpen(address_))
+    {
+        QString errormessage = "Lockin: ";
+        errormessage.append(gpib_->getError().c_str());
+        emit newErrorLockIN(errormessage);
+        return;
+    }
 }
 
 void LockInSr830::setInputVoltageCore(double inputVoltage)
@@ -121,22 +138,6 @@ LockInDataPoint LockInSr830::lockInLogik()
     lockingDpoint.setPvVoltOutputLive(strtoD(gpib_->query(address_, "OUTP? 3", DELAYGPIB , true)));
     // TODO: 3/4 nochmal durchlesen! Werte sind zwar richtig, aber scheinen sehr zeitversetzt?
     return lockingDpoint;
-}
-
-void LockInSr830::openDevice()
-{
-    if (gpib_ == nullptr)
-    {
-        return;
-    }
-    qDebug()<<"openDevice LOCKIN";
-    gpib_->openDevice(address_);
-
-    if(!gpib_->isOpen(address_))
-    {
-        return;
-        //TODO: Hier kommt Fehlermeldung
-    }
 }
 
 std::string LockInSr830::dtoStr(double number, int dec)

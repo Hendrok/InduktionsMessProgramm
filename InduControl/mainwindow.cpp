@@ -23,7 +23,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ppmsWidget_(new PpmsWidget())
     , mainLayoutWidget(new QWidget())
     , mTable(new MeasurementsTable())
+    , rotCheckBox_(nullptr)
 {    
+    createRotatorButton();
     setupUi();
     createStatusBar();
     createActions();
@@ -42,8 +44,12 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::onNewMagSP);
     connect(indumanager_, &InduManager::newAngleSP,
             this, &MainWindow::onNewAngleSP);
-    connect(indumanager_, &InduManager::newErrorMessagePpms,
-            this, &MainWindow::onNewErrorMessagePpms);
+    connect(indumanager_, &InduManager::newErrorMessage,
+            this, &MainWindow::onNewErrorMessage);
+    connect(rotCheckBox_, &QCheckBox::stateChanged,
+            this, &MainWindow::onNewRotState);
+
+    indumanager_->openDevice();
 }
 
 MainWindow::~MainWindow()
@@ -53,12 +59,12 @@ MainWindow::~MainWindow()
 
 QSize MainWindow::sizeHint() const
 {
-    return QSize(1600, 800);
+    return QSize(1600, 1200);
 }
 
 QSize MainWindow::minimumSizeHint() const
 {
-    return QSize(800, 400);
+    return QSize(1000, 400);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -78,12 +84,19 @@ void MainWindow::setupUi()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout();
     QHBoxLayout* GraphandList = new QHBoxLayout();
+    QVBoxLayout* listandRot = new QVBoxLayout();
+    QHBoxLayout* Rot = new QHBoxLayout();
+    Rot->addSpacing(12);
+    Rot->addWidget(rotCheckBox_);
+    listandRot->addLayout(Rot);
+    listandRot->addWidget(mTable);
     GraphandList->addWidget(graph_);
-    GraphandList->addWidget(mTable);
+    GraphandList->addLayout(listandRot);
     mTable->setMaximumWidth(250);
     mainLayout->addLayout(GraphandList);
     mainLayout->addSpacing(10);
-    ppmsWidget_->setMaximumHeight(120);
+    ppmsWidget_->setMaximumHeight(200);
+    ppmsWidget_->height();
     mainLayout->addWidget(ppmsWidget_);
     mainLayoutWidget->setLayout(mainLayout);
 }
@@ -99,16 +112,21 @@ void MainWindow::createActions()
             this, &MainWindow::onStartMessungButton);
     fileMenu->addAction(messungStarten);
     fileToolBar->addAction(messungStarten);
+
+}
+
+void MainWindow::createRotatorButton()
+{
+    rotCheckBox_ = new QCheckBox("C&ase sensitive", this);
+    rotCheckBox_->setText("Rotator On/Off");
 }
 
 void MainWindow::onStartMessungButton()
 {
-
     StartDialog* startDialog = new StartDialog(this);
     connect(startDialog, &StartDialog::createMeasurement,
             this, &MainWindow::onCreateMeasurement);
     startDialog->show();
-
 }
 
 void MainWindow::onCreateMeasurement(std::vector<std::shared_ptr<const MeasurementSequence> > mSeq)
@@ -121,6 +139,11 @@ void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> m
 {    
     graph_->setStaticValues(mSeq);
     mTable->activeMeasurement(mSeq);
+}
+
+void MainWindow::onNewRotState(bool rot)
+{
+    indumanager_->rotatorState(rot);
 }
 
 void MainWindow::onNewData(std::shared_ptr<const DataPoint> datapoint)
@@ -150,9 +173,8 @@ void MainWindow::onNewAngleSP(double angle)
     ppmsWidget_->newAngleSP(angle);
 }
 
-void MainWindow::onNewErrorMessagePpms(QString errormessagePpms)
+void MainWindow::onNewErrorMessage(QString errormessagePpms)
 {
-    qDebug()<<"hi";
     QMessageBox* msgBox = new QMessageBox( this );
        msgBox->setAttribute( Qt::WA_DeleteOnClose ); //makes sure the msgbox is deleted automatically when closed
        msgBox->setStandardButtons( QMessageBox::Ok );
@@ -166,6 +188,7 @@ void MainWindow::createQLineDiagramm()
 {
     graph_->createQlineDiagramm();
 }
+
 void MainWindow::createStatusBar()
 {
     statusBar()->showMessage(tr("Ready"));
