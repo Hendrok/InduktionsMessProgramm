@@ -38,7 +38,7 @@ private slots:
     void onStartMessungButton();
     void onCreateMeasurement(std::vector<std::shared_ptr<const MeasurementSequence>> mSeq);
     void onStartMeasurement(std::shared_ptr<const MeasurementSequence> mSeq);
-    void onNewRotState(bool rot);
+    void onSetSampleStage(bool rotator);
     void onNewData(std::shared_ptr<const DataPoint> datapoint);
     void onNewMeasurementState(InduManager::State newState);
     void onNewTempSP(double temp, double rate);

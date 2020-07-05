@@ -109,7 +109,7 @@ int LockInSr830::harmonicCore()
     {
         return 0;
     }
-    //TODO: Da muss noch was gemacht werden
+    //TODO: harmonicabfrage
     return strtoI("1");
 }
 
@@ -119,7 +119,7 @@ int LockInSr830::sensitivityCore()
     {
         return 0;
     }
-    //TODO: Da muss noch was gemacht werden
+    //TODO: sensivityabfrage
     return strtoI("1");
 }
 

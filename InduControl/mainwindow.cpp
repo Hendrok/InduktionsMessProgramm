@@ -47,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(indumanager_, &InduManager::newErrorMessage,
             this, &MainWindow::onNewErrorMessage);
     connect(rotCheckBox_, &QCheckBox::stateChanged,
-            this, &MainWindow::onNewRotState);
+            this, &MainWindow::onSetSampleStage);
 
     indumanager_->openDevice();
 }
@@ -141,10 +141,10 @@ void MainWindow::onStartMeasurement(std::shared_ptr<const MeasurementSequence> m
     mTable->activeMeasurement(mSeq);
 }
 
-void MainWindow::onNewRotState(bool rot)
+void MainWindow::onSetSampleStage(bool rotator)
 {
-    indumanager_->rotatorState(rot);
-    if(rot == true)
+    indumanager_->rotatorState(rotator);
+    if(rotator == true)
     {
         rotCheckBox_->setText("Rotator On");
     }

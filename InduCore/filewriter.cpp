@@ -41,7 +41,7 @@ QString FileWriter::writeHeader(std::shared_ptr<const MeasurementSequence> measu
             header_.append("\nCoilAngle: ");
             header_.append(QString::number(measurementSequence->coilAngle()));
             header_.append(" degrees \n");
-            header_.append("Temperature Voltage Phase UserTemp \n");
+            header_.append("Temperature UserTemp Voltage Phase \n");
             return header_;
         }
 
@@ -97,9 +97,9 @@ void FileWriter::append(std::shared_ptr<DataPoint> datapoint){
         if(measurementState_ == InduManager::State::ApproachEndTc)
         {
         file_->write(QString::number(datapoint->ppmsdata()->pvTempLive()).toUtf8() +
+                     " " + QString::number(datapoint->ppmsdata()->pvUserTemp()).toUtf8() +
                      " " + QString::number(datapoint->lockindata()->pvVoltOutputLive()).toUtf8() +
-                     " " + QString::number(datapoint->lockindata()->pvPhase()).toUtf8() +
-                     " " + QString::number(datapoint->ppmsdata()->pvUserTemp()).toUtf8() + "\n");
+                     " " + QString::number(datapoint->lockindata()->pvPhase()).toUtf8() + "\n");
         }
         else if(measurementState_ == InduManager::State::ApproachEndJc)
         {

@@ -24,7 +24,7 @@ public:
     enum class State { Idle, ApproachStartTc, ApproachEndTc, CheckForMeas, ApproachStartJc, ApproachEndJc};
     void appendMeasurement(std::vector<std::shared_ptr<const MeasurementSequence>> mVecSeq);
     void startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence);
-    void rotatorState(bool rot);
+    void rotatorState(bool rotator);
 
 signals:
     void newData(std::shared_ptr<const DataPoint>);
@@ -60,6 +60,7 @@ private:
     State measurementState;
     double magFieldSP_;
     double angleSP_;
+    double tempSP_;
 
 };
 

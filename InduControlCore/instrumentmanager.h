@@ -38,7 +38,7 @@ public:
     void setFrequency(double freq);
     void setSensivity(int sensivity);
     void setHarmonic(double harmonic);
-    void rotatorState(bool rot);
+    void rotatorState(bool rotator);
 
 private slots:
     void onPolling();

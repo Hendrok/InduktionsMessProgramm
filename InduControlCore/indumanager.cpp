@@ -22,6 +22,8 @@ InduManager::InduManager()
     , measurementState(State::Idle)
     , magFieldSP_(0)
     , angleSP_(0)
+    , tempSP_(0)
+
 {   
     connect(instrumentmanager_.get(), &InstrumentManager::newData,
             this, &InduManager::onNewData);
@@ -76,7 +78,13 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
         mSeqTc_->setTempEnd(seqTc->tempEnd());
         mSeqTc_->setTemperatureRate(seqTc->temperatureRate());
         mSeqTc_->setVoltageAmplitude(seqTc->voltageAmplitude());
-        instrumentmanager_->setTempSetpoint(mSeqTc_->tempStart(),20);
+
+        if(tempSP_ != mSeqTc_->tempStart())
+        {
+            instrumentmanager_->setTempSetpoint(mSeqTc_->tempStart(),20);
+        }
+
+        instrumentmanager_->setInputVoltage(seqTc->voltageAmplitude());
         measurementState = State::ApproachStartTc;
         emit newState(measurementState);
     }
@@ -85,7 +93,13 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
         mSeqJc_->setVoltRate(seqJc->voltRate());
         mSeqJc_->setVoltEnd(seqJc->voltEnd());
         mSeqJc_->setTemperature(seqJc->temperature());
-        instrumentmanager_->setTempSetpoint(mSeqJc_->temperature(), 20);
+
+        if(tempSP_ != mSeqJc_->temperature())
+        {
+            instrumentmanager_->setTempSetpoint(mSeqJc_->temperature(), 20);
+        }
+
+        instrumentmanager_->setInputVoltage(seqJc->voltStart());
         measurementState = State::ApproachStartJc;
         emit newState(measurementState);
     }
@@ -96,9 +110,9 @@ void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> me
     instrumentmanager_->setFrequency(measurementSequence->frequency());
 }
 
-void InduManager::rotatorState(bool rot)
+void InduManager::rotatorState(bool rotator)
 {
-    instrumentmanager_->rotatorState(rot);
+    instrumentmanager_->rotatorState(rotator);
 }
 
 void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
@@ -147,6 +161,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
                if(std::abs(mSeqTc_->tempEnd() - datapoint->ppmsdata()->pvTempLive()) < 0.6 &&
                        tempStable == true)
                {
+                    tempSP_ = datapoint->ppmsdata()->pvTempSetPoint();
                     fw_->closeFile();
                     measurementState = State::CheckForMeas;
                     measurementNumber_++;
@@ -190,7 +205,9 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
                     fw_->MeasurementState(measurementState);
                     fw_->append(datapoint);
             }
-            if(std::abs(mSeqJc_->voltEnd() - datapoint->lockindata()->pvVoltInputLive()) < 0.01){
+            if(std::abs(mSeqJc_->voltEnd() - datapoint->lockindata()->pvVoltInputLive()) < mSeqJc_->voltRate()){
+                //TODO: newLockinLogikworking?
+                tempSP_ = datapoint->ppmsdata()->pvTempSetPoint();
                 fw_->closeFile();
                 measurementState = State::CheckForMeas;
                 measurementNumber_++;

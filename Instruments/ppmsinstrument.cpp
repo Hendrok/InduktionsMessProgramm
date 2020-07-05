@@ -69,9 +69,9 @@ void PpmsInstrument::openDevice()
     maxRateMag_ = (maxPosMagField_ > MAXFIELDPPMS9) ? MAXFIELDRATEPPMS14 : MAXFIELDRATEPPMS9;
 }
 
-void PpmsInstrument::newRotatorstate(bool rot)
+void PpmsInstrument::newRotatorstate(bool rotator)
 {
-    if(rot == true)
+    if(rotator == true)
     {
         gpib_->cmd(address_ ,"Bridge 1,999.023,100.000,0,0,9.0", DELAYGPIB, false);
         gpib_->cmd(address_ ,"USERTEMP 23 1.9 1.8 2 1", DELAYGPIB, false);

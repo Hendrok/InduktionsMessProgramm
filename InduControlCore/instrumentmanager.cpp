@@ -93,9 +93,9 @@ void InstrumentManager::setHarmonic(double harmonic)
     lockin_->setHarmonic(harmonic);
 }
 
-void InstrumentManager::rotatorState(bool rot)
+void InstrumentManager::rotatorState(bool rotator)
 {
-    ppms_->newRotatorstate(rot);
+    ppms_->newRotatorstate(rotator);
 }
 
 
@@ -107,6 +107,5 @@ void InstrumentManager::onPolling()
     dataPoint.setLockindata(std::make_shared<const LockInDataPoint>(lockin_->lockInLogik()));
     auto dPoint = std::make_shared<DataPoint>(dataPoint);
     emit newData(dPoint);
-    //TODO Sensitivity verbessern
     lockin_->setSensivity(lockinsens_->setSensitivity(dPoint));
 }
