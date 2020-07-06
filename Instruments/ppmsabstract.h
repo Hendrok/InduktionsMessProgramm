@@ -17,6 +17,7 @@ public:
     virtual PpmsDataPoint ppmsLogik() = 0;
     virtual void openDevice() = 0;
     virtual void newRotatorstate(bool rot) = 0;
+    virtual bool isOpen() const = 0;
 
 protected:
     virtual void setTempSetpointCore(double setpoint,double rate) = 0;

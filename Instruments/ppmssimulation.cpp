@@ -41,6 +41,11 @@ void PpmsSimulation::newRotatorstate(bool rot)
         qDebug()<<"false";
     }
 }
+
+bool PpmsSimulation::isOpen() const
+{
+    return true;
+}
 void PpmsSimulation::setTempSetpointCore(double setpoint, double rate)
 {
     tempSetpoint_ = setpoint;

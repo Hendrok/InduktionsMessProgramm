@@ -9,6 +9,7 @@
 #include "../Instruments/lockindatapoint.h"
 
 const int DELAYGPIB = 0;
+const bool TERMCHAR = true;
 
 LockInSr830::LockInSr830(std::shared_ptr<GPIB> gpib)
     : datapoint_(DataPoint())
@@ -32,12 +33,25 @@ void LockInSr830::openDevice()
         return;
     }
     qDebug()<<"openDevice LOCKIN";
-    gpib_->openDevice(address_, DELAYGPIB, true);
+    gpib_->openDevice(address_);
+
+    std::string idn = gpib_->query(address_, "*IDN?", DELAYGPIB, true);
+    if(idn.find("SR830") == std::string::npos)
+    {
+        gpib_->closeDevice(address_);
+    }
 
     if(!gpib_->isOpen(address_))
     {
         QString errormessage = "Lockin: ";
-        errormessage.append(gpib_->getError().c_str());
+        if(gpib_->getError().size() == 0)
+        {
+            errormessage.append("Not connected");
+        }
+        else
+        {
+            errormessage.append(gpib_->getError().c_str());
+        }
         emit newErrorLockIN(errormessage);
         return;
     }

@@ -18,6 +18,7 @@ public:
     PpmsSimulation();
     void openDevice() override;
     void newRotatorstate(bool rot) override;
+    bool isOpen() const override;
 
 protected:
     void setTempSetpointCore(double setpoint, double rate) override;

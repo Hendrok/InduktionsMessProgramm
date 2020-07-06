@@ -21,6 +21,7 @@ public:
     PpmsInstrument(std::shared_ptr<GPIB> gpib, int address);
     void openDevice() override;
     void newRotatorstate(bool rotator) override;
+    bool isOpen() const override;
 
 protected:
     void setTempSetpointCore(double setpoint, double rate) override;

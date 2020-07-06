@@ -5,6 +5,7 @@
 #include <QPair>
 #include <sstream>
 #include <iomanip>
+#include <algorithm>
 
 //Internal Classes
 #include "../InduCore/datapoint.h"
@@ -16,6 +17,7 @@ const double MAXFIELDPPMS9 = 90000; //in Oe
 const double MAXFIELDRATEPPMS9 = 190; //in Oe
 const double MAXFIELDRATEPPMS14 = 120; //in Oe
 const int DELAYGPIB = 100; //in ms
+const bool TERMCHAR = false;
 const int OE_IN_MT = 10;
 const int BITSTATUS = 1 << 0; // Stat
 const int BITTEMP = 1 << 1; // Temp
@@ -40,11 +42,25 @@ void PpmsInstrument::openDevice()
         return;
     }
     qDebug()<<"openDevice PPMS";
-    gpib_->openDevice(address_, DELAYGPIB, false);
+    gpib_->openDevice(address_);
+
+    std::string idn = gpib_->query(address_, "*IDN?", DELAYGPIB, TERMCHAR);
+    if(idn.find("QUANTUM DESIGN") == std::string::npos)
+    {
+        gpib_->closeDevice(address_);
+    }
+
     if(!gpib_->isOpen(address_))
     {
         QString errormessage = "Ppms: ";
-        errormessage.append(gpib_->getError().c_str());
+        if(gpib_->getError().size() == 0)
+        {
+            errormessage.append("Not connected");
+        }
+        else
+        {
+            errormessage.append(gpib_->getError().c_str());
+        }
         emit newErrorPPMS(errormessage);
         return;
     }
@@ -62,7 +78,7 @@ void PpmsInstrument::openDevice()
 
     QString magcnf;
 
-    magcnf = (QString::fromStdString(gpib_->query(address_,"MAGCNF?", DELAYGPIB, false)));
+    magcnf = (QString::fromStdString(gpib_->query(address_,"MAGCNF?", DELAYGPIB, TERMCHAR)));
     auto list = magcnf.split(',',QString::SkipEmptyParts);
 
     maxPosMagField_ = list[0].toDouble();
@@ -73,8 +89,8 @@ void PpmsInstrument::newRotatorstate(bool rotator)
 {
     if(rotator == true)
     {
-        gpib_->cmd(address_ ,"Bridge 1,999.023,100.000,0,0,9.0", DELAYGPIB, false);
-        gpib_->cmd(address_ ,"USERTEMP 23 1.9 1.8 2 1", DELAYGPIB, false);
+        gpib_->cmd(address_ ,"Bridge 1,999.023,100.000,0,0,9.0", DELAYGPIB, TERMCHAR);
+        gpib_->cmd(address_ ,"USERTEMP 23 1.9 1.8 2 1", DELAYGPIB, TERMCHAR);
         rotState_ = true;
         dataMask_ += BITANGLE; // Angle
         dataMask_ += BITUSERTEMP; // userTemp
@@ -83,13 +99,18 @@ void PpmsInstrument::newRotatorstate(bool rotator)
     else
     {
         //TODO: Rotator Voltage aus?
-        //gpib_->cmd(address_ ,"Bridge 1,999.023,100.000,0,0,9.0", DELAYGPIB, false);
-        gpib_->cmd(address_ ,"USERTEMP 0", DELAYGPIB, false);
+        //gpib_->cmd(address_ ,"Bridge 1,999.023,100.000,0,0,9.0", DELAYGPIB, TERMCHAR);
+        gpib_->cmd(address_ ,"USERTEMP 0", DELAYGPIB, TERMCHAR);
         rotState_ = false;
         dataMask_ -= BITANGLE; // Angle
         dataMask_ -= BITUSERTEMP; // userTemp
         qDebug()<<dataMask_;
     }
+}
+
+bool PpmsInstrument::isOpen() const
+{
+    return gpib_->isOpen(address_);
 }
 
 void PpmsInstrument::setTempSetpointCore(double setpoint, double rate)
@@ -99,7 +120,7 @@ void PpmsInstrument::setTempSetpointCore(double setpoint, double rate)
         return;
     }
     std::string setTempSetpointStr = "TEMP "+ dtoStr(setpoint, 3) + " " + dtoStr(rate, 3) + " 0";
-    gpib_->cmd(address_, setTempSetpointStr, DELAYGPIB, false);
+    gpib_->cmd(address_, setTempSetpointStr, DELAYGPIB, TERMCHAR);
 }
 
 void PpmsInstrument::setMagFieldCore(double magField, double magRate)
@@ -109,7 +130,7 @@ void PpmsInstrument::setMagFieldCore(double magField, double magRate)
         return;
     }
     std::string setMagFieldStr = "FIELD " + dtoStr(magField, 0) + " " + dtoStr(magRate, 0);
-    gpib_->cmd(address_, setMagFieldStr, DELAYGPIB, false);
+    gpib_->cmd(address_, setMagFieldStr, DELAYGPIB, TERMCHAR);
 }
 
 void PpmsInstrument::setAngleCore(double angle)
@@ -119,7 +140,7 @@ void PpmsInstrument::setAngleCore(double angle)
         return;
     }
     std::string angleStr = "MOVE " + std::to_string(angle);
-    gpib_->cmd(address_, angleStr, DELAYGPIB, false);
+    gpib_->cmd(address_, angleStr, DELAYGPIB, TERMCHAR);
 }
 
 QPair<double, double> PpmsInstrument::tempSetpointCore()
@@ -129,7 +150,7 @@ QPair<double, double> PpmsInstrument::tempSetpointCore()
         return QPair(0,0);
     }
 
-    QString string = gpib_->query(address_, "TEMP?", DELAYGPIB, false).c_str();
+    QString string = gpib_->query(address_, "TEMP?", DELAYGPIB, TERMCHAR).c_str();
     //QString besteht z.b aus (300,20.0)
     auto list = string.split(',', QString::SkipEmptyParts);
     //nur die erste Zahl die herausgegebn wird ist für uns wichtig
@@ -142,7 +163,7 @@ QPair<double, double> PpmsInstrument::magFieldCore()
     {
         return QPair(0,0);
     }
-    QString string = gpib_->query(address_, "FIELD?", DELAYGPIB, false).c_str();
+    QString string = gpib_->query(address_, "FIELD?", DELAYGPIB, TERMCHAR).c_str();
     //QString = String den uns Ppms gibt
     auto list = string.split(',', QString::SkipEmptyParts);
     //nur die erste Zahl die herausgegebn wird ist für uns wichtig
@@ -155,7 +176,7 @@ double PpmsInstrument::angleCore()
     {
         return 0;
     }
-    QString string = gpib_->query(address_, "MOVE?", DELAYGPIB, false).c_str();
+    QString string = gpib_->query(address_, "MOVE?", DELAYGPIB, TERMCHAR).c_str();
     //QString = String den uns Ppms gibt
     auto list = string.split(',', QString::SkipEmptyParts);
     //nur die erste Zahl die herausgegebn wird ist für uns wichtig
@@ -168,7 +189,7 @@ double PpmsInstrument::heliumCore()
     {
         return 0;
     }
-    QString string = gpib_->query(address_, "LEVEL?", DELAYGPIB, false).c_str();
+    QString string = gpib_->query(address_, "LEVEL?", DELAYGPIB, TERMCHAR).c_str();
     //QString = String den uns Ppms gibt
     auto list = string.split(',', QString::SkipEmptyParts);
     //nur die erste Zahl die herausgegebn wird ist für uns wichtig
@@ -185,7 +206,7 @@ PpmsDataPoint PpmsInstrument::ppmsLogik()
     PpmsDataPoint ppmsDpoint;
     std::string dataMask = QString::number(dataMask_).toStdString();
     std::string getDatStr = "GETDAT? " + dataMask + " 0";
-    QString getdat = (gpib_->query(address_, getDatStr , DELAYGPIB, false).c_str());
+    QString getdat = (gpib_->query(address_, getDatStr , DELAYGPIB, TERMCHAR).c_str());
 
     auto Datavector = getdat.split(',');
     if(Datavector.size() == 0)

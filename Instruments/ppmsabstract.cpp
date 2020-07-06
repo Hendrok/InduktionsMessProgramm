@@ -9,7 +9,12 @@ const double MAXANGLE = 360;
 const double MINANGLE = 0;
 
 void PpmsAbstract::setTempSetpoint(double setpoint, double rate)
-{
+{  
+    if(!isOpen())
+    {
+        return;
+    }
+
     if(setpoint > MAXTEMP)
     {
         setpoint = MAXTEMP;
@@ -36,6 +41,11 @@ void PpmsAbstract::setMagField(double magField, double magRate)
 {
     Q_UNUSED(magRate);
 
+    if(!isOpen())
+    {
+        return;
+    }
+
     magField *= 10;
 
     if (maxPosMagField_ < magField)
@@ -58,7 +68,12 @@ void PpmsAbstract::setMagField(double magField, double magRate)
 }
 
 void PpmsAbstract::setAngle(double angle)
-{
+{    
+    if(!isOpen())
+    {
+        return;
+    }
+
     if(angle > MAXANGLE)
     {
         angle = MAXANGLE;
