@@ -19,7 +19,7 @@ class INSTRUMENTS_EXPORT GPIB
 public:
     GPIB();
 
-    void openDevice(int deviceAddress);
+    void openDevice(int deviceAddress, int delay, bool termchar);
     void closeDevice(int deviceAddress);
     bool isOpen(int deviceAddress) const;
 

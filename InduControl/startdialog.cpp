@@ -168,7 +168,7 @@ void StartDialog::setupUI()
 
     voltStartJc_ = new QDoubleSpinBox();
     voltStartJc_->setDecimals(3);
-    voltStartJc_->setSingleStep(0.01);
+    voltStartJc_->setSingleStep(0.002);
     voltStartJc_->setRange(0.004,1);
     voltStartJc_->setValue(0.004);
 
@@ -180,8 +180,8 @@ void StartDialog::setupUI()
 
     VoltRateJc_ = new QDoubleSpinBox();
     VoltRateJc_->setDecimals(3);
-    VoltRateJc_->setSingleStep(0.001);
-    VoltRateJc_->setRange(0,0.1);
+    VoltRateJc_->setSingleStep(0.002);
+    VoltRateJc_->setRange(0.002,0.1);
     VoltRateJc_->setValue(0.002);
 
     magneticFieldJc_ = new QDoubleSpinBox();

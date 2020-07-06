@@ -34,7 +34,10 @@ InstrumentManager::InstrumentManager()
     }
     else
     {
+        //lockin_ = new LockInSimulation;
         lockin_ = new LockInSr830(gpib_);
+        //ppms_ = new PpmsSimulation;
+
         ppms_ = new PpmsInstrument(gpib_, PPMSADDRESS);
     }
 

@@ -32,7 +32,7 @@ void LockInSr830::openDevice()
         return;
     }
     qDebug()<<"openDevice LOCKIN";
-    gpib_->openDevice(address_);
+    gpib_->openDevice(address_, DELAYGPIB, true);
 
     if(!gpib_->isOpen(address_))
     {

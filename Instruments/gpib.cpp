@@ -17,11 +17,13 @@ GPIB::GPIB()
 }
 
 //public:
-void GPIB::openDevice(int deviceAddress)
+void GPIB::openDevice(int deviceAddress, int delay, bool termchar)
 {
     //open device
     int handle = ibdev_(0, deviceAddress, 0, T3s, 1, 0);
-    if(errorCode(*ibsta_).size() != 0)
+    std::string noError = "no known error";
+
+    if(errorCode(*iberr_) !=  noError)
     {
         errormessage_ = statusGpib(*ibsta_);
         return;
@@ -32,7 +34,12 @@ void GPIB::openDevice(int deviceAddress)
         //ibclr_(handle); //TODO:eventuell nicht so wichtig
         deviceHandles_.insert(std::make_pair(deviceAddress, handle));
     }
-    qDebug()<<statusGpib(*ibsta_).c_str();
+
+    if(query(deviceAddress, "*IDN?", delay, termchar) == "false")
+    {
+        qDebug()<<"test";
+    }
+    qDebug()<<query(deviceAddress, "*IDN?", delay, termchar).c_str();
 }
 
 void GPIB::closeDevice(int deviceAddress)

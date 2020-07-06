@@ -40,7 +40,7 @@ void PpmsInstrument::openDevice()
         return;
     }
     qDebug()<<"openDevice PPMS";
-    gpib_->openDevice(address_);
+    gpib_->openDevice(address_, DELAYGPIB, false);
     if(!gpib_->isOpen(address_))
     {
         QString errormessage = "Ppms: ";
