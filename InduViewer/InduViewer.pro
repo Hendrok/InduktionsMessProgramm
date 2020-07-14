@@ -34,8 +34,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 
-unix|win32: LIBS += -L$$OUT_PWD/../InduCore/ -lInduCore
+
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../InduCore/release/ -lInduCore
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../InduCore/debug/ -lInduCore
+else:unix:!macx: LIBS += -L$$OUT_PWD/../InduCore/ -lInduCore
 
 INCLUDEPATH += $$PWD/../InduCore
 DEPENDPATH += $$PWD/../InduCore
-

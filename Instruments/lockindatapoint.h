@@ -13,8 +13,8 @@ public:
     double pvVoltSetPoint() const;
     void setPvVoltSetPoint(double pvVoltSetPoint);
 
-    double pvVoltLive() const;
-    void setPvVoltLive(double pvVoltLive);
+    double pvVoltInputLive() const;
+    void setPvVoltInputLive(double pvVoltInputLive);
 
     double pvVoltRate() const;
     void setPvVoltRate(double pvVoltRate);
@@ -22,12 +22,16 @@ public:
     double pvPhase() const;
     void setPvPhase(double pvPhase);
 
+    double pvVoltOutputLive() const;
+    void setPvVoltOutputLive(double pvVoltOutputLive);
+
 private:
     double pvVoltSetPoint_;     //höchstwahrscheinlich mit logik verbunden
     double pvVoltInputLive_;
     double pvVoltRate_;         //auch mit Logik verbunden
-
     double pvPhase_;
+    double pvVoltOutputLive_;
+
 };
 inline LockInDataPoint::LockInDataPoint()
     : pvVoltSetPoint_(0)
@@ -47,12 +51,12 @@ inline void LockInDataPoint::setPvVoltSetPoint(double pvVoltSetPoint)
 pvVoltSetPoint_ = pvVoltSetPoint;
 }
 
-inline double LockInDataPoint::pvVoltLive() const
+inline double LockInDataPoint::pvVoltInputLive() const
 {
 return pvVoltInputLive_;
 }
 
-inline void LockInDataPoint::setPvVoltLive(double pvVoltLive)
+inline void LockInDataPoint::setPvVoltInputLive(double pvVoltLive)
 {
 pvVoltInputLive_ = pvVoltLive;
 }
@@ -76,6 +80,17 @@ inline void LockInDataPoint::setPvPhase(double pvPhase)
 {
 pvPhase_ = pvPhase;
 }
+
+inline double LockInDataPoint::pvVoltOutputLive() const
+{
+return pvVoltOutputLive_;
+}
+
+inline void LockInDataPoint::setPvVoltOutputLive(double pvVoltOutputLive)
+{
+pvVoltOutputLive_ = pvVoltOutputLive;
+}
+
 
 
 #endif // LOCKINDATAPOINT_H

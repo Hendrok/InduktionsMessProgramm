@@ -4,9 +4,10 @@
 #include "InduCore_global.h"
 #include <chrono>
 #include <memory>
+//Internal Classes
 #include "../Instruments/ppmsdatapoint.h"
 #include "../Instruments/lockindatapoint.h"
-// test
+
 class INDUCORE_EXPORT DataPoint
 {
 public:

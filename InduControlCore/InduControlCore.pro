@@ -31,17 +31,18 @@ unix {
 }
 !isEmpty(target.path): INSTALLS += target
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../InduCore/ -lInduCore
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../InduCore/ -lInduCore
-else:unix: LIBS += -L$$OUT_PWD/../InduCore/ -lInduCore
+
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../InduCore/release/ -lInduCore
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../InduCore/debug/ -lInduCore
+else:unix:!macx: LIBS += -L$$OUT_PWD/../InduCore/ -lInduCore
 
 INCLUDEPATH += $$PWD/../InduCore
 DEPENDPATH += $$PWD/../InduCore
 
-
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Instruments/ -lInstruments
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Instruments/ -lInstruments
-else:unix: LIBS += -L$$OUT_PWD/../Instruments/ -lInstruments
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Instruments/release/ -lInstruments
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Instruments/debug/ -lInstruments
+else:unix:!macx: LIBS += -L$$OUT_PWD/../Instruments/ -lInstruments
 
 INCLUDEPATH += $$PWD/../Instruments
 DEPENDPATH += $$PWD/../Instruments

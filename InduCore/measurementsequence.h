@@ -3,21 +3,23 @@
 
 #include "InduCore_global.h"
 #include <QString>
-//getter klein durch refactoring
+
 class INDUCORE_EXPORT MeasurementSequence
 {
 public:
     MeasurementSequence();
     virtual ~MeasurementSequence()=0;
+
     //algemein
     QString supraName() const;
     void setSupraName(const QString supraName);
-    //PPMS
 
+    //PPMS
     double magneticField() const;
     void setMagneticField (double magneticField);
     double coilAngle() const;
     void setCoilAngle(double coilAngle);
+
     //GBIB
     double frequency() const;
     void setFrequency(double frequency);
@@ -27,15 +29,17 @@ public:
     void setFileName(const QString fileName);
 
     protected:
+
     //allgemein
     QString supraName_;
     QString fileName_;
+
     //PPMS
     double magneticField_;
     double coilAngle_;
+
     //Lockin
     double frequency_;
-
     int harmonicWave_;
 
 };

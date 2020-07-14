@@ -3,8 +3,10 @@
 
 #include <QWidget>
 
+//Internal Classes
 class DataPoint;
 class QLabel;
+class InstrumentManager;
 
 class PpmsWidget : public QWidget
 {
@@ -17,19 +19,22 @@ public:
     QSize minimumSizeHint() const override;
 
     void newData(std::shared_ptr<const DataPoint> dpoint);
-
+    void newMagSP(double magField, double magRate);
+    void newAngleSP(double angle);
+    void newTempSP(double temp, double rate);
 private:
     void setupUI();
-
     //tempBlock
     QLabel* tempSetPoint_;
     QLabel* tempLive_;
     QLabel* tempRate_;
     QLabel* tempStatus_;
+    QLabel* userTemp_;
 
     //MagBlock
     QLabel* magSetPoint_;
     QLabel* magFieldLive_;
+    QLabel* magRate_;
     QLabel* magStatus_;
 
     //RotationBlock
@@ -40,12 +45,17 @@ private:
     //Chamber
     QLabel* chamberStatus_;
     QLabel* chamberLevel_;
+    QLabel* sampleSpacePressure_;
 
     //Lockin
+    QLabel* inputVoltageLive_;
     QLabel* voltageLive_;
-    QLabel* voltageSetPoint_;
-    QLabel* voltageRate_;
     QLabel* phaseLive_;
+
+    QString tempStatStr_;
+    QString magStatStr_;
+    QString chambStatStr_;
+    QString rotStatStr_;
 
 
 };

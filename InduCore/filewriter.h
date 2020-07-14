@@ -1,19 +1,19 @@
 #ifndef FILEWRITER_H
 #define FILEWRITER_H
 
+#include "InduCore_global.h"
+
 #include <QString>
 #include <memory>
 #include <QFile>
 #include <QObject>
 
-#include "InduCore_global.h"
-
-//forward decleration (hier nur declariert, FileWriter ist z.B. declariert und definiert)
+//Internal Classes
 class MeasSeqTc;
 class MeasurementSequence;
 class FileWriter;
 class DataPoint;
-
+#include "../InduControlCore/indumanager.h"
 
 class INDUCORE_EXPORT FileWriter :QObject
 {
@@ -21,18 +21,19 @@ class INDUCORE_EXPORT FileWriter :QObject
 
 public slots:
 
-    bool append(std::shared_ptr<DataPoint> datapoint);
+    void append(std::shared_ptr<DataPoint> datapoint);
 public:
     FileWriter(QObject *parent =0);
-    QString openFile(std::shared_ptr<const MeasurementSequence> measurementSequence/*, QString filedir*/);
-    //bool append(std::shared_ptr<DataPoint> datapoint);
+    QString openFile(std::shared_ptr<const MeasurementSequence> measurementSequence);
+    void closeFile();
+    void MeasurementState(InduManager::State newState);
 
 
 private:
     QString createFileName(std::shared_ptr<const MeasurementSequence> measurementSequence);
     QString writeHeader(std::shared_ptr<const MeasurementSequence> measurementSequence);
     QString filedir_;
-
+    InduManager::State measurementState_;
 
 
     std::shared_ptr<QFile> file_;

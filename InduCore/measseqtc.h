@@ -6,12 +6,13 @@
 #include "InduCore_global.h"
 #include <QString>
 
+//Internal Classes
 #include "measurementsequence.h"
 
 class INDUCORE_EXPORT MeasSeqTc : public MeasurementSequence
 {
 public:
-    MeasSeqTc();
+    explicit MeasSeqTc();
     double tempStart() const;
     void setTempStart(double tempStart);
     double tempEnd() const;
