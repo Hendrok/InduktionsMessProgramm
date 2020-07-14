@@ -20,7 +20,7 @@ PpmsSimulation::PpmsSimulation()
      , magFieldNow_(0)
      , angle_(0)
 {
-    maxPosMagField_ = 9000;
+    maxPosMagField_ = 90000;
     maxRateMag_ = 100;
     ppmsHelium_ = 60;
 }
@@ -57,7 +57,6 @@ void PpmsSimulation::setMagFieldCore(double magField, double magRate)
 {
     magFieldSP_ = magField;
     magRate_ = magRate;
-
 }
 
 void PpmsSimulation::setAngleCore(double angle)
@@ -72,11 +71,7 @@ QPair<double, double> PpmsSimulation::tempSetpointCore()
 
 QPair<double, double> PpmsSimulation::magFieldCore()
 {  
-    if(magFieldSP_>9000)
-    {
-        emit newErrorPPMS("Magnetfeld zu hoch");
-    }
-    return QPair(magFieldSP_, magRate_);
+    return QPair(magFieldSP_/10, magRate_/10);
 }
 
 double PpmsSimulation::angleCore()
@@ -108,16 +103,16 @@ PpmsDataPoint PpmsSimulation::ppmsLogik()
     {
         tempNow_ = tempNow_ - tempRate_;
     }
-    if(std::abs(magFieldSP_ - magFieldNow_) < magRate_ && magRate_ > 0.1)
+    if(std::abs(magFieldSP_/10 - magFieldNow_) < magRate_ && magRate_ > 0.1)
     {
         magRate_ = 0.1*magRate_;
     }
 
-    if (magFieldNow_ < magFieldSP_)
+    if (magFieldNow_ < magFieldSP_/10)
     {
         magFieldNow_ = magFieldNow_ + magRate_;
     }
-    if (magFieldNow_ > magFieldSP_)
+    if (magFieldNow_ > magFieldSP_/10)
     {
         magFieldNow_ = magFieldNow_ - magRate_;
     }

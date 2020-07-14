@@ -70,11 +70,11 @@ void PpmsInstrument::openDevice()
     dataMask_ += BITMAG; // Mag
     dataMask_ += BITPRESSURE; // pressure
 
-    if(rotState_ == true)
+    /*if(rotState_ == true)
     {
         dataMask_ += BITANGLE; // Angle
         dataMask_ += BITUSERTEMP; // userTemp
-    }
+    }*/
 
     QString magcnf;
 
@@ -91,15 +91,16 @@ void PpmsInstrument::newRotatorstate(bool rotator)
     {
         gpib_->cmd(address_ ,"Bridge 1,999.023,100.000,0,0,9.0", DELAYGPIB, TERMCHAR);
         gpib_->cmd(address_ ,"USERTEMP 23 1.9 1.8 2 1", DELAYGPIB, TERMCHAR);
-        rotState_ = true;
         dataMask_ += BITANGLE; // Angle
         dataMask_ += BITUSERTEMP; // userTemp
+        rotState_ = true;
+
         qDebug()<<dataMask_;
     }
     else
     {
-        //TODO: Rotator Voltage aus?
-        //gpib_->cmd(address_ ,"Bridge 1,999.023,100.000,0,0,9.0", DELAYGPIB, TERMCHAR);
+         //TODO: Rotator Voltage aus?
+        //gpib_->cmd(address_ ,"Bridge 0,999.023,100.000,0,0,9.0", DELAYGPIB, TERMCHAR);
         gpib_->cmd(address_ ,"USERTEMP 0", DELAYGPIB, TERMCHAR);
         rotState_ = false;
         dataMask_ -= BITANGLE; // Angle
@@ -209,7 +210,7 @@ PpmsDataPoint PpmsInstrument::ppmsLogik()
     QString getdat = (gpib_->query(address_, getDatStr , DELAYGPIB, TERMCHAR).c_str());
 
     auto Datavector = getdat.split(',');
-    if(Datavector.size() == 0)
+    if(Datavector.size() < 5)
     {
         return ppmsDpoint;
     }
@@ -218,7 +219,7 @@ PpmsDataPoint PpmsInstrument::ppmsLogik()
     ppmsDpoint.setPvMagFieldLive( Datavector[4].toDouble() / OE_IN_MT);
     ppmsDpoint.setPvSamplePressure(Datavector[5].toDouble());
 
-    if(Datavector[0].toInt() & BITUSERTEMP && rotState_ == true)
+    if(Datavector[0].toInt() & BITUSERTEMP && rotState_ == true && Datavector.size()>7)
     {
         ppmsDpoint.setPvRotLive(Datavector[5].toDouble());
         ppmsDpoint.setPvSamplePressure(Datavector[6].toDouble());

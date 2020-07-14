@@ -141,9 +141,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
                 if( std::abs(mSeqTc_->tempStart() - datapoint->ppmsdata()->pvTempLive()) < 0.7 &&
                         std::abs(magFieldSP_ - datapoint->ppmsdata()->pvMagFieldLive()) < 10 &&
                         std::abs(angleSP_ - datapoint->ppmsdata()->pvRotLive()) < 3 &&
-                        tempStable == true &&
-                        magStable == true &&
-                        rotStable == true)
+                        tempStable == true)
                 {
                     measurementState = State::ApproachEndTc;
                     instrumentmanager_->setTempSetpoint(mSeqTc_->tempEnd(), mSeqTc_->temperatureRate());
@@ -158,7 +156,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
                     fw_->append(datapoint);
                }
 
-               if(std::abs(mSeqTc_->tempEnd() - datapoint->ppmsdata()->pvTempLive()) < 0.6 &&
+               if(std::abs(mSeqTc_->tempEnd() - datapoint->ppmsdata()->pvTempLive()) < 1 &&
                        tempStable == true)
                {
                     tempSP_ = datapoint->ppmsdata()->pvTempSetPoint();
@@ -174,9 +172,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
                 if( std::abs(mSeqJc_->temperature() - datapoint->ppmsdata()->pvTempLive()) < 0.6 &&
                         std::abs(magFieldSP_ - datapoint->ppmsdata()->pvMagFieldLive()) < 10 &&
                         std::abs(angleSP_ - datapoint->ppmsdata()->pvRotLive()) < 1 &&
-                        tempStable == true &&
-                        magStable == true &&
-                        rotStable == true)
+                        tempStable == true)
                 {
                     measurementState = State::ApproachEndJc;
                     instrumentmanager_->setInputVoltage(mSeqJc_->voltStart());
