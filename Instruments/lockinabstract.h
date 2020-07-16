@@ -3,9 +3,11 @@
 #include "Instruments_global.h"
 #include <QObject>
 #include "lockindatapoint.h"
+
 class INSTRUMENTS_EXPORT LockInAbstract: public QObject
 {
     Q_OBJECT
+
 public:
     void setInputVoltage(double InputVoltage);
     void setFreq(double freq);
@@ -13,6 +15,7 @@ public:
     void setHarmonic(int harmonicW);
     virtual LockInDataPoint lockInLogik() = 0;
     virtual void openDevice() = 0;
+
 protected:
     virtual void setInputVoltageCore(double inputVoltage) = 0;
     virtual void setFreqCore(double freq) = 0;
@@ -22,6 +25,7 @@ protected:
     virtual double freqCore() = 0;
     virtual int sensitivityCore() = 0;
     virtual int harmonicCore() = 0;
+
 signals:
     void newFreqSP(double freq);
     void newSensivitySP(int sensivity);

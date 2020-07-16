@@ -11,7 +11,7 @@
 const int DELAYGPIB = 0;
 const bool TERMCHAR = true;
 
-LockInSr830::LockInSr830(std::shared_ptr<GPIB> gpib)
+LockInSr830::LockInSr830(std::shared_ptr<GPIB> gpib, int address)
     : datapoint_(DataPoint())
     , inputVoltage_ (0.1)
     , voltnow_(0.1)
@@ -20,7 +20,7 @@ LockInSr830::LockInSr830(std::shared_ptr<GPIB> gpib)
     , harmonicW_(1)
     , phase_(0)
     , gpib_(gpib)
-    , address_(10)
+    , address_(address)
 {  
     sstring_.imbue(std::locale::classic());
     sstring_ << std::fixed;

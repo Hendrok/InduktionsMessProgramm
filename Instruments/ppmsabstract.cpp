@@ -88,4 +88,10 @@ void PpmsAbstract::setAngle(double angle)
     emit newAngleSP(angleReport);
 }
 
+void PpmsAbstract::setRotatorState(bool rot)
+{
+    setRotatorStateCore(rot);
+    emit newRotstate(rotState_);
+}
+
 

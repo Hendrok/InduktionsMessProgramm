@@ -27,23 +27,17 @@ PpmsSimulation::PpmsSimulation()
 
 void PpmsSimulation::openDevice()
 {
-
-}
-
-void PpmsSimulation::setRotatorstate(bool rot)
-{
-    emit newRotstate(rot);
 }
 
 bool PpmsSimulation::isOpen() const
 {
     return true;
 }
+
 void PpmsSimulation::setTempSetpointCore(double setpoint, double rate)
 {
     tempSetpoint_ = setpoint;
     tempRate_ = rate;
-
 }
 
 void PpmsSimulation::setMagFieldCore(double magField, double magRate)
@@ -55,6 +49,11 @@ void PpmsSimulation::setMagFieldCore(double magField, double magRate)
 void PpmsSimulation::setAngleCore(double angle)
 {
     angle_ = angle;
+}
+
+void PpmsSimulation::setRotatorStateCore(bool rot)
+{
+    Q_UNUSED(rot)
 }
 
 QPair<double, double> PpmsSimulation::tempSetpointCore()
@@ -81,8 +80,6 @@ PpmsDataPoint PpmsSimulation::ppmsLogik()
 {
     PpmsDataPoint ppmsDpoint;
     auto dataPoint =std::make_shared<DataPoint> ();
-
-
 
     if(std::abs(tempSetpoint_ - tempNow_) < tempRate_ && tempRate_ > 0.1)
     {

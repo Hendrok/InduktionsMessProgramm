@@ -12,34 +12,34 @@
 #include "../Instruments/lockinsr830.h"
 #include "../Instruments/gpib.h"
 #include "../Instruments/lockinsens.h"
-const int PPMSADDRESS = 15;
-//const int LOCKINADRESS = 10;
+
+const int GPIB_ADDRESS_PPMS = 15;
+const int GPIB_ADDRESS_LOCKIN = 10;
 
 InstrumentManager::InstrumentManager()
     : timer_(new QTimer(this))
     , gpib_(std::make_shared<GPIB>())
     , lockinsens_(std::make_shared<LockInSens> ())
 {
-    connect(timer_, &QTimer::timeout,
-            this, &InstrumentManager::onPolling);
-
-    timer_->start(1000);
-
-    if(simulation_ == 1)
+    if(simulation_)
     {
         //ppms_ = new PpmsSimulation;
         lockin_ = new LockInSimulation;
-        //lockin_ = new LockInSr830(gpib_);
-        ppms_ = new PpmsInstrument(gpib_, PPMSADDRESS);
+        //lockin_ = new LockInSr830(gpib_, GPIB_ADDRESS_LOCKIN);
+        ppms_ = new PpmsInstrument(gpib_, GPIB_ADDRESS_PPMS);
     }
     else
     {
         //lockin_ = new LockInSimulation;
-        lockin_ = new LockInSr830(gpib_);
+        lockin_ = new LockInSr830(gpib_, GPIB_ADDRESS_LOCKIN);
         //ppms_ = new PpmsSimulation;
 
-        ppms_ = new PpmsInstrument(gpib_, PPMSADDRESS);
+        ppms_ = new PpmsInstrument(gpib_, GPIB_ADDRESS_PPMS);
     }
+
+    connect(timer_, &QTimer::timeout,
+            this, &InstrumentManager::onPolling);
+    timer_->start(1000);
 
     connect(ppms_, &PpmsAbstract::newTempSP,
             this, &InstrumentManager::newTempSP);
@@ -100,7 +100,7 @@ void InstrumentManager::setHarmonic(double harmonic)
 
 void InstrumentManager::rotatorState(bool rotator)
 {
-    ppms_->setRotatorstate(rotator);
+    ppms_->setRotatorState(rotator);
 }
 
 void InstrumentManager::adjustSensitivity()
@@ -110,8 +110,6 @@ void InstrumentManager::adjustSensitivity()
          onPolling();
     }
 }
-
-
 
 void InstrumentManager::onPolling()
 {

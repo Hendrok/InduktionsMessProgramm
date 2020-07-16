@@ -19,17 +19,16 @@ const double MAXFIELDRATEPPMS14 = 120; //in Oe
 const int DELAYGPIB = 100; //in ms
 const bool TERMCHAR = false;
 const int OE_IN_MT = 10;
-const int BITSTATUS = 1 << 0; // Stat
-const int BITTEMP = 1 << 1; // Temp
-const int BITMAG = 1 << 2; // Mag
-const int BITANGLE = 1 << 3; // Angle
-const int BITPRESSURE = 1 << 19; // pressure
-const int BITUSERTEMP = 1 << 23; // userTemp
+const int BIT_STATUS = 1 << 0; // Stat
+const int BIT_TEMP = 1 << 1; // Temp
+const int BIT_MAG = 1 << 2; // Mag
+const int BIT_ANGLE = 1 << 3; // Angle
+const int BIT_PRESSURE = 1 << 19; // pressure
+const int BIT_USERTEMP = 1 << 23; // userTemp
 
 PpmsInstrument::PpmsInstrument(std::shared_ptr<GPIB> gpib, int address)
     : gpib_(gpib)
     , address_(address)
-    , rotState_(false)
     , dataMask_(0)
 {
     sstring_.imbue(std::locale::classic());
@@ -65,56 +64,21 @@ void PpmsInstrument::openDevice()
         return;
     }
 
-    dataMask_ += BITSTATUS; // Stat
-    dataMask_ += BITTEMP; // Temp
-    dataMask_ += BITMAG; // Mag
-    dataMask_ += BITPRESSURE; // pressure
-
-    /*if(rotState_ == true)
-    {
-        dataMask_ += BITANGLE; // Angle
-        dataMask_ += BITUSERTEMP; // userTemp
-    }*/
+    dataMask_ += BIT_STATUS; // Stat
+    dataMask_ += BIT_TEMP; // Temp
+    dataMask_ += BIT_MAG; // Mag
+    dataMask_ += BIT_PRESSURE; // pressure
 
     QString magcnf;
 
     magcnf = (QString::fromStdString(gpib_->query(address_,"MAGCNF?", DELAYGPIB, TERMCHAR)));
     auto list = magcnf.split(',',QString::SkipEmptyParts);
 
-    maxPosMagField_ = list[0].toDouble();
-    maxRateMag_ = (maxPosMagField_ > MAXFIELDPPMS9) ? MAXFIELDRATEPPMS14 : MAXFIELDRATEPPMS9;
-}
-
-void PpmsInstrument::setRotatorstate(bool rotator)
-{
-    rotState_ = rotator;
-    if(rotator == true)
+    if (!list.isEmpty())
     {
-        gpib_->cmd(address_ ,"Bridge 1,999.023,100.000,0,0,9.0", DELAYGPIB, TERMCHAR);
-        gpib_->cmd(address_ ,"USERTEMP 23 1.9 1.8 2 1", DELAYGPIB, TERMCHAR);
-        dataMask_ += BITANGLE; // Angle
-        dataMask_ += BITUSERTEMP; // userTemp
-
-        qDebug()<<gpib_->query(address_,"",DELAYGPIB,TERMCHAR).c_str();
-
-        qDebug()<<dataMask_;
-        rotState_ = ppmsLogik().datamask() & BITUSERTEMP;
-        if(rotState_ != rotator)
-        {
-            emit newErrorPPMS("Rotator not mounted");
-        }
+        maxPosMagField_ = list[0].toDouble();
+        maxRateMag_ = (maxPosMagField_ > MAXFIELDPPMS9) ? MAXFIELDRATEPPMS14 : MAXFIELDRATEPPMS9;
     }
-    else
-    {
-        //TODO: Rotator Voltage aus?
-        //gpib_->cmd(address_ ,"Bridge 0,999.023,100.000,0,0,9.0", DELAYGPIB, TERMCHAR);
-        gpib_->cmd(address_ ,"USERTEMP 0", DELAYGPIB, TERMCHAR);
-        dataMask_ -= BITANGLE; // Angle
-        dataMask_ -= BITUSERTEMP; // userTemp
-        //qDebug()<<dataMask_;
-    }
-
-    emit newRotstate(rotState_);
 }
 
 bool PpmsInstrument::isOpen() const
@@ -128,6 +92,7 @@ void PpmsInstrument::setTempSetpointCore(double setpoint, double rate)
     {
         return;
     }
+
     std::string setTempSetpointStr = "TEMP "+ dtoStr(setpoint, 3) + " " + dtoStr(rate, 3) + " 0";
     gpib_->cmd(address_, setTempSetpointStr, DELAYGPIB, TERMCHAR);
 }
@@ -138,6 +103,7 @@ void PpmsInstrument::setMagFieldCore(double magField, double magRate)
     {
         return;
     }
+
     std::string setMagFieldStr = "FIELD " + dtoStr(magField, 0) + " " + dtoStr(magRate, 0);
     gpib_->cmd(address_, setMagFieldStr, DELAYGPIB, TERMCHAR);
 }
@@ -148,8 +114,40 @@ void PpmsInstrument::setAngleCore(double angle)
     {
         return;
     }
+
     std::string angleStr = "MOVE " + std::to_string(angle);
     gpib_->cmd(address_, angleStr, DELAYGPIB, TERMCHAR);
+}
+
+void PpmsInstrument::setRotatorStateCore(bool rotator)
+{
+    rotState_ = rotator;
+
+    if(rotator == true)
+    {
+        gpib_->cmd(address_ ,"Bridge 1,999.023,100.000,0,0,9.0", DELAYGPIB, TERMCHAR);
+        gpib_->cmd(address_ ,"USERTEMP 23 1.9 1.8 2 1", DELAYGPIB, TERMCHAR);
+        dataMask_ += BIT_ANGLE; // Angle
+        dataMask_ += BIT_USERTEMP; // userTemp
+
+        qDebug()<<gpib_->query(address_,"",DELAYGPIB,TERMCHAR).c_str();
+
+        qDebug()<<dataMask_;
+        rotState_ = ppmsLogik().datamask() & BIT_USERTEMP;
+        if(rotState_ != rotator)
+        {
+            emit newErrorPPMS("Rotator not mounted");
+        }
+    }
+    else
+    {
+        //TODO: Rotator Voltage aus?
+        //gpib_->cmd(address_ ,"Bridge 0,999.023,100.000,0,0,9.0", DELAYGPIB, TERMCHAR);
+        gpib_->cmd(address_ ,"USERTEMP 0", DELAYGPIB, TERMCHAR);
+        dataMask_ -= BIT_ANGLE; // Angle
+        dataMask_ -= BIT_USERTEMP; // userTemp
+        //qDebug()<<dataMask_;
+    }
 }
 
 QPair<double, double> PpmsInstrument::tempSetpointCore()
@@ -172,6 +170,7 @@ QPair<double, double> PpmsInstrument::magFieldCore()
     {
         return QPair(0,0);
     }
+
     QString string = gpib_->query(address_, "FIELD?", DELAYGPIB, TERMCHAR).c_str();
     //QString = String den uns Ppms gibt
     auto list = string.split(',', QString::SkipEmptyParts);
@@ -198,6 +197,7 @@ double PpmsInstrument::heliumCore()
     {
         return 0;
     }
+
     QString string = gpib_->query(address_, "LEVEL?", DELAYGPIB, TERMCHAR).c_str();
     //QString = String den uns Ppms gibt
     auto list = string.split(',', QString::SkipEmptyParts);
@@ -212,6 +212,7 @@ PpmsDataPoint PpmsInstrument::ppmsLogik()
     {
         return PpmsDataPoint();
     }
+
     PpmsDataPoint ppmsDpoint;
     std::string dataMask = QString::number(dataMask_).toStdString();
     std::string getDatStr = "GETDAT? " + dataMask + " 0";
@@ -228,7 +229,7 @@ PpmsDataPoint PpmsInstrument::ppmsLogik()
     ppmsDpoint.setPvMagFieldLive( Datavector[4].toDouble() / OE_IN_MT);
     ppmsDpoint.setPvSamplePressure(Datavector[5].toDouble());
 
-    if(ppmsDpoint.datamask() & BITUSERTEMP && rotState_ == true && Datavector.size()>7)
+    if(ppmsDpoint.datamask() & BIT_USERTEMP && rotState_ == true && Datavector.size()>7)
     {
         ppmsDpoint.setPvRotLive(Datavector[5].toDouble());
         ppmsDpoint.setPvSamplePressure(Datavector[6].toDouble());

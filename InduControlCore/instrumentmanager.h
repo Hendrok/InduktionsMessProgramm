@@ -28,9 +28,11 @@ signals:
     void newHarmonicSP(int harmonicW);
     void newRotstate(bool rotActive);
     void newErrorMessage(QString ppmsError);
+
 public:
     InstrumentManager();
     ~InstrumentManager() = default;
+
     void openDevice();
     void setTempSetpoint(double setpoint, double rate);
     void setInputVoltage(double inputVoltage);

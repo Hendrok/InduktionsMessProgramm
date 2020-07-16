@@ -14,16 +14,17 @@
 class INSTRUMENTS_EXPORT PpmsSimulation : public PpmsAbstract
 {
     Q_OBJECT
+
 public:
     PpmsSimulation();
     void openDevice() override;
-    void setRotatorstate(bool rot) override;
     bool isOpen() const override;
 
 protected:
     void setTempSetpointCore(double setpoint, double rate) override;
     void setMagFieldCore(double magField, double magRate) override;
     void setAngleCore(double angle) override;
+    void setRotatorStateCore(bool rot) override;
     QPair<double,double> tempSetpointCore() override;
     QPair<double, double> magFieldCore() override;
     double angleCore() override;

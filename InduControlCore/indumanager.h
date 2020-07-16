@@ -41,16 +41,6 @@ signals:
 
 private slots:
     void onNewData(std::shared_ptr<DataPoint> datapoint);
-    void onNewTempSP(double setpoint, double rate);
-    void onNewMagSP(double magField, double magRate);
-    void onNewAngleSP(double angle);
-    void onNewFreqSP(double freq);
-    void onNewSensivitySP(int sensivity);
-    void onNewHarmonicSP(int harmonicW);
-    void onNewRotstate(bool rotActive);
-    void onNewErrorMessage(QString errormessagePpms);
-
-
 
 private:
     size_t measurementNumber_;
@@ -63,7 +53,6 @@ private:
     double magFieldSP_;
     double angleSP_;
     double tempSP_;
-
 };
 
 #endif // INDUMANAGER_H

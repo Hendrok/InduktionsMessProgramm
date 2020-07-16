@@ -12,7 +12,6 @@
 #include "../Instruments/ppmsdatapoint.h"
 #include <QThread>
 
-
 InduManager::InduManager()
     : measurementNumber_(0)
     , instrumentmanager_(std::make_unique<InstrumentManager>())
@@ -23,39 +22,35 @@ InduManager::InduManager()
     , magFieldSP_(0)
     , angleSP_(0)
     , tempSP_(0)
-
 {   
     connect(instrumentmanager_.get(), &InstrumentManager::newData,
             this, &InduManager::onNewData);
     connect(instrumentmanager_.get(), &InstrumentManager::newTempSP,
-            this, &InduManager::onNewTempSP);
+            this, &InduManager::newTempSP);
     connect(instrumentmanager_.get(), &InstrumentManager::newMagSP,
-            this, &InduManager::onNewMagSP);
+            this, &InduManager::newMagSP);
     connect(instrumentmanager_.get(), &InstrumentManager::newAngleSP,
-            this, &InduManager::onNewAngleSP);
+            this, &InduManager::newAngleSP);
     connect(instrumentmanager_.get(), &InstrumentManager::newFreqSP,
-            this, &InduManager::onNewFreqSP);
+            this, &InduManager::newFreqSP);
     connect(instrumentmanager_.get(), &InstrumentManager::newSensivitySP,
-            this, &InduManager::onNewSensivitySP);
+            this, &InduManager::newSensivitySP);
     connect(instrumentmanager_.get(), &InstrumentManager::newHarmonicSP,
-            this, &InduManager::onNewHarmonicSP);
+            this, &InduManager::newHarmonicSP);
     connect(instrumentmanager_.get(), &InstrumentManager::newRotstate,
-            this, &InduManager::onNewRotstate);
+            this, &InduManager::newRotstate);
     connect(instrumentmanager_.get(), &InstrumentManager::newErrorMessage,
-            this, &InduManager::onNewErrorMessage);
-
+            this, &InduManager::newErrorMessage);
 }
 
 InduManager::~InduManager()
 {
-
 }
 
 void InduManager::openDevice()
 {
     instrumentmanager_->openDevice();
 }
-
 
 void InduManager::appendMeasurement(std::vector<std::shared_ptr<const MeasurementSequence>> mVecSeq)
 {
@@ -68,7 +63,6 @@ void InduManager::appendMeasurement(std::vector<std::shared_ptr<const Measuremen
         emit newState(measurementState);
     }
 }
-
 
 void InduManager::startMeasurement(std::shared_ptr<const MeasurementSequence> measurementSequence)
 {
@@ -234,47 +228,3 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
         default:assert(false);
     }
 }
-
-void InduManager::onNewTempSP(double setpoint, double rate)
-{
-    emit newTempSP(setpoint, rate);
-
-}
-
-void InduManager::onNewMagSP(double magField, double magRate)
-{
-    emit newMagSP(magField,magRate);
-    magFieldSP_ = magField;
-}
-
-void InduManager::onNewAngleSP(double angle)
-{
-    emit newAngleSP(angle);
-    angleSP_ = angle;
-}
-
-void InduManager::onNewFreqSP(double freq)
-{
-    emit newFreqSP(freq);
-}
-
-void InduManager::onNewSensivitySP(int sensivity)
-{
-    emit newSensivitySP(sensivity);
-}
-
-void InduManager::onNewHarmonicSP(int harmonicW)
-{
-    emit newHarmonicSP(harmonicW);
-}
-
-void InduManager::onNewRotstate(bool rotActive)
-{
-    emit newRotstate(rotActive);
-}
-
-void InduManager::onNewErrorMessage(QString errormessagePpms)
-{
-    emit newErrorMessage(errormessagePpms);
-}
-

@@ -20,8 +20,9 @@ class INSTRUMENTS_EXPORT LockInSr830 : public LockInAbstract
 {
     Q_OBJECT
 public:
-    LockInSr830(std::shared_ptr<GPIB> gpib);
+    LockInSr830(std::shared_ptr<GPIB> gpib, int address);
     void openDevice() override;
+
 protected:
     void setInputVoltageCore(double inputVoltage) override;
     void setFreqCore(double freq) override;
@@ -32,6 +33,7 @@ protected:
     int harmonicCore() override;
     int sensitivityCore() override;
     LockInDataPoint lockInLogik() override;
+
 private:
     std::string dtoStr (double number, int dec);
     std::string itoStr (int number);
@@ -47,7 +49,6 @@ private:
     std::stringstream sstring_ ;
     std::shared_ptr<GPIB> gpib_;
     int address_;
-
 };
 
 #endif
