@@ -20,7 +20,7 @@ class INSTRUMENTS_EXPORT PpmsInstrument : public PpmsAbstract
 public:
     PpmsInstrument(std::shared_ptr<GPIB> gpib, int address);
     void openDevice() override;
-    void newRotatorstate(bool rotator) override;
+    void setRotatorstate(bool rotator) override;
     bool isOpen() const override;
 
 protected:

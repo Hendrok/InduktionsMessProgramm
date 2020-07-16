@@ -30,16 +30,9 @@ void PpmsSimulation::openDevice()
 
 }
 
-void PpmsSimulation::newRotatorstate(bool rot)
+void PpmsSimulation::setRotatorstate(bool rot)
 {
-    if(rot == true)
-    {
-        qDebug()<<"true";
-    }
-    else
-    {
-        qDebug()<<"false";
-    }
+    emit newRotstate(rot);
 }
 
 bool PpmsSimulation::isOpen() const

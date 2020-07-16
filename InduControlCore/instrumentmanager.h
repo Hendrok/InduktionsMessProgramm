@@ -40,6 +40,7 @@ public:
     void setSensivity(int sensivity);
     void setHarmonic(double harmonic);
     void rotatorState(bool rotator);
+    void adjustSensitivity();
 
 private slots:
     void onPolling();

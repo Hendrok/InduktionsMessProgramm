@@ -100,7 +100,15 @@ void InstrumentManager::setHarmonic(double harmonic)
 
 void InstrumentManager::rotatorState(bool rotator)
 {
-    ppms_->newRotatorstate(rotator);
+    ppms_->setRotatorstate(rotator);
+}
+
+void InstrumentManager::adjustSensitivity()
+{
+    for(int i = 1; i < 15; i++)
+    {
+         onPolling();
+    }
 }
 
 

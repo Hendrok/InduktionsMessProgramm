@@ -185,7 +185,8 @@ void MainWindow::onNewAngleSP(double angle)
 
 void MainWindow::onNewRotState(bool rotActive)
 {
-    //rotCheckBox_->setEnabled(rotActive);
+    Qt::CheckState rotState = rotActive ? Qt::CheckState::Checked : Qt::CheckState::Unchecked ;
+    rotCheckBox_->setCheckState(rotState);
 }
 
 void MainWindow::onNewErrorMessage(QString errormessagePpms)

@@ -85,7 +85,7 @@ void PpmsInstrument::openDevice()
     maxRateMag_ = (maxPosMagField_ > MAXFIELDPPMS9) ? MAXFIELDRATEPPMS14 : MAXFIELDRATEPPMS9;
 }
 
-void PpmsInstrument::newRotatorstate(bool rotator)
+void PpmsInstrument::setRotatorstate(bool rotator)
 {
     rotState_ = rotator;
     if(rotator == true)
@@ -94,6 +94,7 @@ void PpmsInstrument::newRotatorstate(bool rotator)
         gpib_->cmd(address_ ,"USERTEMP 23 1.9 1.8 2 1", DELAYGPIB, TERMCHAR);
         dataMask_ += BITANGLE; // Angle
         dataMask_ += BITUSERTEMP; // userTemp
+
         qDebug()<<gpib_->query(address_,"",DELAYGPIB,TERMCHAR).c_str();
 
         qDebug()<<dataMask_;
@@ -113,7 +114,7 @@ void PpmsInstrument::newRotatorstate(bool rotator)
         //qDebug()<<dataMask_;
     }
 
-    emit newRotatorstate(rotator);
+    emit newRotstate(rotState_);
 }
 
 bool PpmsInstrument::isOpen() const

@@ -17,7 +17,7 @@ class INSTRUMENTS_EXPORT PpmsSimulation : public PpmsAbstract
 public:
     PpmsSimulation();
     void openDevice() override;
-    void newRotatorstate(bool rot) override;
+    void setRotatorstate(bool rot) override;
     bool isOpen() const override;
 
 protected:

@@ -16,7 +16,7 @@ public:
     void setAngle(double angle);
     virtual PpmsDataPoint ppmsLogik() = 0;
     virtual void openDevice() = 0;
-    virtual void newRotatorstate(bool rot) = 0;
+    virtual void setRotatorstate(bool rot) = 0;
     virtual bool isOpen() const = 0;
 
 protected:

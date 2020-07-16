@@ -149,6 +149,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
                     measurementState = State::ApproachEndTc;
                     instrumentmanager_->setTempSetpoint(mSeqTc_->tempEnd(), mSeqTc_->temperatureRate());
                     instrumentmanager_->setInputVoltage(mSeqTc_->voltageAmplitude());
+                    instrumentmanager_->adjustSensitivity();
                     emit newState(measurementState);
                 }
                 break;
@@ -179,6 +180,7 @@ void InduManager::onNewData(std::shared_ptr<DataPoint> datapoint)
                 {
                     measurementState = State::ApproachEndJc;
                     instrumentmanager_->setInputVoltage(mSeqJc_->voltStart());
+                    instrumentmanager_->adjustSensitivity();
                     emit newState(measurementState);
                 }
                 break;
