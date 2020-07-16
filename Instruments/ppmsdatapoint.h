@@ -45,6 +45,9 @@ public:
     double pvUserTemp() const;
     void setPvUserTemp(double pvUserTemp);
 
+    std::uint32_t datamask() const;
+    void setDatamask(const std::uint32_t &datamask);
+
 private:
     //PpmsTemp
     double pvTempSetPoint_;
@@ -65,6 +68,7 @@ private:
     double pvSamplePressure_;
 
     std::string pvStatusPpms_;
+    std::uint32_t datamask_;
 };
 inline PpmsDataPoint::PpmsDataPoint()
     : pvTempSetPoint_(300)
@@ -78,6 +82,7 @@ inline PpmsDataPoint::PpmsDataPoint()
     , pvChamberLevel_(60)
     , pvSamplePressure_(0)
     , pvStatusPpms_("")
+    , datamask_(0)
 {
 }
 
@@ -189,6 +194,16 @@ return pvUserTemp_;
 inline void PpmsDataPoint::setPvUserTemp(double pvUserTemp)
 {
 pvUserTemp_ = pvUserTemp;
+}
+
+inline std::uint32_t PpmsDataPoint::datamask() const
+{
+return datamask_;
+}
+
+inline void PpmsDataPoint::setDatamask(const std::uint32_t &datamask)
+{
+datamask_ = datamask;
 }
 
 

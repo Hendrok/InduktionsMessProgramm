@@ -57,7 +57,7 @@ bool GPIB::isOpen(int deviceAddress) const
 void GPIB::cmd(int deviceAddress, std::string command, int delay, bool termchar)
 {
     int handle = getHandle(deviceAddress);
-    if (handle == -1)
+    if (handle == -1 || command.size() == 0)
     {
         return;
     }

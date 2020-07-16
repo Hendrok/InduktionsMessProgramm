@@ -57,6 +57,8 @@ InstrumentManager::InstrumentManager()
             this, &InstrumentManager::newErrorMessage);
     connect(lockin_, &LockInAbstract::newErrorLockIN,
             this, &InstrumentManager::newErrorMessage);
+    connect(ppms_, &PpmsAbstract::newRotstate,
+            this, &InstrumentManager::newRotstate);
 }
 
 void InstrumentManager::openDevice()

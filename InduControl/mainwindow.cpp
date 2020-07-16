@@ -44,9 +44,11 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::onNewMagSP);
     connect(indumanager_, &InduManager::newAngleSP,
             this, &MainWindow::onNewAngleSP);
+    connect(indumanager_, &InduManager::newRotstate,
+            this, &MainWindow::onNewRotState);
     connect(indumanager_, &InduManager::newErrorMessage,
             this, &MainWindow::onNewErrorMessage);
-    connect(rotCheckBox_, &QCheckBox::stateChanged,
+    connect(rotCheckBox_, &QCheckBox::clicked,
             this, &MainWindow::onSetSampleStage);
 
     indumanager_->openDevice();
@@ -179,6 +181,11 @@ void MainWindow::onNewMagSP(double magField, double magRate)
 void MainWindow::onNewAngleSP(double angle)
 {
     ppmsWidget_->newAngleSP(angle);
+}
+
+void MainWindow::onNewRotState(bool rotActive)
+{
+    //rotCheckBox_->setEnabled(rotActive);
 }
 
 void MainWindow::onNewErrorMessage(QString errormessagePpms)

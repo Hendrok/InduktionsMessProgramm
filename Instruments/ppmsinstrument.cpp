@@ -87,26 +87,33 @@ void PpmsInstrument::openDevice()
 
 void PpmsInstrument::newRotatorstate(bool rotator)
 {
+    rotState_ = rotator;
     if(rotator == true)
     {
         gpib_->cmd(address_ ,"Bridge 1,999.023,100.000,0,0,9.0", DELAYGPIB, TERMCHAR);
         gpib_->cmd(address_ ,"USERTEMP 23 1.9 1.8 2 1", DELAYGPIB, TERMCHAR);
         dataMask_ += BITANGLE; // Angle
         dataMask_ += BITUSERTEMP; // userTemp
-        rotState_ = true;
+        qDebug()<<gpib_->query(address_,"",DELAYGPIB,TERMCHAR).c_str();
 
         qDebug()<<dataMask_;
+        rotState_ = ppmsLogik().datamask() & BITUSERTEMP;
+        if(rotState_ != rotator)
+        {
+            emit newErrorPPMS("Rotator not mounted");
+        }
     }
     else
     {
-         //TODO: Rotator Voltage aus?
+        //TODO: Rotator Voltage aus?
         //gpib_->cmd(address_ ,"Bridge 0,999.023,100.000,0,0,9.0", DELAYGPIB, TERMCHAR);
         gpib_->cmd(address_ ,"USERTEMP 0", DELAYGPIB, TERMCHAR);
-        rotState_ = false;
         dataMask_ -= BITANGLE; // Angle
         dataMask_ -= BITUSERTEMP; // userTemp
-        qDebug()<<dataMask_;
+        //qDebug()<<dataMask_;
     }
+
+    emit newRotatorstate(rotator);
 }
 
 bool PpmsInstrument::isOpen() const
@@ -214,12 +221,13 @@ PpmsDataPoint PpmsInstrument::ppmsLogik()
     {
         return ppmsDpoint;
     }
+    ppmsDpoint.setDatamask(Datavector[0].toInt());
     ppmsDpoint.setPvStatusPpms(Datavector[2].toStdString());
     ppmsDpoint.setPvTempLive(Datavector[3].toDouble());
     ppmsDpoint.setPvMagFieldLive( Datavector[4].toDouble() / OE_IN_MT);
     ppmsDpoint.setPvSamplePressure(Datavector[5].toDouble());
 
-    if(Datavector[0].toInt() & BITUSERTEMP && rotState_ == true && Datavector.size()>7)
+    if(ppmsDpoint.datamask() & BITUSERTEMP && rotState_ == true && Datavector.size()>7)
     {
         ppmsDpoint.setPvRotLive(Datavector[5].toDouble());
         ppmsDpoint.setPvSamplePressure(Datavector[6].toDouble());

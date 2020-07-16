@@ -34,6 +34,7 @@ signals:
     void newTempSP(double setpoint, double rate) ;
     void newMagSP(double magField, double magRate) ;
     void newAngleSP(double angle) ;   
+    void newRotstate(bool rotActive);
     void newErrorPPMS(QString ppmsError);
 };
 

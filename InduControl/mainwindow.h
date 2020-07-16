@@ -44,6 +44,7 @@ private slots:
     void onNewTempSP(double temp, double rate);
     void onNewMagSP(double magField, double magRate);
     void onNewAngleSP(double angle);
+    void onNewRotState(bool rotActive);
     void onNewErrorMessage(QString errormessagePpms);
 private:
     void setupUi();

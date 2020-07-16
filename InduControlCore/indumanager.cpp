@@ -39,8 +39,11 @@ InduManager::InduManager()
             this, &InduManager::onNewSensivitySP);
     connect(instrumentmanager_.get(), &InstrumentManager::newHarmonicSP,
             this, &InduManager::onNewHarmonicSP);
+    connect(instrumentmanager_.get(), &InstrumentManager::newRotstate,
+            this, &InduManager::onNewRotstate);
     connect(instrumentmanager_.get(), &InstrumentManager::newErrorMessage,
             this, &InduManager::onNewErrorMessage);
+
 }
 
 InduManager::~InduManager()
@@ -261,6 +264,11 @@ void InduManager::onNewSensivitySP(int sensivity)
 void InduManager::onNewHarmonicSP(int harmonicW)
 {
     emit newHarmonicSP(harmonicW);
+}
+
+void InduManager::onNewRotstate(bool rotActive)
+{
+    emit newRotstate(rotActive);
 }
 
 void InduManager::onNewErrorMessage(QString errormessagePpms)

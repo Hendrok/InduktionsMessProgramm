@@ -26,6 +26,7 @@ signals:
     void newFreqSP(double freq);
     void newSensivitySP(int sensivity);
     void newHarmonicSP(int harmonicW);
+    void newRotstate(bool rotActive);
     void newErrorMessage(QString ppmsError);
 public:
     InstrumentManager();

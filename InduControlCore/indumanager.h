@@ -36,6 +36,7 @@ signals:
     void newFreqSP(double freq);
     void newSensivitySP(int sensivity);
     void newHarmonicSP(int harmonicW);
+    void newRotstate(bool rotActive);
     void newErrorMessage(QString errormessagePpms);
 
 private slots:
@@ -46,6 +47,7 @@ private slots:
     void onNewFreqSP(double freq);
     void onNewSensivitySP(int sensivity);
     void onNewHarmonicSP(int harmonicW);
+    void onNewRotstate(bool rotActive);
     void onNewErrorMessage(QString errormessagePpms);
 
 
