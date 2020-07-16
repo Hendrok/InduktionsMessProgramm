@@ -18,12 +18,16 @@ int LockInSens::setSensitivity(std::shared_ptr<DataPoint> datapoint)
         setRefVoltage();
 
     }
-    if(datapoint->lockindata()->pvVoltOutputLive() < refVoltage_/2.5 && sensState_ !=0)
+    else if(datapoint->lockindata()->pvVoltOutputLive() < refVoltage_/2.5 && sensState_ !=0)
     {
         sensState_--;
         sensitivity_ = Sensitivity(sensState_);
         setRefVoltage();
 
+    }
+    else
+    {
+        //TODO: HIER das die Messung losgeht
     }
     /*qDebug()<<datapoint->lockindata()->pvVoltOutputLive();
     qDebug()<<sensState_;*/
